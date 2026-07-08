@@ -1,4 +1,3 @@
-
 @extends('layouts.admin')
 
 @section('content')
@@ -19,7 +18,7 @@
             /* === БАЗОВЫЕ СТИЛИ СТРАНИЦЫ === */
             /* ============================================ */
             .logs-page {
-                font-family: 'Inter', sans-serif !important;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
                 min-height: 100vh;
                 padding: 24px 20px;
                 position: relative;
@@ -28,11 +27,11 @@
             }
 
             .logs-page * {
-                font-family: 'Inter', sans-serif;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             }
 
             .logs-page .mono {
-                font-family: 'JetBrains Mono', monospace !important;
+                font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
             }
 
             /* Ambient Lighting */
@@ -79,7 +78,7 @@
             }
 
             .logs-container {
-                max-width: 1200px;
+                max-width: 1400px;
                 margin: 0 auto;
                 position: relative;
                 z-index: 10;
@@ -217,11 +216,11 @@
                 width: 100%;
                 text-align: left;
                 border-collapse: collapse;
-                min-width: 820px;
+                min-width: 900px;
             }
 
             .logs-table th {
-                padding: 10px 14px;
+                padding: 12px 16px;
                 font-family: 'JetBrains Mono', monospace;
                 font-size: 9px;
                 font-weight: 700;
@@ -234,8 +233,8 @@
             }
 
             .logs-table td {
-                padding: 10px 14px;
-                font-size: 12px;
+                padding: 14px 16px;
+                font-size: 13px;
                 color: rgba(226, 232, 240, 0.9);
                 vertical-align: middle;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -263,19 +262,19 @@
                 font-size: 11px;
             }
 
-            /* Document */
+            /* Document - показываем полное название */
             .cell-doc-title {
-                font-weight: 700;
+                font-weight: 600;
                 color: var(--text);
                 display: block;
-                max-width: 200px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                font-size: 12px;
+                max-width: 350px;
+                word-wrap: break-word;
+                white-space: normal;
+                line-height: 1.5;
+                font-size: 13px;
             }
 
-            /* User */
+            /* User - показываем полное имя */
             .user-cell {
                 display: flex;
                 align-items: center;
@@ -283,14 +282,14 @@
             }
 
             .mini-avatar {
-                width: 30px;
-                height: 30px;
+                width: 32px;
+                height: 32px;
                 border-radius: 8px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-family: 'JetBrains Mono', monospace;
-                font-size: 11px;
+                font-size: 12px;
                 font-weight: 800;
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
@@ -311,12 +310,11 @@
             .user-name {
                 font-weight: 600;
                 color: #cbd5e1;
-                font-size: 12px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                max-width: 120px;
-                display: block;
+                font-size: 13px;
+                word-wrap: break-word;
+                white-space: normal;
+                line-height: 1.4;
+                max-width: 180px;
             }
 
             /* Action badge */
@@ -324,9 +322,9 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 5px;
-                padding: 4px 10px;
+                padding: 5px 12px;
                 font-family: 'JetBrains Mono', monospace;
-                font-size: 9px;
+                font-size: 10px;
                 font-weight: 700;
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
@@ -347,20 +345,25 @@
             .badge-deleted { background: rgba(239, 68, 68, 0.1); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
             .badge-signed  { background: rgba(99, 102, 241, 0.1); color: #818cf8; border-color: rgba(99, 102, 241, 0.3); }
             .badge-status  { background: rgba(245, 158, 11, 0.1); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); }
+            .badge-sent { background: rgba(6, 182, 212, 0.1); color: #22d3ee; border-color: rgba(6, 182, 212, 0.3); }
+            .badge-downloaded { background: rgba(168, 85, 247, 0.1); color: #c084fc; border-color: rgba(168, 85, 247, 0.3); }
+            .badge-exported { background: rgba(236, 72, 153, 0.1); color: #f472b6; border-color: rgba(236, 72, 153, 0.3); }
+            .badge-rejected { background: rgba(220, 38, 38, 0.1); color: #ef4444; border-color: rgba(220, 38, 38, 0.3); }
+            .badge-ai { background: rgba(132, 204, 22, 0.1); color: #a3e635; border-color: rgba(132, 204, 22, 0.3); }
+            .badge-error { background: rgba(251, 146, 60, 0.1); color: #fb923c; border-color: rgba(251, 146, 60, 0.3); }
             .badge-unknown { background: rgba(100, 116, 139, 0.1); color: #94a3b8; border-color: rgba(100, 116, 139, 0.3); }
 
-            /* Meta */
+            /* Meta - показываем полное описание */
             .cell-meta {
                 color: var(--muted);
                 font-weight: 500;
-                font-size: 11px;
+                font-size: 12px;
                 font-style: italic;
-                line-height: 1.4;
+                line-height: 1.5;
                 display: block;
-                max-width: 200px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
+                max-width: 300px;
+                word-wrap: break-word;
+                white-space: normal;
             }
 
             /* Time */
@@ -368,39 +371,65 @@
                 font-family: 'JetBrains Mono', monospace;
                 font-weight: 600;
                 color: #cbd5e1;
-                font-size: 11px;
+                font-size: 12px;
                 white-space: nowrap;
             }
 
-            /* Delete button */
-            .delete-btn {
-                width: 30px;
-                height: 30px;
-                border-radius: 8px;
+            /* Delete button - КРАСИВАЯ ИКОНКА МУСОРНОГО БАКА */
+            .delete-btn-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-                background: rgba(239, 68, 68, 0.1);
-                border: 1px solid rgba(239, 68, 68, 0.2);
-                color: #ef4444;
+                background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(220, 38, 38, 0.08));
+                border: 1px solid rgba(239, 68, 68, 0.25);
+                color: #f87171;
                 cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+                position: relative;
+                overflow: hidden;
             }
 
-            .delete-btn:hover {
-                transform: scale(1.1) rotate(-5deg);
-                background: rgba(239, 68, 68, 0.2);
-                box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
-                border-color: rgba(239, 68, 68, 0.4);
+            .delete-btn-icon::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(circle at center, rgba(239, 68, 68, 0.3), transparent 70%);
+                opacity: 0;
+                transition: opacity 0.3s ease;
             }
 
-            .delete-btn i {
-                font-size: 13px;
-                transition: transform 0.3s ease;
+            .delete-btn-icon i {
+                font-size: 16px;
+                filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.4));
+                transition: all 0.3s ease;
+                position: relative;
+                z-index: 1;
             }
 
-            .delete-btn:hover i {
-                transform: rotate(12deg);
+            .delete-btn-icon:hover {
+                background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.2));
+                border-color: rgba(239, 68, 68, 0.5);
+                color: #fff;
+                transform: translateY(-2px) scale(1.05);
+                box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4), 0 0 25px rgba(239, 68, 68, 0.3);
+            }
+
+            .delete-btn-icon:hover::before {
+                opacity: 1;
+            }
+
+            .delete-btn-icon:hover i {
+                transform: rotate(-12deg) scale(1.15);
+                filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+            }
+
+            .delete-btn-icon:active {
+                transform: translateY(0) scale(0.98);
+                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
             }
 
             /* Empty state */
@@ -485,9 +514,15 @@
             @media (max-width: 768px) {
                 .logs-page { padding: 16px 12px; }
                 .logs-title { font-size: 18px; }
-                .logs-table th, .logs-table td { padding: 8px 10px; font-size: 11px; }
-                .cell-doc-title, .user-name, .cell-meta { max-width: 140px; }
+                .logs-table th, .logs-table td { padding: 10px 12px; font-size: 12px; }
+                .cell-doc-title, .user-name, .cell-meta { max-width: 200px; }
                 .pagination-btn { min-width: 110px; height: 38px; padding: 0 16px; font-size: 11px; }
+                .delete-btn-icon { width: 32px; height: 32px; }
+                .delete-btn-icon i { font-size: 14px; }
+            }
+
+            @media (max-width: 1024px) {
+                .hidden-lg { display: none !important; }
             }
         </style>
 
@@ -505,7 +540,7 @@
             <div class="logs-counter">
                 <div class="pulse-dot"></div>
                 <span class="logs-counter-text">
-                    <span id="logsCountNumber" class="logs-counter-number">{{ count($logs) }}</span>
+                    <span id="logsCountNumber" class="logs-counter-number">{{ $logs->total() }}</span>
                     <span data-i18n="logsText" class="logs-counter-label">логов</span>
                 </span>
             </div>
@@ -523,7 +558,7 @@
                         <th data-i18n="colAction">Тип действия</th>
                         <th class="hidden-lg" data-i18n="colMeta">Мета-данные</th>
                         <th data-i18n="colTime">Время</th>
-                        <th style="text-align: right;" data-i18n="colManage">Управление</th>
+                        <th style="text-align: right; width: 80px;" data-i18n="colManage">Управление</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -532,14 +567,14 @@
 
                         {{-- ID --}}
                         <td class="cell-id">
-                            #{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}
+                            #{{ str_pad($log->id, 3, '0', STR_PAD_LEFT) }}
                         </td>
 
                         {{-- DOCUMENT --}}
                         <td>
-                                <span class="cell-doc-title">
-                                    {{ $log->document->title ?? '—' }}
-                                </span>
+                            <span class="cell-doc-title">
+                                {{ $log->document->title ?? '—' }}
+                            </span>
                         </td>
 
                         {{-- USER --}}
@@ -567,11 +602,17 @@
                             @php
                             $action = strtolower($log->action);
                             $actionKey = match(true) {
-                            str_contains($action, 'create') || str_contains($action, 'создание') => 'actionCreated',
-                            str_contains($action, 'update') || str_contains($action, 'обновление') => 'actionUpdated',
-                            str_contains($action, 'delete') || str_contains($action, 'удаление') => 'actionDeleted',
-                            str_contains($action, 'sign') || str_contains($action, 'подпись') => 'actionSigned',
-                            str_contains($action, 'status') || str_contains($action, 'статус') => 'actionStatus',
+                            str_contains($action, 'create') || str_contains($action, 'создание') || str_contains($action, 'сохтан') || str_contains($action, 'эҷод') => 'actionCreated',
+                            str_contains($action, 'update') || str_contains($action, 'обновление') || str_contains($action, 'навсозӣ') || str_contains($action, 'нав кардан') => 'actionUpdated',
+                            str_contains($action, 'delete') || str_contains($action, 'удаление') || str_contains($action, 'нест кардан') || str_contains($action, 'нобуд') => 'actionDeleted',
+                            str_contains($action, 'sign') || str_contains($action, 'подпис') || str_contains($action, 'имзо') => 'actionSigned',
+                            str_contains($action, 'send') || str_contains($action, 'отправк') || str_contains($action, 'фиристодан') => 'actionSent',
+                            str_contains($action, 'download') || str_contains($action, 'скачиван') || str_contains($action, 'боргирӣ') => 'actionDownloaded',
+                            str_contains($action, 'export') || str_contains($action, 'экспорт') || str_contains($action, 'содирот') => 'actionExported',
+                            str_contains($action, 'reject') || str_contains($action, 'отклон') || str_contains($action, 'рад кардан') => 'actionRejected',
+                            str_contains($action, 'ai') || str_contains($action, 'ии') || str_contains($action, 'таҳлил') || str_contains($action, 'анализ') => 'actionAI',
+                            str_contains($action, 'error') || str_contains($action, 'ошибк') || str_contains($action, 'хатогӣ') => 'actionError',
+                            str_contains($action, 'status') || str_contains($action, 'статус') || str_contains($action, 'иваз') => 'actionStatus',
                             default => 'actionUnknown'
                             };
                             $badgeClass = match($actionKey) {
@@ -579,13 +620,19 @@
                             'actionCreated' => 'badge-created',
                             'actionUpdated' => 'badge-updated',
                             'actionSigned'  => 'badge-signed',
+                            'actionSent'    => 'badge-sent',
+                            'actionDownloaded' => 'badge-downloaded',
+                            'actionExported' => 'badge-exported',
+                            'actionRejected' => 'badge-rejected',
+                            'actionAI'      => 'badge-ai',
+                            'actionError'   => 'badge-error',
                             'actionStatus'  => 'badge-status',
                             default         => 'badge-unknown'
                             };
                             @endphp
                             <span class="action-badge {{ $badgeClass }}" data-i18n="{{ $actionKey }}">
-                                    {{ $log->action }}
-                                </span>
+                                {{ $log->action }}
+                            </span>
                         </td>
 
                         {{-- META --}}
@@ -598,77 +645,85 @@
                             {{ $log->created_at->format('d.m.y / H:i') }}
                         </td>
 
-                        {{-- DELETE --}}
+                        {{-- DELETE - КРАСИВАЯ ИКОНКА МУСОРНОГО БАКА --}}
+                        {{-- DELETE - ЯРКАЯ КНОПКА --}}
+                        {{-- DELETE - ЯРКАЯ КНОПКА С SVG --}}
                         <td style="text-align: right;">
                             <form action="{{ route('logs.destroy', $log->id) }}" method="POST" style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" data-confirm-i18n="confirmDelete" class="delete-btn-visible">
-                                    <i class="bi bi-trash3-fill"></i>
-                                    <span class="delete-label">Delete</span>
+                                <button type="submit" data-confirm-i18n="confirmDelete" class="delete-btn-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                    </svg>
                                 </button>
                             </form>
                         </td>
-                        <style>
-                            /* === ЗАМЕТНАЯ КНОПКА УДАЛЕНИЯ === */
-.delete-btn-visible {
+<style>
+    /* Delete button - ЯРКАЯ И ЗАМЕТНАЯ */
+.delete-btn-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    color: #f87171;
-    font-size: 11px;
-    font-weight: 700;
-    font-family: 'Inter', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    justify-content: center;
+
+    /* Яркий градиентный фон */
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    border: none;
+
+    /* Белая иконка для контраста */
+    color: #ffffff;
+
     cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Красивая тень */
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    position: relative;
+    overflow: hidden;
 }
 
-.delete-btn-visible i {
-    font-size: 14px;
-    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.5));
+/* Блик при наведении */
+.delete-btn-icon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
 }
 
-.delete-btn-visible:hover {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.2));
-    border-color: rgba(239, 68, 68, 0.6);
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4), 0 0 20px rgba(239, 68, 68, 0.3);
+.delete-btn-icon:hover::after {
+    left: 100%;
 }
 
-.delete-btn-visible:hover i {
-    transform: rotate(-8deg) scale(1.1);
-    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+.delete-btn-icon i {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+    z-index: 2;
 }
 
-.delete-btn-visible:active {
-    transform: translateY(0);
+/* Эффект при наведении */
+.delete-btn-icon:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.6);
+    background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
 }
 
-.delete-label {
-    font-size: 10px;
-    font-weight: 700;
+.delete-btn-icon:hover i {
+    transform: rotate(15deg);
 }
 
-/* Для мобильных - скрыть текст */
-@media (max-width: 768px) {
-    .delete-label {
-        display: none;
-    }
-
-    .delete-btn-visible {
-        padding: 6px 10px;
-    }
+.delete-btn-icon:active {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
 }
-                        </style>
-
+</style>
                     </tr>
                     @empty
                     <tr>
@@ -691,27 +746,21 @@
         @if($logs->hasPages())
         <div class="pagination-wrapper">
             @if($logs->onFirstPage())
-            <span class="pagination-btn disabled">« Previous</span>
+            <span class="pagination-btn disabled" data-i18n="prevPage">« Previous</span>
             @else
-            <a href="{{ $logs->previousPageUrl() }}" class="pagination-btn">« Previous</a>
+            <a href="{{ $logs->previousPageUrl() }}" class="pagination-btn" data-i18n="prevPage">« Previous</a>
             @endif
 
             @if($logs->hasMorePages())
-            <a href="{{ $logs->nextPageUrl() }}" class="pagination-btn">Next »</a>
+            <a href="{{ $logs->nextPageUrl() }}" class="pagination-btn" data-i18n="nextPage">Next »</a>
             @else
-            <span class="pagination-btn disabled">Next »</span>
+            <span class="pagination-btn disabled" data-i18n="nextPage">Next »</span>
             @endif
         </div>
         @endif
 
     </div>
 </div>
-
-<style>
-    @media (max-width: 1024px) {
-        .hidden-lg { display: none !important; }
-    }
-</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -730,11 +779,19 @@
                 actionUpdated: 'Обновление',
                 actionDeleted: 'Удаление',
                 actionSigned: 'Подписание',
+                actionSent: 'Отправка',
+                actionDownloaded: 'Скачивание',
+                actionExported: 'Экспорт',
+                actionRejected: 'Отклонение',
+                actionAI: 'AI анализ',
+                actionError: 'Ошибка',
                 actionStatus: 'Смена статуса',
                 actionUnknown: 'Действие',
                 noLogs: 'Записи не найдены',
                 confirmDelete: 'Удалить запись?',
-                logsText: 'логов'
+                logsText: 'логов',
+                prevPage: '« Назад',
+                nextPage: 'Вперёд »'
             },
             tj: {
                 historyTitle: 'Таърихи ҳодисаҳо',
@@ -743,18 +800,26 @@
                 colDoc: 'Ҳуҷҷат',
                 colUser: 'Ташаббускор',
                 colAction: 'Навъи амал',
-                colMeta: 'Мета-маълумот',
+                colMeta: 'Маълумоти иловагӣ',
                 colTime: 'Вақт',
                 colManage: 'Идоракунӣ',
                 actionCreated: 'Сохтан',
                 actionUpdated: 'Навсозӣ',
                 actionDeleted: 'Нест кардан',
-                actionSigned: 'Имзо',
+                actionSigned: 'Имзо кардан',
+                actionSent: 'Фиристодан',
+                actionDownloaded: 'Боргирӣ кардан',
+                actionExported: 'Содирот',
+                actionRejected: 'Рад кардан',
+                actionAI: 'Таҳлили AI',
+                actionError: 'Хатогӣ',
                 actionStatus: 'Ивази статус',
                 actionUnknown: 'Амал',
                 noLogs: 'Сабтҳо ёфт нашуданд',
-                confirmDelete: 'Сабт нест шавад?',
-                logsText: 'логҳо'
+                confirmDelete: 'Сабтро нест мекунед?',
+                logsText: 'сабтҳо',
+                prevPage: '« Қафо',
+                nextPage: 'Пеш »'
             },
             en: {
                 historyTitle: 'Event History',
@@ -770,11 +835,19 @@
                 actionUpdated: 'Update',
                 actionDeleted: 'Deletion',
                 actionSigned: 'Signing',
+                actionSent: 'Sending',
+                actionDownloaded: 'Download',
+                actionExported: 'Export',
+                actionRejected: 'Rejection',
+                actionAI: 'AI Analysis',
+                actionError: 'Error',
                 actionStatus: 'Status Change',
                 actionUnknown: 'Action',
                 noLogs: 'No logs found',
                 confirmDelete: 'Delete this record?',
-                logsText: 'logs'
+                logsText: 'logs',
+                prevPage: '« Previous',
+                nextPage: 'Next »'
             }
         };
 

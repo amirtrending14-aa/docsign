@@ -9,14 +9,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('last_seen_at')->nullable()->after('remember_token');
+            // Проверяем, существует ли колонка, прежде чем добавлять
+            if (!Schema::hasColumn('users', 'last_seen_at')) {
+                $table->timestamp('last_seen_at')->nullable()->after('remember_token');
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('last_seen_at');
+            // Проверяем, существует ли колонка, прежде чем удалять
+            if (Schema::hasColumn('users', 'last_seen_at')) {
+                $table->dropColumn('last_seen_at');
+            }
         });
     }
 };

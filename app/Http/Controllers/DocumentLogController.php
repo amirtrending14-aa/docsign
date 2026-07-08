@@ -9,14 +9,23 @@ use Illuminate\View\View;
 
 class DocumentLogController extends Controller
 {
-
     public function index()
     {
         $query = DocumentLog::with(['document', 'user']);
 
-        if (!auth()->user()->is_admin) {
-            $query->whereHas('document', function ($q) {
-                $q->where('created_by', auth()->id());
+        if (!auth()->user()->isAdmin()) {
+            $userId = auth()->id();
+
+            // Показываем логи где пользователь:
+            // 1. Создатель документа ИЛИ
+            // 2. Получатель документа ИЛИ
+            // 3. Совершил действие (подписал, обновил и т.д.)
+            $query->where(function($q) use ($userId) {
+                $q->whereHas('document', function($docQ) use ($userId) {
+                    $docQ->where('created_by', $userId)
+                        ->orWhere('receiver_id', $userId)
+                        ->orWhere('sender_id', $userId);
+                })->orWhere('user_id', $userId);
             });
         }
 
@@ -24,10 +33,9 @@ class DocumentLogController extends Controller
         return view('logs.index', compact('logs'));
     }
 
-
     public function create(): View
     {
-        if (auth()->user()->is_admin) {
+        if (auth()->user()->isAdmin()) {
             $documents = Document::pluck('title', 'id');
         } else {
             $documents = Document::where('created_by', auth()->id())->pluck('title', 'id');
@@ -38,7 +46,6 @@ class DocumentLogController extends Controller
         return view('logs.create', compact('documents', 'users'));
     }
 
-
     public function store(StoreRequest $request): RedirectResponse
     {
         DocumentLog::create($request->validated());
@@ -48,10 +55,9 @@ class DocumentLogController extends Controller
             ->with('success', 'Запись в журнале успешно создана');
     }
 
-
     public function show(DocumentLog $log): View
     {
-        if (!auth()->user()->is_admin && $log->document->created_by !== auth()->id()) {
+        if (!auth()->user()->isAdmin() && $log->document->created_by !== auth()->id()) {
             abort(403, 'У вас нет доступа к этой истории.');
         }
 
@@ -60,14 +66,13 @@ class DocumentLogController extends Controller
         return view('logs.show', compact('log'));
     }
 
-
     public function edit(DocumentLog $log): View
     {
-        if (!auth()->user()->is_admin && $log->document->created_by !== auth()->id()) {
+        if (!auth()->user()->isAdmin() && $log->document->created_by !== auth()->id()) {
             abort(403);
         }
 
-        if (auth()->user()->is_admin) {
+        if (auth()->user()->isAdmin()) {
             $documents = Document::pluck('title', 'id');
         } else {
             $documents = Document::where('created_by', auth()->id())->pluck('title', 'id');
@@ -78,10 +83,9 @@ class DocumentLogController extends Controller
         return view('logs.edit', compact('log', 'documents', 'users'));
     }
 
-
     public function update(UpdateRequest $request, DocumentLog $log): RedirectResponse
     {
-        if (!auth()->user()->is_admin && $log->document->created_by !== auth()->id()) {
+        if (!auth()->user()->isAdmin() && $log->document->created_by !== auth()->id()) {
             abort(403);
         }
 
@@ -92,10 +96,9 @@ class DocumentLogController extends Controller
             ->with('success', 'Запись журнала обновлена');
     }
 
-
     public function destroy(DocumentLog $log): RedirectResponse
     {
-        if (!auth()->user()->is_admin && $log->document->created_by !== auth()->id()) {
+        if (!auth()->user()->isAdmin() && $log->document->created_by !== auth()->id()) {
             abort(403);
         }
 
@@ -104,10 +107,9 @@ class DocumentLogController extends Controller
         return back()->with('success', 'Запись удалена');
     }
 
-
     public function documentLogs(Document $document): View
     {
-        if (!auth()->user()->is_admin && $document->created_by !== auth()->id()) {
+        if (!auth()->user()->isAdmin() && $document->created_by !== auth()->id()) {
             abort(403);
         }
 
@@ -121,7 +123,7 @@ class DocumentLogController extends Controller
 
     public function clear(): \Illuminate\Http\RedirectResponse
     {
-        if (!auth()->user()->is_admin) {
+        if (!auth()->user()->isAdmin()) {
             return back()->with('error', 'У вас нет прав на очистку журнала истории');
         }
 

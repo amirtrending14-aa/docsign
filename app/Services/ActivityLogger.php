@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\ActivityLog;
+use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -13,7 +13,7 @@ class ActivityLogger
      */
     public static function log(string $action, $model = null, string $description = null, array $properties = [])
     {
-        ActivityLog::create([
+        Activity::create([
             'user_id' => Auth::id(),
             'action' => $action,
             'model_type' => $model ? get_class($model) : null,

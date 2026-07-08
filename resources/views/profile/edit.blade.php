@@ -599,17 +599,132 @@
                         <div class="form-error">{{ $message }}</div>
                         @enderror
                     </div>
+                    <style>
+                        .phone-input-wrapper {
+                            display: flex;
+                            align-items: center;
+                            border: 1px solid #ddd;
+                            border-radius: 4px;
+                            overflow: hidden;
+                            transition: border-color 0.3s;
+                        }
 
-                    {{-- Телефон --}}
+                        .phone-input-wrapper:focus-within {
+                            border-color: #007bff;
+                            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+                        }
+
+                        .phone-input-wrapper .flag-icon {
+                            background: #f8f9fa;
+                            padding: 8px 12px;
+                            border-right: 1px solid #ddd;
+                            font-size: 20px;
+                            line-height: 1;
+                        }
+
+                        .phone-input-wrapper .form-input {
+                            flex: 1;
+                            border: none;
+                            padding: 8px 12px;
+                            outline: none;
+                            background: transparent;
+                        }
+                    </style>
                     <div class="form-group">
                         <label class="form-label" for="phone">
                             <span data-i18n="labelPhone">Телефон</span>
                         </label>
-                        <input type="text" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" class="form-input" placeholder="+992 XX XXX XX XX">
+                        <div class="phone-input-wrapper" style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; overflow: hidden;">
+        <span style="background: #000; padding: 6px 10px; border-right: 1px solid #ccc; display: flex; align-items: center;">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect fill='%23006600' width='900' height='600'/%3E%3Crect fill='%23fff' width='900' height='400'/%3E%3Crect fill='%23cc0000' width='900' height='200'/%3E%3Cg fill='%23ffcc00'%3E%3Cpath d='M450 320c-25 0-45-20-45-45s20-45 45-45 45 20 45 45-20 45-45 45zm0-70c-14 0-25 11-25 25s11 25 25 25 25-11 25-25-11-25-25-25z'/%3E%3Cpath d='M450 265l-5-15-5 15h10z'/%3E%3Cpath d='M435 290l15 5-10 10-5-15z'/%3E%3C/g%3E%3C/svg%3E"
+                 alt="TJ"
+                 style="width: 24px; height: 16px; object-fit: cover;">
+        </span>
+                            <input type="tel"
+                                   id="phone"
+                                   name="phone"
+                                   value="{{ old('phone', $user->phone) }}"
+                                   class="form-input"
+                                   placeholder="+992 XX XXX XX XX"
+                                   inputmode="numeric"
+                                   autocomplete="tel"
+                                   maxlength="17"
+                                   style="flex: 1; border: none; padding: 8px 12px; outline: none;">
+                        </div>
                         @error('phone')
                         <div class="form-error">{{ $message }}</div>
                         @enderror
                     </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const phone = document.getElementById('phone');
+                            if (!phone) return;
+
+                            const COUNTRY_CODE = '992';
+                            const MAX_DIGITS = 12;
+
+                            function format(value) {
+                                let digits = value.replace(/\D/g, '');
+
+                                if (digits.startsWith('8') || digits.startsWith('0')) {
+                                    digits = digits.substring(1);
+                                }
+
+                                if (!digits.startsWith(COUNTRY_CODE)) {
+                                    digits = COUNTRY_CODE + digits;
+                                }
+
+                                digits = digits.substring(0, MAX_DIGITS);
+
+                                const parts = ['+' + digits.substring(0, 3)];
+                                if (digits.length > 3)  parts.push(digits.substring(3, 5));
+                                if (digits.length > 5)  parts.push(digits.substring(5, 8));
+                                if (digits.length > 8)  parts.push(digits.substring(8, 10));
+                                if (digits.length > 10) parts.push(digits.substring(10, 12));
+
+                                return parts.join(' ');
+                            }
+
+                            if (phone.value.trim() !== '') {
+                                phone.value = format(phone.value);
+                            }
+
+                            phone.addEventListener('input', function () {
+                                const cursorPos = phone.selectionStart;
+                                const oldLen = phone.value.length;
+
+                                phone.value = format(phone.value);
+
+                                const newLen = phone.value.length;
+                                let newPos = cursorPos + (newLen - oldLen);
+                                if (newPos < 0) newPos = 0;
+                                if (newPos > newLen) newPos = newLen;
+                                phone.setSelectionRange(newPos, newPos);
+                            });
+
+                            phone.addEventListener('paste', function (e) {
+                                e.preventDefault();
+                                const pasted = (e.clipboardData || window.clipboardData).getData('text');
+                                const before = phone.value.substring(0, phone.selectionStart);
+                                const after  = phone.value.substring(phone.selectionEnd);
+                                phone.value = format(before + pasted + after);
+                            });
+
+                            phone.addEventListener('keydown', function (e) {
+                                const allowed = [
+                                    'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight',
+                                    'Tab', 'Home', 'End', 'Enter'
+                                ];
+                                if (allowed.includes(e.key)) return;
+                                if (e.ctrlKey || e.metaKey) return;
+                                if (!/^\d$/.test(e.key)) {
+                                    e.preventDefault();
+                                }
+                            });
+
+                            // ❌ УДАЛЁН обработчик submit, который убирал пробелы
+                        });
+                    </script>
 
                     {{-- Компания --}}
                     @if(!$user->isSuperAdmin())

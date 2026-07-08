@@ -39,7 +39,7 @@ class User extends Authenticatable implements CanResetPassword
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
-        'password' => 'hashed',
+        // ❌ УБРАЛИ: 'password' => 'hashed',  // Это вызывает двойное хеширование!
         'level' => 'integer',
         'is_admin' => 'boolean',
         'is_super_admin' => 'boolean',

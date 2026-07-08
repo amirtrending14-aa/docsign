@@ -67,7 +67,15 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'phone'         => ['nullable', 'string', 'max:20'],
+            'phone'         => [
+                'nullable',
+                'string',
+                function ($attribute, $value, $fail) {
+                    if ($value && !preg_match('/^\+992 \d{2} \d{3} \d{2} \d{2}$/', $value)) {
+                        $fail('Номер телефона должен быть в формате +992 XX XXX XX XX');
+                    }
+                }
+            ],
             'company'       => ['nullable', 'string', 'max:255'],
             'avatar'        => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'remove_avatar' => ['nullable', 'string', 'in:0,1'],
@@ -94,20 +102,16 @@ class ProfileController extends Controller
         $user->phone = $validated['phone'] ?? null;
 
         // ===== СИНХРОНИЗАЦИЯ КОМПАНИИ =====
-        // Если админ меняет название компании - обновляем везде!
         if ($user->isAdmin() && !empty($validated['company'])) {
             $newCompanyName = $validated['company'];
 
-            // Если название изменилось
             if ($user->company !== $newCompanyName) {
-                // 1. Обновляем в таблице companies (если есть company_id)
                 if ($user->company_id) {
                     $company = Company::find($user->company_id);
                     if ($company) {
                         $company->update(['name' => $newCompanyName]);
                     }
                 } else {
-                    // Если company_id нет - создаём компанию
                     $company = Company::create([
                         'name' => $newCompanyName,
                         'owner_id' => $user->id,
@@ -115,19 +119,15 @@ class ProfileController extends Controller
                     $user->company_id = $company->id;
                 }
 
-                // 2. Обновляем название компании у ВСЕХ пользователей этой компании
                 User::where('company_id', $user->company_id)
                     ->update(['company' => $newCompanyName]);
 
-                // 3. Обновляем у самого админа
                 $user->company = $newCompanyName;
             }
         } elseif (!$user->isAdmin() && !empty($validated['company'])) {
-            // Обычный пользователь (не админ) - просто обновляем поле company
             $user->company = $validated['company'];
         }
 
-        // Сброс верификации email если он изменился
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }

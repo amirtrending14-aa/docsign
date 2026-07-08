@@ -10,6 +10,7 @@ use App\Models\DocumentSignature;
 use App\Models\DocumentWorkflow;
 use App\Models\Notification;
 use App\Models\User;
+use App\Helpers\ActivityLogger;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,6 @@ class DocumentController extends Controller
         $user = Auth::user();
         $query = DocumentSignature::with(['document.createdBy', 'users']);
 
-        // ИСПРАВЛЕНО: is_admin → isAdmin()
         if (!$user->isAdmin()) {
             $query->where('user_id', $user->id);
         }
@@ -43,12 +43,19 @@ class DocumentController extends Controller
     {
         $document = Document::with(['createdBy', 'receiver', 'signatures.users'])->findOrFail($id);
 
+        // 📝 ИСТОРИЯ: Экспорт в Word
         DocumentLog::create([
             'document_id' => $document->id,
             'user_id' => Auth::id(),
             'action' => 'экспорт',
             'description' => 'Документ экспортирован в формат Word (.docx) пользователем ' . Auth::user()->name
         ]);
+
+        ActivityLogger::log(
+            'document_exported',
+            "Экспортирован документ в Word: «{$document->title}»",
+            Auth::id()
+        );
 
         $phpWord = new PhpWord();
         $properties = $phpWord->getDocInfo();
@@ -122,12 +129,19 @@ class DocumentController extends Controller
     {
         $document = Document::with(['createdBy', 'receiver', 'signatures'])->findOrFail($id);
 
+        // 📝 ИСТОРИЯ: Экспорт в PDF
         DocumentLog::create([
             'document_id' => $document->id,
             'user_id' => Auth::id(),
             'action' => 'экспорт',
             'description' => 'Документ экспортирован в PDF пользователем ' . Auth::user()->name
         ]);
+
+        ActivityLogger::log(
+            'document_exported',
+            "Экспортирован документ в PDF: «{$document->title}»",
+            Auth::id()
+        );
 
         $verifyUrl = route('documents.show', $document->id);
         $qrCodePng = QrCode::format('png')
@@ -187,6 +201,20 @@ class DocumentController extends Controller
         $aiResult = $response->json()['choices'][0]['message']['content'];
         $data = json_decode($aiResult, true);
 
+        // 📝 ИСТОРИЯ: Анализ ИИ
+        DocumentLog::create([
+            'document_id' => null,
+            'user_id' => Auth::id(),
+            'action' => 'анализ ИИ',
+            'description' => 'Документ проанализирован ИИ: ' . $file->getClientOriginalName()
+        ]);
+
+        ActivityLogger::log(
+            'document_ai_parsed',
+            "Документ проанализирован ИИ: " . ($file->getClientOriginalName()),
+            Auth::id()
+        );
+
         return response()->json([
             'status' => 'success',
             'data' => $data
@@ -224,12 +252,19 @@ class DocumentController extends Controller
 
                 $this->processWorkflow($document, $currentWorkflow);
 
+                // 📝 ИСТОРИЯ: Подписание (не PDF)
                 DocumentLog::create([
                     'document_id' => $id,
                     'user_id' => $signer->id,
-                    'action' => 'имзо',
-                    'description' => strtoupper($extension) . ' документ успешно подписан пользователем ' . $signer->name
+                    'action' => 'подписание',
+                    'description' => strtoupper($extension) . ' документ подписан пользователем ' . $signer->name
                 ]);
+
+                ActivityLogger::log(
+                    'document_signed',
+                    "Подписан документ «{$document->title}» (формат " . strtoupper($extension) . ")",
+                    $signer->id
+                );
 
                 return redirect()->route('documents.show', $id)->with('success', strtoupper($extension) . ' успешно подписан!');
             }
@@ -331,14 +366,21 @@ class DocumentController extends Controller
                     'status' => ($this->isLastStep($document)) ? 'completed' : 'processing'
                 ]);
 
+                // 📝 ИСТОРИЯ: Подписание PDF
                 DocumentLog::create([
                     'document_id' => $document->id,
                     'user_id' => $signer->id,
-                    'action' => 'имзо',
-                    'description' => "Документ подписан и штампован пользователем: {$signer->name}"
+                    'action' => 'подписание',
+                    'description' => "PDF-документ подписан и штампован пользователем: {$signer->name}"
                 ]);
 
                 $this->processWorkflow($document, $currentWorkflow);
+
+                ActivityLogger::log(
+                    'document_signed',
+                    "Подписан PDF-документ «{$document->title}» с QR-штампом",
+                    $signer->id
+                );
 
                 return redirect()->route('documents.show', $id)->with('success', 'Документ успешно подписан!');
             });
@@ -387,12 +429,10 @@ class DocumentController extends Controller
         return view('dashboard', compact('totalDocs', 'docsGrowth'));
     }
 
-    // ИСПРАВЛЕННЫЙ МЕТОД INDEX
     public function index(Request $request)
     {
         $user = Auth::user();
 
-        // ===== СТАТИСТИКА (отдельный запрос, не зависит от фильтров списка) =====
         $userFilter = function($q) use ($user) {
             $q->where('created_by', $user->id)
                 ->orWhere('receiver_id', $user->id);
@@ -409,7 +449,6 @@ class DocumentController extends Controller
             'pending_change' => 3,
         ];
 
-        // ===== СПИСОК ДОКУМЕНТОВ (с фильтрами) =====
         $query = Document::with(['createdBy', 'receiver', 'signatures']);
 
         $query->where(function($q) use ($user) {
@@ -417,7 +456,6 @@ class DocumentController extends Controller
                 ->orWhere('receiver_id', $user->id);
         });
 
-        // Поиск
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -426,14 +464,12 @@ class DocumentController extends Controller
             });
         }
 
-        // Тип
         if ($request->type === 'incoming') {
             $query->where('receiver_id', $user->id);
         } elseif ($request->type === 'outgoing') {
             $query->where('created_by', $user->id);
         }
 
-        // Статусы
         if ($request->filled('status')) {
             $status = $request->status;
             if ($status === 'waiting') {
@@ -460,18 +496,15 @@ class DocumentController extends Controller
     {
         $authUser = auth()->user();
 
-        // Пользователи из своей команды (кроме себя)
         $teamUsers = User::where('company_id', $authUser->company_id)
             ->where('id', '!=', $authUser->id)
             ->get();
 
-        // Пользователи из других команд
         $otherUsers = User::where('company_id', '!=', $authUser->company_id)
             ->orWhereNull('company_id')
             ->where('id', '!=', $authUser->id)
             ->get();
 
-        // Подготавливаем массивы для JS
         $teamUsersArray = $teamUsers->map(function($u) {
             return [
                 'id' => $u->id,
@@ -503,13 +536,11 @@ class DocumentController extends Controller
             'content' => 'nullable|string',
             'deadline' => 'nullable|date',
             'status' => 'required|in:draft,active',
-            // ✅ ИСПРАВЛЕНО: используем mimetypes вместо mimes
             'file_path' => 'required|file|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/rtf|max:51200',
-            'receiver_mode' => 'required|in:all_team,select_team,other_company',
+            'receiver_mode' => 'nullable|in:all_team,select_team,other_company',
             'team_receivers' => 'nullable|string',
             'other_receiver_id' => 'nullable|integer|exists:users,id',
         ], [
-            // ✅ Кастомные сообщения на русском
             'file_path.required' => 'Необходимо прикрепить файл',
             'file_path.file' => 'Загруженный элемент не является файлом',
             'file_path.mimetypes' => 'Недопустимый формат файла. Разрешены: PDF, DOC, DOCX, XLS, XLSX, RTF',
@@ -518,16 +549,54 @@ class DocumentController extends Controller
             'type.required' => 'Тип документа обязателен',
             'title.required' => 'Заголовок обязателен',
             'status.required' => 'Статус обязателен',
-            'receiver_mode.required' => 'Выберите способ отправки',
         ]);
 
         $authUser = auth()->user();
-
-        // Загружаем файл
         $filePath = $request->file('file_path')->store('documents', 'public');
 
-        // Определяем получателей
+        // ═══════════════════════════════════════════════════════════
+        // ЕСЛИ ЧЕРНОВИК — сохраняем ТОЛЬКО для себя
+        // ═══════════════════════════════════════════════════════════
+        if ($data['status'] === 'draft') {
+            $document = Document::create([
+                'number' => $data['number'],
+                'type' => $data['type'],
+                'title' => $data['title'],
+                'content' => $data['content'] ?? null,
+                'deadline' => $data['deadline'] ?? null,
+                'status' => 'draft',
+                'file_path' => $filePath,
+                'sender_id' => $authUser->id,
+                'receiver_id' => null,
+                'created_by' => $authUser->id,
+            ]);
+
+            // 📝 ИСТОРИЯ: Создание черновика
+            DocumentLog::create([
+                'document_id' => $document->id,
+                'user_id' => $authUser->id,
+                'action' => 'создание',
+                'description' => "Создан черновик документа «{$data['title']}» (№{$data['number']})"
+            ]);
+
+            ActivityLogger::log(
+                'document_created',
+                "Создан черновик документа «{$data['title']}» (№{$data['number']}) — сохранён для себя",
+                $authUser->id
+            );
+
+            return redirect()->route('documents.index')
+                ->with('success', 'Черновик успешно сохранён');
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // ЕСЛИ АКТИВНЫЙ — определяем получателей
+        // ═══════════════════════════════════════════════════════════
         $receivers = [];
+
+        if (empty($data['receiver_mode'])) {
+            return back()->withErrors(['receiver_mode' => 'Выберите способ отправки для активного документа']);
+        }
 
         if ($data['receiver_mode'] === 'all_team') {
             $receivers = User::where('company_id', $authUser->company_id)
@@ -539,11 +608,10 @@ class DocumentController extends Controller
                 return back()->withErrors(['team_receivers' => 'Выберите хотя бы одного получателя']);
             }
             $receiverIds = array_map('intval', explode(',', $data['team_receivers']));
-            $validIds = User::where('company_id', $authUser->company_id)
+            $receivers = User::where('company_id', $authUser->company_id)
                 ->whereIn('id', $receiverIds)
                 ->pluck('id')
                 ->toArray();
-            $receivers = $validIds;
         } elseif ($data['receiver_mode'] === 'other_company') {
             if (empty($data['other_receiver_id'])) {
                 return back()->withErrors(['other_receiver_id' => 'Выберите получателя']);
@@ -555,59 +623,68 @@ class DocumentController extends Controller
             return back()->withErrors(['receiver_mode' => 'Не удалось определить получателей']);
         }
 
-        // Создаём документ для каждого получателя
+        // Создаём документы для каждого получателя
         foreach ($receivers as $receiverId) {
+            $receiver = User::find($receiverId);
+
             $document = Document::create([
                 'number' => $data['number'],
                 'type' => $data['type'],
                 'title' => $data['title'],
                 'content' => $data['content'] ?? null,
                 'deadline' => $data['deadline'] ?? null,
-                'status' => $data['status'],
+                'status' => 'active',
                 'file_path' => $filePath,
                 'sender_id' => $authUser->id,
                 'receiver_id' => $receiverId,
                 'created_by' => $authUser->id,
             ]);
 
-            // ⚠️ ТОЛЬКО если статус НЕ черновик — создаём запись на подпись
-            // ⚠️ ТОЛЬКО если статус НЕ черновик — создаём запись на подпись
-            if ($data['status'] !== 'draft') {
-                DocumentSignature::updateOrCreate(
-                    ['document_id' => $document->id, 'user_id' => $receiverId],
-                    ['signature' => '']
-                );
+            // 📝 ИСТОРИЯ: Создание и отправка документа
+            DocumentLog::create([
+                'document_id' => $document->id,
+                'user_id' => $authUser->id,
+                'action' => 'создание',
+                'description' => "Создан документ «{$data['title']}» (№{$data['number']}) и отправлен пользователю: {$receiver->name}"
+            ]);
 
-                // ✅ ИСПРАВЛЕНО: добавлен user_id + messages + data как массив
-                Notification::create([
-                    'user_id'         => $receiverId,   // ← КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ
-                    'type'            => 'assigned',
-                    'messages'        => 'Вам назначен документ на подпись: ' . $document->title,
-                    'notifiable_type' => User::class,
-                    'notifiable_id'   => $receiverId,
-                    'is_read'         => false,
-                    'data'            => [              // ← массив, не json_encode!
-                        'document_id'    => $document->id,
-                        'type'           => 'assigned',
-                        'user_name'      => $authUser->name,
-                        'user_email'     => $authUser->email,
-                        'document_title' => $document->title,
-                        'message'        => 'Новый документ на подпись: ' . $document->title,
-                    ],
-                ]);
-            }
+            DocumentSignature::updateOrCreate(
+                ['document_id' => $document->id, 'user_id' => $receiverId],
+                ['signature' => '']
+            );
 
+            Notification::create([
+                'user_id'         => $receiverId,
+                'type'            => 'assigned',
+                'messages'        => 'Вам назначен документ на подпись: ' . $document->title,
+                'notifiable_type' => User::class,
+                'notifiable_id'   => $receiverId,
+                'is_read'         => false,
+                'data'            => [
+                    'document_id'    => $document->id,
+                    'type'           => 'assigned',
+                    'user_name'      => $authUser->name,
+                    'user_email'     => $authUser->email,
+                    'document_title' => $document->title,
+                    'message'        => 'Новый документ на подпись: ' . $document->title,
+                ],
+            ]);
         }
 
+        ActivityLogger::log(
+            'document_created',
+            "Создан и отправлен документ «{$data['title']}» (№{$data['number']}) — отправлен " . count($receivers) . " получателю(ям)",
+            $authUser->id
+        );
+
         return redirect()->route('documents.index')
-            ->with('success', 'Документ успешно ' . ($data['status'] === 'draft' ? 'сохранён как черновик' : 'отправлен ' . count($receivers) . ' получателю(ям)'));
+            ->with('success', 'Документ успешно отправлен ' . count($receivers) . ' получателю(ям)');
     }
 
     public function sendToSign($id)
     {
         $document = Document::findOrFail($id);
 
-        // ИСПРАВЛЕНО: is_admin → isAdmin()
         if ((int)$document->created_by !== (int)Auth::id() && !Auth::user()->isAdmin()) {
             return back()->with('error', 'У вас нет прав на отправку этого документа');
         }
@@ -629,15 +706,14 @@ class DocumentController extends Controller
             ['signature' => '']
         );
 
-        // ✅ ИСПРАВЛЕНО
         Notification::create([
-            'user_id'         => $receiver->id,    // ← ДОБАВЛЕНО
+            'user_id'         => $receiver->id,
             'type'            => 'assigned',
             'messages'        => 'Вам отправлен документ на подпись: ' . $document->title,
             'notifiable_type' => User::class,
             'notifiable_id'   => $receiver->id,
             'is_read'         => false,
-            'data'            => [                 // ← массив
+            'data'            => [
                 'document_id'    => $document->id,
                 'type'           => 'assigned',
                 'user_name'      => Auth::user()->name,
@@ -647,12 +723,19 @@ class DocumentController extends Controller
             ],
         ]);
 
+        // 📝 ИСТОРИЯ: Отправка на подпись
         DocumentLog::create([
             'document_id' => $document->id,
             'user_id'     => Auth::id(),
             'action'      => 'отправка',
-            'description' => "Документ отправлен на подпись получателю: {$receiver->name}"
+            'description' => "Документ «{$document->title}» отправлен на подпись пользователю: {$receiver->name}"
         ]);
+
+        ActivityLogger::log(
+            'document_sent',
+            "Документ «{$document->title}» отправлен на подпись: {$receiver->name}",
+            Auth::id()
+        );
 
         return redirect()->route('documents.show', $id)->with('success', 'Документ успешно отправлен на подпись!');
     }
@@ -664,12 +747,19 @@ class DocumentController extends Controller
         if ($document->file_path && Storage::disk('public')->exists($document->file_path)) {
             $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
 
+            // 📝 ИСТОРИЯ: Скачивание файла
             DocumentLog::create([
                 'document_id' => $document->id,
                 'user_id' => Auth::id(),
-                'action' => 'экспорт',
-                'description' => 'Скачивание прикрепленного исходного файла пользователем ' . Auth::user()->name
+                'action' => 'скачивание',
+                'description' => 'Скачан исходный файл документа пользователем ' . Auth::user()->name
             ]);
+
+            ActivityLogger::log(
+                'document_downloaded',
+                "Скачан исходный файл документа «{$document->title}»",
+                Auth::id()
+            );
 
             return Storage::disk('public')->download(
                 $document->file_path,
@@ -700,18 +790,15 @@ class DocumentController extends Controller
         $document = Document::findOrFail($id);
         $authUser = auth()->user();
 
-        // Пользователи из своей команды (кроме себя)
         $teamUsers = User::where('company_id', $authUser->company_id)
             ->where('id', '!=', $authUser->id)
             ->get();
 
-        // Пользователи из других команд
         $otherUsers = User::where('company_id', '!=', $authUser->company_id)
             ->orWhereNull('company_id')
             ->where('id', '!=', $authUser->id)
             ->get();
 
-        // Подготавливаем массивы для JS
         $teamUsersArray = $teamUsers->map(function($u) {
             return [
                 'id' => $u->id,
@@ -731,7 +818,6 @@ class DocumentController extends Controller
             ];
         })->values()->toArray();
 
-        // Получаем текущего получателя
         $currentReceiver = $document->receiver_id ? User::find($document->receiver_id) : null;
 
         return view('document.edit', compact(
@@ -761,7 +847,7 @@ class DocumentController extends Controller
             'deadline' => 'nullable|date',
             'status'   => 'required|in:draft,active,completed',
             'file_path' => 'nullable|file|mimetypes:application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/rtf|max:51200',
-            'receiver_mode' => 'required|in:all_team,select_team,other_company',
+            'receiver_mode' => 'nullable|in:all_team,select_team,other_company',
             'team_receivers' => 'nullable|string',
             'other_receiver_id' => 'nullable|integer|exists:users,id',
         ]);
@@ -779,52 +865,73 @@ class DocumentController extends Controller
             $data['file_path'] = $request->file('file_path')->store('documents', 'public');
         }
 
-        // Определяем нового получателя
-        $newReceiverId = null;
-
-        if ($request->receiver_mode === 'all_team') {
-            // Для всей команды - берём первого пользователя (или можно создать несколько документов)
-            $firstReceiver = User::where('company_id', $authUser->company_id)
-                ->where('id', '!=', $authUser->id)
-                ->first();
-            $newReceiverId = $firstReceiver ? $firstReceiver->id : null;
-        } elseif ($request->receiver_mode === 'select_team') {
-            if ($request->team_receivers) {
-                $receiverIds = array_map('intval', explode(',', $request->team_receivers));
-                $newReceiverId = $receiverIds[0] ?? null; // Берём первого
+        // Если статус меняется с draft на active — нужен получатель
+        if ($oldStatus === 'draft' && $newStatus === 'active') {
+            if (empty($request->receiver_mode)) {
+                return back()->withErrors(['receiver_mode' => 'Выберите получателя для отправки документа']);
             }
-        } elseif ($request->receiver_mode === 'other_company') {
-            $newReceiverId = $request->other_receiver_id;
+
+            $newReceiverId = null;
+
+            if ($request->receiver_mode === 'all_team') {
+                $firstReceiver = User::where('company_id', $authUser->company_id)
+                    ->where('id', '!=', $authUser->id)
+                    ->first();
+                $newReceiverId = $firstReceiver ? $firstReceiver->id : null;
+            } elseif ($request->receiver_mode === 'select_team') {
+                if ($request->team_receivers) {
+                    $receiverIds = array_map('intval', explode(',', $request->team_receivers));
+                    $newReceiverId = $receiverIds[0] ?? null;
+                }
+            } elseif ($request->receiver_mode === 'other_company') {
+                $newReceiverId = $request->other_receiver_id;
+            }
+
+            if ($newReceiverId) {
+                $data['receiver_id'] = $newReceiverId;
+            } else {
+                return back()->withErrors(['receiver_mode' => 'Не удалось определить получателя']);
+            }
         }
 
-        if ($newReceiverId) {
-            $data['receiver_id'] = $newReceiverId;
+        // Если остаётся черновиком — получатель не нужен
+        if ($newStatus === 'draft') {
+            $data['receiver_id'] = null;
         }
 
         $document->update($data);
 
+        // 📝 ИСТОРИЯ: Обновление документа
         DocumentLog::create([
             'document_id' => $document->id,
             'user_id'     => Auth::id(),
-            'action'      => 'навсозӣ',
-            'description' => 'Параметры документа обновлены'
+            'action'      => 'обновление',
+            'description' => "Обновлён документ «{$document->title}» (статус: {$newStatus})"
         ]);
 
-        // Если статус изменился с draft на active - создаём подпись
+        ActivityLogger::log(
+            'document_updated',
+            "Обновлён документ «{$document->title}» (статус: {$newStatus})",
+            Auth::id()
+        );
+
+        // Если был черновик и стал активным — создаём подпись и уведомление
         if ($oldStatus === 'draft' && $newStatus === 'active' && $document->receiver_id) {
             DocumentSignature::updateOrCreate(
                 ['document_id' => $document->id, 'user_id' => $document->receiver_id],
                 ['signature' => '']
             );
 
+            $receiver = User::find($document->receiver_id);
+
             Notification::create([
-                'user_id'         => $document->receiver_id,  // ← ДОБАВЛЕНО
+                'user_id'         => $document->receiver_id,
                 'type'            => 'assigned',
                 'messages'        => 'Документ отправлен на подпись: ' . $document->title,
                 'notifiable_type' => User::class,
                 'notifiable_id'   => $document->receiver_id,
                 'is_read'         => false,
-                'data'            => [                        // ← массив
+                'data'            => [
                     'document_id'    => $document->id,
                     'type'           => 'assigned',
                     'user_name'      => auth()->user()->name,
@@ -833,6 +940,20 @@ class DocumentController extends Controller
                     'message'        => 'Документ отправлен на подпись: ' . $document->title,
                 ],
             ]);
+
+            // 📝 ИСТОРИЯ: Отправка черновика на подпись
+            DocumentLog::create([
+                'document_id' => $document->id,
+                'user_id'     => Auth::id(),
+                'action'      => 'отправка',
+                'description' => "Черновик «{$document->title}» отправлен на подпись пользователю: {$receiver->name}"
+            ]);
+
+            ActivityLogger::log(
+                'document_sent',
+                "Черновик «{$document->title}» отправлен на подпись",
+                Auth::id()
+            );
         }
 
         return redirect()->route('documents.index')->with('success', 'Документ успешно обновлен!');
@@ -840,17 +961,23 @@ class DocumentController extends Controller
 
     public function destroy(Document $document)
     {
-        // ИСПРАВЛЕНО: is_admin → isAdmin()
         if ($document->created_by !== Auth::id() && !Auth::user()->isAdmin()) {
             return back()->with('error', 'У вас нет прав на удаление этого документа');
         }
 
+        // 📝 ИСТОРИЯ: Удаление документа (ДО удаления файла)
         DocumentLog::create([
             'document_id' => $document->id,
             'user_id' => Auth::id(),
-            'action' => 'нест кардан',
-            'description' => 'Документ "' . $document->title . '" полностью удален из системы'
+            'action' => 'удаление',
+            'description' => 'Удалён документ "' . $document->title . '" (№' . $document->number . ')'
         ]);
+
+        ActivityLogger::log(
+            'document_deleted',
+            "Удалён документ «{$document->title}» (№{$document->number})",
+            Auth::id()
+        );
 
         if ($document->file_path) {
             Storage::disk('public')->delete($document->file_path);
@@ -860,6 +987,7 @@ class DocumentController extends Controller
 
         return redirect()->route('documents.index')->with('success', 'Документ удален!');
     }
+
     public function generateWithAI(Request $request)
     {
         $validated = $request->validate([
@@ -869,7 +997,6 @@ class DocumentController extends Controller
             'details'   => 'nullable|array',
         ]);
 
-        // Создаём документ-заготовку
         $document = Document::create([
             'user_id'    => auth()->id(),
             'created_by' => auth()->id(),
@@ -879,7 +1006,6 @@ class DocumentController extends Controller
             'receiver_id'=> null,
         ]);
 
-        // Запускаем фоновую генерацию через Job
         GenerateDocumentJob::dispatch(
             $document,
             $validated['type'],
@@ -888,17 +1014,31 @@ class DocumentController extends Controller
             $validated['format']
         );
 
+        // 📝 ИСТОРИЯ: Генерация через ИИ
+        DocumentLog::create([
+            'document_id' => $document->id,
+            'user_id' => auth()->id(),
+            'action' => 'генерация ИИ',
+            'description' => "Запущена генерация документа через ИИ: тип={$validated['type']}, получатель={$validated['recipient']}"
+        ]);
+
+        ActivityLogger::log(
+            'document_ai_generated',
+            "Запущена генерация документа через ИИ: тип={$validated['type']}, получатель={$validated['recipient']}",
+            auth()->id()
+        );
+
         return response()->json([
             'message'     => 'Документ генерируется с помощью ИИ',
             'document_id' => $document->id,
         ]);
     }
+
     public function reject(Request $request, $id)
     {
         $document = Document::findOrFail($id);
         $user = Auth::user();
 
-        // Проверяем права: только получатель или админ может отклонить
         if ((int)$document->receiver_id !== (int)$user->id && !$user->isAdmin()) {
             return back()->with('error', 'У вас нет прав на отклонение этого документа');
         }
@@ -911,7 +1051,6 @@ class DocumentController extends Controller
             return back()->with('error', 'Нельзя отклонить уже подписанный документ');
         }
 
-        // Валидация причины
         $request->validate([
             'reject_reason' => 'required|string|min:5|max:1000'
         ], [
@@ -920,25 +1059,22 @@ class DocumentController extends Controller
             'reject_reason.max' => 'Причина не должна превышать 1000 символов'
         ]);
 
-        // Меняем статус на rejected
         $document->update(['status' => 'rejected']);
 
-        // Логируем действие с причиной
+        // 📝 ИСТОРИЯ: Отклонение документа
         DocumentLog::create([
             'document_id' => $document->id,
             'user_id'     => $user->id,
-            'action'      => 'отказ',
+            'action'      => 'отклонение',
             'description' => "Документ отклонён пользователем {$user->name}. Причина: " . $request->input('reject_reason')
         ]);
 
-        // Создаём комментарий с причиной отказа
         DocumentComment::create([
             'document_id' => $document->id,
             'user_id'     => $user->id,
             'comment'     => '❌ ОТКАЗ: ' . $request->input('reject_reason')
         ]);
 
-        // Уведомляем отправителя
         if ($document->created_by) {
             Notification::create([
                 'user_id'         => $document->created_by,
@@ -957,6 +1093,12 @@ class DocumentController extends Controller
                 ],
             ]);
         }
+
+        ActivityLogger::log(
+            'document_rejected',
+            "Отклонён документ «{$document->title}». Причина: " . $request->input('reject_reason'),
+            $user->id
+        );
 
         return redirect()->route('documents.show', $id)->with('success', 'Документ успешно отклонён');
     }

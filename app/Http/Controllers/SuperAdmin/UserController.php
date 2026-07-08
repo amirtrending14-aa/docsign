@@ -11,10 +11,41 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('companyRelation')->get();
-        return view('superadmin.users.index', compact('users'));
+        $query = User::with('companyRelation');
+
+        // Фильтр по поиску
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        // Фильтр по компании
+        if ($request->filled('company_id')) {
+            $query->where('company_id', $request->company_id);
+        }
+
+        // Фильтр по статусу (онлайн/офлайн)
+        if ($request->filled('status')) {
+            if ($request->status === 'online') {
+                $query->where('last_seen_at', '>=', now()->subMinutes(5));
+            } elseif ($request->status === 'offline') {
+                $query->where(function ($q) {
+                    $q->where('last_seen_at', '<', now()->subMinutes(5))
+                        ->orWhereNull('last_seen_at');
+                });
+            }
+        }
+
+        $users = $query->latest()->paginate(20)->withQueryString();
+        $companies = Company::orderBy('name')->get(); // ✅ Теперь $companies точно будет в view
+
+        return view('superadmin.users.index', compact('users', 'companies'));
     }
 
     public function create()
@@ -159,5 +190,19 @@ class UserController extends Controller
 
         return redirect()->route('superadmin.users.index')
             ->with('success', 'Пользователь удалён');
+    }
+    public function userActivity($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Добавляем переменную $users для фильтров
+        $users = User::orderBy('name')->get();
+
+        $activities = \App\Models\Activity::where('user_id', $id)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(30);
+
+        return view('superadmin.activity', compact('user', 'users', 'activities'));
     }
 }

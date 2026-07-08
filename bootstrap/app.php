@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'superadmin' => \App\Http\Middleware\CheckSuperAdmin::class,
             'last.seen' => \App\Http\Middleware\UpdateUserOnlineStatus::class,
         ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

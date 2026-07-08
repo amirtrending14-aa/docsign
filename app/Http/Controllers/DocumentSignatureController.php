@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Traits\LogsDocumentActions;
 use App\Models\Document;
 use App\Models\DocumentSignature;
 use App\Models\DocumentWorkflow;
@@ -15,7 +14,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpSpreadsheet\IOFactory as SpreadsheetIOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
@@ -23,8 +21,6 @@ use Exception;
 
 class DocumentSignatureController extends Controller
 {
-    use LogsDocumentActions;
-
     const A4_WIDTH_MM = 210;
     const A4_HEIGHT_MM = 297;
     const PIXEL_TO_MM_FACTOR = (1 / 1.5) * 0.352778;
@@ -36,15 +32,14 @@ class DocumentSignatureController extends Controller
         $user = Auth::user();
 
         // ✅ ПРОСРОЧЕННЫЕ ДОКУМЕНТЫ
-        // Логика: статус pending И (deadline прошёл ИЛИ создано >7 дней назад)
         $overdueQuery = Document::where('status', 'pending')
             ->where(function($q) {
-                $q->where('deadline', '<', now())                    // Дедлайн прошёл
-                ->orWhere('created_at', '<', now()->subDays(7));   // Или старше 7 дней
+                $q->where('deadline', '<', now())
+                    ->orWhere('created_at', '<', now()->subDays(7));
             });
 
-        if (!$user->is_admin) {
-            $overdueQuery->where('created_by', $user->id); // ✅ created_by, не user_id!
+        if (!$user->isAdmin()) {
+            $overdueQuery->where('created_by', $user->id);
         }
 
         $overdueCount = $overdueQuery->count();
@@ -52,7 +47,7 @@ class DocumentSignatureController extends Controller
         // ✅ ОСНОВНОЙ ЗАПРОС
         $query = DocumentSignature::with(['document', 'user']);
 
-        if (!$user->is_admin) {
+        if (!$user->isAdmin()) {
             $query->where('user_id', $user->id);
         }
 
@@ -81,7 +76,7 @@ class DocumentSignatureController extends Controller
 
         $document = Document::findOrFail($request->document_id);
         $signer = Auth::user();
-        $creator = $document->user;
+        $creator = $document->createdBy ?? $document->user;
 
         $currentWorkflow = DocumentWorkflow::where('document_id', $document->id)
             ->where('status', 'pending')
@@ -117,7 +112,9 @@ class DocumentSignatureController extends Controller
                         'file_path' => $result['docx_path'],
                         'status'    => ($this->isLastStep($document)) ? 'completed' : 'processing'
                     ]);
-                    $this->logAction($document->id, 'signed', "QR внедрен в DOCX: {$signer->name}");
+
+                    // 📝 ИСТОРИЯ: Подписание DOCX
+                    $this->logAction($document->id, 'подписание', "DOCX документ подписан пользователем {$signer->name}. QR-код внедрён в файл.");
                     $redirectType = 'docx';
                     return;
                 }
@@ -130,7 +127,9 @@ class DocumentSignatureController extends Controller
                         'file_path' => $result['pdf_path'],
                         'status'    => ($this->isLastStep($document)) ? 'completed' : 'processing'
                     ]);
-                    $this->logAction($document->id, 'signed', "QR внедрен в PDF: {$signer->name}");
+
+                    // 📝 ИСТОРИЯ: Подписание PDF
+                    $this->logAction($document->id, 'подписание', "PDF документ подписан пользователем {$signer->name}. QR-код внедрён в файл.");
                     $redirectType = 'pdf';
                     return;
                 }
@@ -143,7 +142,9 @@ class DocumentSignatureController extends Controller
                         'file_path' => $result['xlsx_path'],
                         'status'    => ($this->isLastStep($document)) ? 'completed' : 'processing'
                     ]);
-                    $this->logAction($document->id, 'signed', "QR внедрен в XLSX: {$signer->name}");
+
+                    // 📝 ИСТОРИЯ: Подписание XLSX
+                    $this->logAction($document->id, 'подписание', "Excel документ подписан пользователем {$signer->name}. QR-код внедрён в файл.");
                     $redirectType = 'xlsx';
                     return;
                 }
@@ -156,7 +157,9 @@ class DocumentSignatureController extends Controller
                         'file_path' => $result['docx_path'],
                         'status'    => ($this->isLastStep($document)) ? 'completed' : 'processing'
                     ]);
-                    $this->logAction($document->id, 'signed', "RTF→DOCX с QR: {$signer->name}");
+
+                    // 📝 ИСТОРИЯ: Конвертация RTF и подписание
+                    $this->logAction($document->id, 'подписание', "RTF конвертирован в DOCX и подписан пользователем {$signer->name}. QR-код внедрён.");
                     $redirectType = 'docx';
                     return;
                 }
@@ -175,7 +178,9 @@ class DocumentSignatureController extends Controller
                 $this->saveSignature($document, $signer, $permanentQrName);
                 $this->processWorkflow($document, $currentWorkflow, $signer);
                 $document->update(['status' => ($this->isLastStep($document)) ? 'completed' : 'processing']);
-                $this->logAction($document->id, 'signed', "Документ {$extension} подписан: {$signer->name}");
+
+                // 📝 ИСТОРИЯ: Подписание другого формата
+                $this->logAction($document->id, 'подписание', "Документ формата {$extension} подписан пользователем {$signer->name}. Создан QR-штамп.");
             });
 
             if ($redirectType === 'docx') {
@@ -190,36 +195,37 @@ class DocumentSignatureController extends Controller
 
         } catch (Exception $e) {
             \Log::error("Ошибка подписи: " . $e->getMessage() . "\n" . $e->getTraceAsString());
+
+            // 📝 ИСТОРИЯ: Ошибка подписания
+            $this->logAction($document->id, 'ошибка', "Ошибка при подписании документа пользователем {$signer->name}: " . $e->getMessage());
+
             return back()->with('error', '❌ Ошибка: ' . $e->getMessage());
         }
     }
 
     /**
-     * ✅ НОВЫЙ МЕТОД: Сохраняет или обновляет подпись
+     * ✅ Сохраняет или обновляет подпись
      */
     private function saveSignature($document, $signer, $qrPath)
     {
-        // Ищем существующую запись
         $signature = DocumentSignature::where('document_id', $document->id)
             ->where('user_id', $signer->id)
             ->first();
 
         if ($signature) {
-            // Обновляем существующую
             $signature->update([
                 'signature' => $qrPath,
                 'signed_at' => now(),
             ]);
-            \Log::info("✅ Подпись ОБНОВЛЕНА: doc_id={$document->id}, user_id={$signer->id}, signed_at=" . now());
+            \Log::info("✅ Подпись ОБНОВЛЕНА: doc_id={$document->id}, user_id={$signer->id}");
         } else {
-            // Создаём новую
             DocumentSignature::create([
                 'document_id' => $document->id,
                 'user_id'     => $signer->id,
                 'signature'   => $qrPath,
                 'signed_at'   => now(),
             ]);
-            \Log::info("✅ Подпись СОЗДАНА: doc_id={$document->id}, user_id={$signer->id}, signed_at=" . now());
+            \Log::info("✅ Подпись СОЗДАНА: doc_id={$document->id}, user_id={$signer->id}");
         }
     }
 
@@ -228,7 +234,7 @@ class DocumentSignatureController extends Controller
     }
 
     public function edit(DocumentSignature $signature) {
-        if (!Auth::user()->is_admin && $signature->user_id !== Auth::id()) {
+        if (!Auth::user()->isAdmin() && $signature->user_id !== Auth::id()) {
             abort(403);
         }
         return view('signatures.edit', compact('signature'));
@@ -236,13 +242,13 @@ class DocumentSignatureController extends Controller
 
     public function update(Request $request, DocumentSignature $signature)
     {
-        if (!Auth::user()->is_admin && $signature->user_id !== Auth::id()) {
+        if (!Auth::user()->isAdmin() && $signature->user_id !== Auth::id()) {
             abort(403);
         }
 
         $document = $signature->document;
         $signer = Auth::user();
-        $creator = $document->user;
+        $creator = $document->createdBy ?? $document->user;
 
         $senderName = $creator->name ?? 'System';
         $senderEmail = $creator->email ?? '-';
@@ -313,7 +319,8 @@ class DocumentSignatureController extends Controller
                 $signature->update(['signature' => $permanentQrName, 'signed_at' => now()]);
             });
 
-            $this->logAction($document->id, 'обновление подписи', "Подпись обновлена: {$signer->name}");
+            // 📝 ИСТОРИЯ: Обновление подписи
+            $this->logAction($document->id, 'обновление подписи', "Подпись обновлена пользователем {$signer->name}. Формат: " . strtoupper($extension));
 
             if ($redirectType === 'docx') {
                 return redirect()->route('signatures.show', $signature->id)->with('success', 'Файл Word переподписан!');
@@ -327,17 +334,24 @@ class DocumentSignatureController extends Controller
 
         } catch (Exception $e) {
             \Log::error("Ошибка обновления: " . $e->getMessage());
+
+            // 📝 ИСТОРИЯ: Ошибка обновления
+            $this->logAction($document->id, 'ошибка', "Ошибка при обновлении подписи пользователем {$signer->name}: " . $e->getMessage());
+
             return back()->with('error', 'Ошибка обновления: ' . $e->getMessage());
         }
     }
 
     public function destroy(DocumentSignature $signature) {
-        if (!Auth::user()->is_admin && $signature->user_id !== Auth::id()) {
+        if (!Auth::user()->isAdmin() && $signature->user_id !== Auth::id()) {
             abort(403);
         }
 
         $document = $signature->document;
         $signer = Auth::user();
+
+        // 📝 ИСТОРИЯ: Удаление подписи (ДО удаления файлов)
+        $this->logAction($document->id, 'удаление подписи', "Подпись пользователя {$signer->name} удалена из документа «{$document->title}»");
 
         $extension = strtolower(pathinfo($signature->document->file_path, PATHINFO_EXTENSION));
         if (in_array($extension, ['pdf', 'docx', 'doc', 'xlsx', 'xls'])) {
@@ -350,13 +364,11 @@ class DocumentSignatureController extends Controller
 
         $signature->delete();
 
-        $this->logAction($document->id, 'удаление подписи', "Подпись удалена: {$signer->name}");
-
         return back()->with('success', 'Запись удалена');
     }
 
     /**
-     * ✅ УЛУЧШЕНО: Генерирует штамп с QR-кодом ВЫСОКОГО качества
+     * ✅ Генерирует штамп с QR-кодом ВЫСОКОГО качества
      */
     private function generateStamp($qrPayload, $signerName, $signedDate, $qrSizePx = 100)
     {
@@ -365,7 +377,6 @@ class DocumentSignatureController extends Controller
             File::makeDirectory($tempDir, 0755, true);
         }
 
-        // ✅ ГЕНЕРИРУЕМ QR БОЛЬШЕГО РАЗМЕРА для лучшего качества (600x600)
         $qrApiSize = 600;
         $qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size={$qrApiSize}x{$qrApiSize}&margin=2&data=" . urlencode($qrPayload);
 
@@ -401,7 +412,6 @@ class DocumentSignatureController extends Controller
         $stampWidth = $qrSizePx;
         $stampHeight = $qrSizePx + 70;
 
-        // ✅ СОЗДАЕМ ИЗОБРАЖЕНИЕ С ВЫСОКИМ РАЗРЕШЕНИЕМ (2x для Retina)
         $scale = 2;
         $stampWidthHiRes = $stampWidth * $scale;
         $stampHeightHiRes = $stampHeight * $scale;
@@ -417,7 +427,6 @@ class DocumentSignatureController extends Controller
 
         imagefill($stamp, 0, 0, $white);
 
-        // ✅ МАСШТАБИРУЕМ QR С ВЫСОКИМ КАЧЕСТВОМ
         imagecopyresampled(
             $stamp, $qrImage,
             0, 0, 0, 0,
@@ -425,25 +434,20 @@ class DocumentSignatureController extends Controller
             $qrWidth, $qrHeight
         );
 
-        // Разделительная линия
         imageline($stamp, 5 * $scale, ($qrSizePx + 5) * $scale, ($stampWidthHiRes - 5 * $scale), ($qrSizePx + 5) * $scale, $gray);
 
-        // Имя (по центру) - используем больший шрифт
         $displayName = mb_strlen($signerName) > 20 ? mb_substr($signerName, 0, 20) . '...' : $signerName;
         $nameFont = 5;
         $nameCharWidth = imagefontwidth($nameFont);
         $nameX = max(5 * $scale, ($stampWidthHiRes - (strlen($displayName) * $nameCharWidth)) / 2);
         imagestring($stamp, $nameFont, $nameX, ($qrSizePx + 15) * $scale, $displayName, $black);
 
-        // Дата (по центру)
         $dateCharWidth = imagefontwidth(3);
         $dateX = max(5 * $scale, ($stampWidthHiRes - (strlen($signedDate) * $dateCharWidth)) / 2);
         imagestring($stamp, 3, $dateX, ($qrSizePx + 40) * $scale, $signedDate, $black);
 
-        // Рамка
         imagerectangle($stamp, 0, 0, $stampWidthHiRes - 1, $stampHeightHiRes - 1, $black);
 
-        // ✅ УМЕНЬШАЕМ до нужного размера с высоким качеством
         $finalStamp = imagecreatetruecolor($stampWidth, $stampHeight);
         imageantialias($finalStamp, true);
         imagealphablending($finalStamp, false);
@@ -457,7 +461,6 @@ class DocumentSignatureController extends Controller
         );
 
         $stampPath = $tempDir . '/' . uniqid('stamp_', true) . '.png';
-        // ✅ СОХРАНЯЕМ С МИНИМАЛЬНЫМ СЖАТИЕМ (качество 9)
         imagepng($finalStamp, $stampPath, 9);
 
         imagedestroy($qrImage);
@@ -472,7 +475,7 @@ class DocumentSignatureController extends Controller
     }
 
     /**
-     * ✅ PDF: QR на ПОСЛЕДНЕЙ странице, в правом нижнем углу
+     * ✅ PDF: QR на ПОСЛЕДНЕЙ странице
      */
     private function processPdfSigning($document, $qrPayload, $qrSize = 100, $signerName = '', $signedDate = '')
     {
@@ -489,8 +492,6 @@ class DocumentSignatureController extends Controller
         $pdf->SetAutoPageBreak(false);
 
         $pageCount = $pdf->setSourceFile($originalPath);
-
-        // ✅ ВСЕГДА ПОСЛЕДНЯЯ СТРАНИЦА
         $targetPage = $pageCount;
 
         for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
@@ -504,7 +505,6 @@ class DocumentSignatureController extends Controller
                 $qr_size_mm = $qrSize * self::PIXEL_TO_MM_FACTOR;
                 $stamp_height_mm = ($qrSize + 70) * self::PIXEL_TO_MM_FACTOR;
 
-                // ✅ ВНИЗ ПРАВОГО УГЛА с отступом 15мм
                 $margin = 15;
                 $qr_x_mm = $size['width'] - $qr_size_mm - $margin;
                 $qr_y_mm = $size['height'] - $stamp_height_mm - $margin;
@@ -535,7 +535,7 @@ class DocumentSignatureController extends Controller
     }
 
     /**
-     * ✅ DOCX: QR на ПОСЛЕДНЕЙ странице, МАЛЕНЬКИЙ размер (как в PDF)
+     * ✅ DOCX: QR на ПОСЛЕДНЕЙ странице
      */
     private function processDocxSigning($document, $qrPayload, $qrSize = 100, $signerName = '', $signedDate = '')
     {
@@ -544,7 +544,6 @@ class DocumentSignatureController extends Controller
             throw new Exception("Файл Word не найден: {$originalPath}");
         }
 
-        // ✅ ИСПОЛЬЗУЕМ УЛУЧШЕННЫЙ generateStamp с высоким качеством
         $stampPath = $this->generateStamp($qrPayload, $signerName, $signedDate, $qrSize);
         if (!File::exists($stampPath)) {
             throw new Exception("Штамп не создан.");
@@ -553,15 +552,12 @@ class DocumentSignatureController extends Controller
         $phpWord = IOFactory::load($originalPath);
         $sections = $phpWord->getSections();
 
-        // ✅ ПОСЛЕДНЯЯ СЕКЦИЯ = ПОСЛЕДНЯЯ СТРАНИЦА
         $sectionIndex = count($sections) > 0 ? count($sections) - 1 : 0;
         $section = $sections[$sectionIndex] ?? $phpWord->addSection();
 
-        // ✅ РАЗМЕР: $qrSize мм QR + 70мм текст
         $qr_size_mm = $qrSize * self::PIXEL_TO_MM_FACTOR;
         $stamp_height_mm = ($qrSize + 70) * self::PIXEL_TO_MM_FACTOR;
 
-        // ✅ ВНИЗ ПРАВОГО УГЛА A4 с отступом 15мм
         $margin = 15;
         $pageWidthMm = self::A4_WIDTH_MM;
         $pageHeightMm = self::A4_HEIGHT_MM;
@@ -611,7 +607,7 @@ class DocumentSignatureController extends Controller
     }
 
     /**
-     * ✅ XLSX: QR на ПОСЛЕДНЕМ листе, в правом нижнем углу
+     * ✅ XLSX: QR на ПОСЛЕДНЕМ листе
      */
     private function processXlsxSigning($document, $qrPayload, $qrSize = 100, $signerName = '', $signedDate = '')
     {
@@ -625,13 +621,11 @@ class DocumentSignatureController extends Controller
         $spreadsheet = SpreadsheetIOFactory::load($originalPath);
         $sheetCount = $spreadsheet->getSheetCount();
 
-        // ✅ ПОСЛЕДНИЙ ЛИСТ
         $sheetIndex = $sheetCount - 1;
         $sheet = $spreadsheet->getSheet($sheetIndex);
 
         $stampHeight = $qrSize + 70;
 
-        // ✅ ВНИЗ ПРАВОГО УГЛА
         $qrX = 700;
         $qrY = 500;
 
@@ -668,7 +662,7 @@ class DocumentSignatureController extends Controller
     }
 
     /**
-     * ✅ RTF: конвертируем в DOCX и ставим QR на ПОСЛЕДНЕЙ странице
+     * ✅ RTF: конвертируем в DOCX и ставим QR
      */
     private function processRtfSigning($document, $qrPayload, $qrSize = 100, $signerName = '', $signedDate = '')
     {
@@ -820,13 +814,20 @@ class DocumentSignatureController extends Controller
         return !DocumentWorkflow::where('document_id', $document->id)->where('status', 'pending')->exists();
     }
 
+    /**
+     * ✅ УЛУЧШЕННЫЙ МЕТОД ЛОГИРОВАНИЯ
+     */
     private function logAction($docId, $action, $desc) {
-        DocumentLog::create([
-            'document_id' => $docId,
-            'user_id' => Auth::id(),
-            'action' => $action,
-            'description' => $desc
-        ]);
+        try {
+            DocumentLog::create([
+                'document_id' => $docId,
+                'user_id' => Auth::id(),
+                'action' => $action,
+                'description' => $desc
+            ]);
+        } catch (\Exception $e) {
+            \Log::error("Ошибка логирования: " . $e->getMessage());
+        }
     }
 
     private function processWorkflow($document, $currentWorkflow, $signer) {

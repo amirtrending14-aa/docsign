@@ -2,22 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'address', 'phone', 'email', 'owner_id'];
+    protected $fillable = [
+        'slug',
+        'name',
+        'email',
+        'password',
+        'status',
+        'owner_telegram_id',
+        'address',
+    ];
 
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'owner_id');
-    }
+    protected $hidden = [
+        'password',
+    ];
 
     public function users()
     {
-        return $this->hasMany(User::class, 'company_id');
+        return $this->hasMany(User::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
     }
 }

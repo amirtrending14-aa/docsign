@@ -222,10 +222,12 @@ class SuperAdminController extends Controller
     public function activityIndex(Request $request)
     {
         $users = User::orderBy('name')->get();
-        $query = Document::with('creator');
+
+        // Используем DocumentLog вместо Document
+        $query = \App\Models\DocumentLog::with(['user', 'document']);
 
         if ($request->filled('user_id')) {
-            $query->where('created_by', $request->user_id);
+            $query->where('user_id', $request->user_id);
         }
 
         if ($request->filled('date_from')) {
@@ -238,7 +240,20 @@ class SuperAdminController extends Controller
 
         $activities = $query->latest()->paginate(50);
 
-        return view('superadmin.activity', compact('activities', 'users'));
+        // Статистика
+        $totalActivities = \App\Models\DocumentLog::count();
+        $todayLogins = \App\Models\DocumentLog::whereDate('created_at', today())->count();
+        $documentActions = \App\Models\DocumentLog::count();
+        $activeUsersCount = User::count();
+
+        return view('superadmin.activity', compact(
+            'activities',
+            'users',
+            'totalActivities',
+            'todayLogins',
+            'documentActions',
+            'activeUsersCount'
+        ));
     }
 
     public function profile()

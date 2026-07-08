@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Helpers\ActivityLogger;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,8 +29,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
+        // 📝 Логируем вход пользователя
+        $user = $request->user();
+        ActivityLogger::log(
+            'login',
+            "Пользователь {$user->name} ({$user->email}) вошёл в систему",
+            $user->id
+        );
+
         // Супер-админ → на свой дашборд
-        if ($request->user()->is_super_admin) {
+        if ($user->is_super_admin) {
             return redirect()->route('superadmin.dashboard');
         }
 
@@ -42,6 +51,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // 📝 Логируем выход ДО logout (иначе user будет null)
+        if (Auth::check()) {
+            $user = Auth::user();
+            ActivityLogger::log(
+                'logout',
+                "Пользователь {$user->name} ({$user->email}) вышел из системы",
+                $user->id
+            );
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
