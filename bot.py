@@ -16,9 +16,10 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-# ⚠️ НАСТРОЙКИ
+# ============ КОНФИГУРАЦИЯ ============
 BOT_TOKEN = "8227404687:AAGHcLRwZHS116RhY7TQTJmtNu2MvkCZ3To"
 LARAVEL_PATH = Path("C:/OSPanel/home/docsign")
+OWNER_ID = 7298046635
 SUPPORT_LINK = "https://t.me/amnvamr"
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -27,7 +28,7 @@ bot = Bot(token=BOT_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
-# 🌍 ЯЗЫКИ
+# ============ ХРАНИЛИЩЕ ЯЗЫКОВ ============
 user_languages = {}
 
 def get_user_lang(user_id: int) -> str:
@@ -36,7 +37,7 @@ def get_user_lang(user_id: int) -> str:
 def set_user_lang(user_id: int, lang: str):
     user_languages[user_id] = lang
 
-# 🌍 ПЕРЕВОДЫ
+# ============ МУЛЬТИЯЗЫЧНОСТЬ ============
 TRANSLATIONS = {
     'ru': {
         'welcome': '✨ <b>Добро пожаловать в DocSign!</b>\n\n🚀 Платформа электронного документооборота\n\n📋 Выберите действие:',
@@ -48,27 +49,43 @@ TRANSLATIONS = {
         'cancel': '❌ Отмена',
         'back': '🔙 Назад',
         'main_menu': '🏠 Главное меню',
-        'name_prompt': '🏢 <b>Шаг 1 из 4</b>\n\nВведите название компании:\n\n💡 Например: Tech Solutions',
-        'name_invalid': '❌ Название должно быть от 2 до 50 символов',
-        'email_prompt': '📧 <b>Шаг 2 из 4</b>\n\nВведите email:\n\n💡 Email будет использоваться для входа',
-        'email_invalid': '❌ Неверный формат email',
+
+        # Шаг 1: Название компании
+        'company_name_prompt': '🏢 <b>Шаг 1 из 5</b>\n\nВведите название вашей компании:\n\n💡 Например: Alif Group, Tech Solutions',
+        'company_name_invalid': '❌ Название должно содержать от 2 до 50 символов',
+        'company_name_taken': '❌ <b>Название уже занято!</b>\n\nИспользуйте другое название.',
+
+        # Шаг 2: Имя админа
+        'admin_name_prompt': '👤 <b>Шаг 2 из 5</b>\n\nВведите ваше имя (админа):\n\n💡 Например: Иван, Ахмад',
+        'admin_name_invalid': '❌ Имя должно содержать от 2 до 50 символов',
+
+        # Шаг 3: Email
+        'email_prompt': '📧 <b>Шаг 3 из 5</b>\n\nВведите email:\n\n💡 Email будет использоваться для входа',
+        'email_invalid': '❌ Неверный формат email\n💡 Пример: name@example.com',
         'email_taken': '❌ <b>Email уже зарегистрирован!</b>\n\nИспользуйте другой email.',
-        'phone_prompt': '📱 <b>Шаг 3 из 4</b>\n\nВведите номер телефона:\n\n💡 Например: +992901234567',
-        'phone_invalid': '❌ Введите корректный номер телефона',
+
+        # Шаг 4: Телефон
+        'phone_prompt': '📱 <b>Шаг 4 из 5</b>\n\nВведите номер телефона:\n\n💡 Например: +992901234567',
+        'phone_invalid': '❌ Введите корректный номер телефона (мин. 7 цифр)',
         'phone_taken': '❌ <b>Телефон уже зарегистрирован!</b>\n\nИспользуйте другой номер.',
-        'password_prompt': '🔐 <b>Шаг 4 из 4</b>\n\nПридумайте пароль:\n\n💡 Минимум 8 символов',
-        'password_short': '❌ Пароль слишком короткий (минимум 8 символов)',
-        'confirm': '📋 <b>Проверьте данные:</b>\n\n🏢 Компания: <b>{name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>\n🔐 Пароль: {password}\n\n✅ Всё верно?',
+
+        # Шаг 5: Пароль
+        'password_prompt': '🔐 <b>Шаг 5 из 5</b>\n\nПридумайте надёжный пароль:\n\n💡 Минимум 8 символов',
+        'password_short': '❌ Пароль слишком короткий\n💡 Минимум 8 символов',
+
+        # Подтверждение
+        'confirm': '📋 <b>Проверьте данные:</b>\n\n🏢 Компания: <b>{company_name}</b>\n👤 Админ: <b>{admin_name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>\n🔐 Пароль: {password}\n\n✅ Всё верно?',
         'create': '✅ Создать компанию',
-        'edit': '✏️ Изменить',
-        'success': '🎉 <b>Компания создана!</b>\n\n🏢 Название: <b>{name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>\n\n🔐 Сохраните данные для входа.\n\n⚠️ Удалите это сообщение!',
+        'success': '🎉 <b>Компания создана!</b>\n\n🏢 Название: <b>{company_name}</b>\n👤 Админ: <b>{admin_name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>\n\n🔐 Сохраните данные для входа.\n\n⚠️ Удалите это сообщение!',
+
+        # Статистика
         'stats_title': '📊 <b>Статистика DocSign</b>\n\n',
         'stats_companies': '🏢 Компаний: <b>{total}</b>\n',
         'stats_users': '👥 Пользователей: <b>{total}</b>\n\n',
-        'stats_registrations': '📅 <b>Компании:</b>\n• Сегодня: <b>{today}</b>\n• Неделя: <b>{week}</b>\n• Месяц: <b>{month}</b>\n\n',
-        'stats_users_reg': '👤 <b>Пользователи:</b>\n• Сегодня: <b>{today}</b>\n• Неделя: <b>{week}</b>\n• Месяц: <b>{month}</b>',
+        'stats_registrations': '📅 <b>Регистрации:</b>\n• Сегодня: <b>{today}</b>\n• Неделя: <b>{week}</b>\n• Месяц: <b>{month}</b>\n\n',
+        'stats_users_reg': '👤 <b>Новые пользователи:</b>\n• Сегодня: <b>{today}</b>\n• Неделя: <b>{week}</b>\n• Месяц: <b>{month}</b>',
         'stats_error': '❌ Не удалось загрузить статистику',
-        'support_text': '💬 <b>Нужна помощь?</b>\n\n👤 @amnvamr\n\n💡 Ответ в течение 24 часов',
+        'support_text': '💬 <b>Нужна помощь?</b>\n\nНапишите нам:\n👤 @amnvamr',
         'lang_select': '🌐 <b>Выберите язык:</b>',
         'lang_ru': '🇷🇺 Русский',
         'lang_tj': '🇹🇯 Тоҷикӣ',
@@ -81,7 +98,7 @@ TRANSLATIONS = {
         'chart_user': 'Пользователи',
     },
     'tj': {
-        'welcome': '✨ <b>Хуш омадед ба DocSign!</b>\n\n🚀 Платформаи ҳуҷҷатҳои электронӣ\n\n📋 Амалро интихоб кунед:',
+        'welcome': '✨ <b>Хуш омадед ба DocSign!</b>\n\n🚀 Платформаи кор бо ҳуҷҷатҳои электронӣ\n\n📋 Амалро интихоб кунед:',
         'register': '🏢 Бақайдгирии ширкат',
         'stats': '📊 Омор',
         'support': '💬 Дастгирӣ',
@@ -90,25 +107,27 @@ TRANSLATIONS = {
         'cancel': '❌ Бекор',
         'back': '🔙 Бозгашт',
         'main_menu': '🏠 Менюи асосӣ',
-        'name_prompt': '🏢 <b>Қадами 1 аз 4</b>\n\nНоми ширкатро ворид кунед:',
-        'name_invalid': '❌ Ном бояд аз 2 то 50 рамз бошад',
-        'email_prompt': '📧 <b>Қадами 2 аз 4</b>\n\nEmail-ро ворид кунед:',
-        'email_invalid': '❌ Формати email нодуруст',
+        'company_name_prompt': '🏢 <b>Қадами 1 аз 5</b>\n\nНоми ширкатро ворид кунед:\n\n💡 Масалан: Alif Group, Tech Solutions',
+        'company_name_invalid': '❌ Ном бояд аз 2 то 50 рамз дошта бошад',
+        'company_name_taken': '❌ <b>Ном аллакай банд аст!</b>',
+        'admin_name_prompt': '👤 <b>Қадами 2 аз 5</b>\n\nНоми худро ворид кунед (админ):\n\n💡 Масалан: Иван, Ахмад',
+        'admin_name_invalid': '❌ Ном бояд аз 2 то 50 рамз дошта бошад',
+        'email_prompt': '📧 <b>Қадами 3 аз 5</b>\n\nEmail-ро ворид кунед:\n\n💡 Email барои ворид шудан',
+        'email_invalid': '❌ Формати email нодуруст\n💡 Мисол: name@example.com',
         'email_taken': '❌ <b>Email аллакай ба қайд гирифта шудааст!</b>',
-        'phone_prompt': '📱 <b>Қадами 3 аз 4</b>\n\nРақами телефонро ворид кунед:',
+        'phone_prompt': '📱 <b>Қадами 4 аз 5</b>\n\nРақами телефонро ворид кунед:\n\n💡 Масалан: +992901234567',
         'phone_invalid': '❌ Рақами телефонро дуруст ворид кунед',
         'phone_taken': '❌ <b>Телефон аллакай ба қайд гирифта шудааст!</b>',
-        'password_prompt': '🔐 <b>Қадами 4 аз 4</b>\n\nПаролро ворид кунед (ҳадди ақал 8 рамз):',
-        'password_short': '❌ Парол кӯтоҳ аст',
-        'confirm': '📋 <b>Маълумотро санҷед:</b>\n\n🏢 Ширкат: <b>{name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>\n🔐 Парол: {password}\n\n✅ Ҳама дуруст?',
+        'password_prompt': '🔐 <b>Қадами 5 аз 5</b>\n\nПаролро ворид кунед:\n\n💡 Ҳадди ақал 8 рамз',
+        'password_short': '❌ Парол кӯтоҳ аст\n💡 Ҳадди ақал 8 рамз',
+        'confirm': '📋 <b>Маълумотро санҷед:</b>\n\n🏢 Ширкат: <b>{company_name}</b>\n👤 Админ: <b>{admin_name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>\n🔐 Парол: {password}\n\n✅ Ҳама дуруст?',
         'create': '✅ Эҷоди ширкат',
-        'edit': '✏️ Тағйир',
-        'success': '🎉 <b>Ширкат эҷод шуд!</b>\n\n🏢 Ном: <b>{name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>',
+        'success': '🎉 <b>Ширкат эҷод шуд!</b>\n\n🏢 Ном: <b>{company_name}</b>\n👤 Админ: <b>{admin_name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>',
         'stats_title': '📊 <b>Омори DocSign</b>\n\n',
         'stats_companies': '🏢 Ширкатҳо: <b>{total}</b>\n',
         'stats_users': '👥 Истифодабарандагон: <b>{total}</b>\n\n',
-        'stats_registrations': '📅 <b>Ширкатҳо:</b>\n• Имрӯз: <b>{today}</b>\n• Ҳафта: <b>{week}</b>\n• Моҳ: <b>{month}</b>\n\n',
-        'stats_users_reg': '👤 <b>Истифодабарандагон:</b>\n• Имрӯз: <b>{today}</b>\n• Ҳафта: <b>{week}</b>\n• Моҳ: <b>{month}</b>',
+        'stats_registrations': '📅 <b>Бақайдгирӣ:</b>\n• Имрӯз: <b>{today}</b>\n• Ҳафта: <b>{week}</b>\n• Моҳ: <b>{month}</b>\n\n',
+        'stats_users_reg': '👤 <b>Истифодабарандагони нав:</b>\n• Имрӯз: <b>{today}</b>\n• Ҳафта: <b>{week}</b>\n• Моҳ: <b>{month}</b>',
         'stats_error': '❌ Оморро бор кардан нашуд',
         'support_text': '💬 <b>Кӯмак лозим?</b>\n\n👤 @amnvamr',
         'lang_select': '🌐 <b>Забонро интихоб кунед:</b>',
@@ -132,25 +151,27 @@ TRANSLATIONS = {
         'cancel': '❌ Cancel',
         'back': '🔙 Back',
         'main_menu': '🏠 Main menu',
-        'name_prompt': '🏢 <b>Step 1 of 4</b>\n\nEnter company name:',
-        'name_invalid': '❌ Name must be 2-50 characters',
-        'email_prompt': '📧 <b>Step 2 of 4</b>\n\nEnter email:',
-        'email_invalid': '❌ Invalid email format',
+        'company_name_prompt': '🏢 <b>Step 1 of 5</b>\n\nEnter your company name:\n\n💡 Example: Alif Group, Tech Solutions',
+        'company_name_invalid': '❌ Name must be 2-50 characters',
+        'company_name_taken': '❌ <b>Name already taken!</b>',
+        'admin_name_prompt': '👤 <b>Step 2 of 5</b>\n\nEnter your name (admin):\n\n💡 Example: John, Ahmad',
+        'admin_name_invalid': '❌ Name must be 2-50 characters',
+        'email_prompt': '📧 <b>Step 3 of 5</b>\n\nEnter email:\n\n💡 Email for login',
+        'email_invalid': '❌ Invalid email format\n💡 Example: name@example.com',
         'email_taken': '❌ <b>Email already registered!</b>',
-        'phone_prompt': '📱 <b>Step 3 of 4</b>\n\nEnter phone number:',
+        'phone_prompt': '📱 <b>Step 4 of 5</b>\n\nEnter phone number:\n\n💡 Example: +992901234567',
         'phone_invalid': '❌ Enter valid phone number',
         'phone_taken': '❌ <b>Phone already registered!</b>',
-        'password_prompt': '🔐 <b>Step 4 of 4</b>\n\nCreate password (min 8 chars):',
-        'password_short': '❌ Password too short',
-        'confirm': '📋 <b>Check your data:</b>\n\n🏢 Company: <b>{name}</b>\n📧 Email: <code>{email}</code>\n📱 Phone: <code>{phone}</code>\n🔐 Password: {password}\n\n✅ All correct?',
+        'password_prompt': '🔐 <b>Step 5 of 5</b>\n\nCreate password:\n\n💡 Minimum 8 characters',
+        'password_short': '❌ Password too short\n💡 Minimum 8 characters',
+        'confirm': '📋 <b>Check your data:</b>\n\n🏢 Company: <b>{company_name}</b>\n👤 Admin: <b>{admin_name}</b>\n📧 Email: <code>{email}</code>\n📱 Phone: <code>{phone}</code>\n🔐 Password: {password}\n\n✅ All correct?',
         'create': '✅ Create company',
-        'edit': '✏️ Edit',
-        'success': '🎉 <b>Company created!</b>\n\n🏢 Name: <b>{name}</b>\n📧 Email: <code>{email}</code>\n📱 Phone: <code>{phone}</code>',
+        'success': '🎉 <b>Company created!</b>\n\n🏢 Name: <b>{company_name}</b>\n👤 Admin: <b>{admin_name}</b>\n📧 Email: <code>{email}</code>\n📱 Phone: <code>{phone}</code>',
         'stats_title': '📊 <b>DocSign Statistics</b>\n\n',
         'stats_companies': '🏢 Companies: <b>{total}</b>\n',
         'stats_users': '👥 Users: <b>{total}</b>\n\n',
-        'stats_registrations': '📅 <b>Companies:</b>\n• Today: <b>{today}</b>\n• Week: <b>{week}</b>\n• Month: <b>{month}</b>\n\n',
-        'stats_users_reg': '👤 <b>Users:</b>\n• Today: <b>{today}</b>\n• Week: <b>{week}</b>\n• Month: <b>{month}</b>',
+        'stats_registrations': '📅 <b>Registrations:</b>\n• Today: <b>{today}</b>\n• Week: <b>{week}</b>\n• Month: <b>{month}</b>\n\n',
+        'stats_users_reg': '👤 <b>New users:</b>\n• Today: <b>{today}</b>\n• Week: <b>{week}</b>\n• Month: <b>{month}</b>',
         'stats_error': '❌ Failed to load statistics',
         'support_text': '💬 <b>Need help?</b>\n\n👤 @amnvamr',
         'lang_select': '🌐 <b>Select language:</b>',
@@ -169,67 +190,58 @@ TRANSLATIONS = {
 def t(key, lang='ru'):
     return TRANSLATIONS.get(lang, TRANSLATIONS['ru']).get(key, key)
 
-# 🔄 FSM
+# ============ СОСТОЯНИЯ FSM ============
 class CompanyReg(StatesGroup):
-    waiting_for_name = State()
+    waiting_for_company_name = State()
+    waiting_for_admin_name = State()
     waiting_for_email = State()
     waiting_for_phone = State()
     waiting_for_password = State()
     confirming = State()
 
-# 🔧 ФУНКЦИИ
-def run_php(script_name, args=None):
-    """Запускает PHP скрипт и возвращает результат"""
+# ============ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ============
+def execute_php(script_name: str, *args) -> tuple[bool, str]:
     try:
         php_file = LARAVEL_PATH / script_name
         if not php_file.exists():
-            logging.error(f"{script_name} not found")
-            return None
+            return False, f"{script_name} not found"
 
-        cmd = ['php', str(php_file)]
-        if args:
-            cmd.extend(args)
+        cmd = ['php', str(php_file)] + list(args)
+        result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(LARAVEL_PATH), timeout=30)
+        output = (result.stdout or '').strip()
 
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            cwd=str(LARAVEL_PATH),
-            timeout=30
-        )
-
-        output = result.stdout.strip()
-        logging.info(f"{script_name} output: {output}")
-        return output
+        if output.startswith("OK:"):
+            return True, output[3:]
+        elif output.startswith("ERROR:"):
+            return False, output[6:]
+        elif output.startswith("EXISTS:"):
+            return True, "EXISTS"
+        elif output.startswith("FREE:"):
+            return False, "FREE"
+        return False, f"Unknown: {output[:50]}"
     except Exception as e:
-        logging.error(f"Error in {script_name}: {e}")
-        return None
+        return False, str(e)
+
+def check_company_name_exists(name: str) -> bool:
+    success, result = execute_php('check_company_name.php', name)
+    return result == "EXISTS"
 
 def check_email_exists(email: str) -> bool:
-    output = run_php("check_email.php", [email])
-    return output and output.startswith("EXISTS:")
+    success, result = execute_php('check_email.php', email)
+    return result == "EXISTS"
 
 def check_phone_exists(phone: str) -> bool:
-    output = run_php("check_phone.php", [phone])
-    return output and output.startswith("EXISTS:")
+    success, result = execute_php('check_phone.php', phone)
+    return result == "EXISTS"
 
-def create_company(name, admin_name, email, phone, password, telegram_id) -> tuple[bool, str]:
-    output = run_php("create_company.php", [name, admin_name, email, phone, password, str(telegram_id)])
-
-    if not output:
-        return False, "Script error"
-
-    if output.startswith("OK:"):
-        return True, output
-    else:
-        error_msg = output.replace("ERROR:", "")
-        return False, error_msg
+def create_company(company_name, admin_name, email, phone, password, telegram_id) -> tuple[bool, str]:
+    return execute_php('create_company.php', company_name, admin_name, email, phone, password, str(telegram_id))
 
 def get_stats() -> dict:
-    output = run_php("get_stats.php")
-    if output and output.startswith("OK:"):
+    success, result = execute_php('get_stats.php')
+    if success:
         try:
-            return json.loads(output[3:])
+            return json.loads(result)
         except:
             return {}
     return {}
@@ -237,11 +249,14 @@ def get_stats() -> dict:
 def is_valid_email(email):
     return bool(re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email))
 
-# 🎯 МЕНЮ
+def is_valid_phone(phone):
+    digits = re.sub(r'\D', '', phone)
+    return len(digits) >= 7
+
+# ============ ГЛАВНОЕ МЕНЮ ============
 async def show_main_menu(message: types.Message, state: FSMContext):
     await state.clear()
-    user_id = message.from_user.id
-    lang = get_user_lang(user_id)
+    lang = get_user_lang(message.from_user.id)
 
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=t('register', lang), callback_data="register")],
@@ -253,7 +268,7 @@ async def show_main_menu(message: types.Message, state: FSMContext):
 
     await message.answer(t('welcome', lang), reply_markup=kb, parse_mode="HTML")
 
-# 🎯 ХЕНДЛЕРЫ
+# ============ ХЕНДЛЕРЫ ============
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message, state: FSMContext):
     await show_main_menu(message, state)
@@ -261,39 +276,67 @@ async def cmd_start(message: types.Message, state: FSMContext):
 @dp.callback_query(F.data == "register")
 async def cb_register(callback: types.CallbackQuery, state: FSMContext):
     lang = get_user_lang(callback.from_user.id)
-    await state.set_state(CompanyReg.waiting_for_name)
+    await state.set_state(CompanyReg.waiting_for_company_name)
 
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
     ])
 
-    await callback.message.edit_text(t('name_prompt', lang), reply_markup=kb, parse_mode="HTML")
+    await callback.message.edit_text(t('company_name_prompt', lang), reply_markup=kb, parse_mode="HTML")
     await callback.answer()
 
-@dp.message(CompanyReg.waiting_for_name)
-async def process_name(message: types.Message, state: FSMContext):
+# ШАГ 1: Название компании
+@dp.message(CompanyReg.waiting_for_company_name)
+async def process_company_name(message: types.Message, state: FSMContext):
     lang = get_user_lang(message.from_user.id)
-    name = message.text.strip()
+    company_name = message.text.strip()
 
-    if len(name) < 2 or len(name) > 50:
+    if len(company_name) < 2 or len(company_name) > 50:
         kb = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
         ])
-        await message.answer(t('name_invalid', lang), reply_markup=kb, parse_mode="HTML")
+        await message.answer(t('company_name_invalid', lang), reply_markup=kb, parse_mode="HTML")
         return
 
-    await state.update_data(name=name)
+    checking_msg = await message.answer(t('checking', lang))
+    if check_company_name_exists(company_name):
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
+        ])
+        await checking_msg.edit_text(t('company_name_taken', lang), reply_markup=kb, parse_mode="HTML")
+        return
+
+    await checking_msg.delete()
+    await state.update_data(company_name=company_name)
+    await state.set_state(CompanyReg.waiting_for_admin_name)
+
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
+    ])
+    await message.answer(f"✅ <b>{company_name}</b>\n\n" + t('admin_name_prompt', lang), reply_markup=kb, parse_mode="HTML")
+
+# ШАГ 2: Имя админа
+@dp.message(CompanyReg.waiting_for_admin_name)
+async def process_admin_name(message: types.Message, state: FSMContext):
+    lang = get_user_lang(message.from_user.id)
+    admin_name = message.text.strip()
+
+    if len(admin_name) < 2 or len(admin_name) > 50:
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
+        ])
+        await message.answer(t('admin_name_invalid', lang), reply_markup=kb, parse_mode="HTML")
+        return
+
+    await state.update_data(admin_name=admin_name)
     await state.set_state(CompanyReg.waiting_for_email)
 
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
     ])
-    await message.answer(
-        f"✅ <b>{name}</b>\n\n" + t('email_prompt', lang),
-        reply_markup=kb,
-        parse_mode="HTML"
-    )
+    await message.answer(f"✅ <b>{admin_name}</b>\n\n" + t('email_prompt', lang), reply_markup=kb, parse_mode="HTML")
 
+# ШАГ 3: Email (БЕЗ верификации)
 @dp.message(CompanyReg.waiting_for_email)
 async def process_email(message: types.Message, state: FSMContext):
     lang = get_user_lang(message.from_user.id)
@@ -321,18 +364,15 @@ async def process_email(message: types.Message, state: FSMContext):
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
     ])
-    await message.answer(
-        f"✅ <code>{email}</code>\n\n" + t('phone_prompt', lang),
-        reply_markup=kb,
-        parse_mode="HTML"
-    )
+    await message.answer(f"✅ <code>{email}</code>\n\n" + t('phone_prompt', lang), reply_markup=kb, parse_mode="HTML")
 
+# ШАГ 4: Телефон
 @dp.message(CompanyReg.waiting_for_phone)
 async def process_phone(message: types.Message, state: FSMContext):
     lang = get_user_lang(message.from_user.id)
     phone = message.text.strip()
 
-    if len(phone) < 7:
+    if not is_valid_phone(phone):
         kb = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
         ])
@@ -354,12 +394,9 @@ async def process_phone(message: types.Message, state: FSMContext):
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=t('cancel', lang), callback_data="main_menu")]
     ])
-    await message.answer(
-        f"✅ <code>{phone}</code>\n\n" + t('password_prompt', lang),
-        reply_markup=kb,
-        parse_mode="HTML"
-    )
+    await message.answer(f"✅ <code>{phone}</code>\n\n" + t('password_prompt', lang), reply_markup=kb, parse_mode="HTML")
 
+# ШАГ 5: Пароль
 @dp.message(CompanyReg.waiting_for_password)
 async def process_password(message: types.Message, state: FSMContext):
     lang = get_user_lang(message.from_user.id)
@@ -385,7 +422,8 @@ async def process_password(message: types.Message, state: FSMContext):
 
     await message.answer(
         t('confirm', lang).format(
-            name=data['name'],
+            company_name=data['company_name'],
+            admin_name=data['admin_name'],
             email=data['email'],
             phone=data['phone'],
             password=masked_pwd
@@ -394,6 +432,7 @@ async def process_password(message: types.Message, state: FSMContext):
         parse_mode="HTML"
     )
 
+# ПОДТВЕРЖДЕНИЕ
 @dp.callback_query(F.data == "confirm_create")
 async def cb_confirm_create(callback: types.CallbackQuery, state: FSMContext):
     lang = get_user_lang(callback.from_user.id)
@@ -402,8 +441,8 @@ async def cb_confirm_create(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_text(t('creating_company', lang))
 
     success, result = create_company(
-        data['name'],
-        data['name'],  # admin_name = company name
+        data['company_name'],
+        data['admin_name'],
         data['email'],
         data['phone'],
         data['password'],
@@ -416,7 +455,8 @@ async def cb_confirm_create(callback: types.CallbackQuery, state: FSMContext):
         ])
         await callback.message.edit_text(
             t('success', lang).format(
-                name=data['name'],
+                company_name=data['company_name'],
+                admin_name=data['admin_name'],
                 email=data['email'],
                 phone=data['phone']
             ),
@@ -436,6 +476,7 @@ async def cb_confirm_create(callback: types.CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.answer()
 
+# СТАТИСТИКА
 @dp.callback_query(F.data == "stats")
 async def cb_stats(callback: types.CallbackQuery):
     lang = get_user_lang(callback.from_user.id)
@@ -455,14 +496,10 @@ async def cb_stats(callback: types.CallbackQuery):
     total_users = stats.get('total_users', 0)
 
     labels = [t('chart_company', lang), t('chart_user', lang)]
-    sizes = [total_companies, total_users]
-
-    if sum(sizes) == 0:
-        sizes = [1, 1]
+    sizes = [max(total_companies, 1), max(total_users, 1)]
 
     fig, ax = plt.subplots(figsize=(6, 6))
-    colors = ['#3498db', '#2ecc71']
-    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors, textprops={'fontsize': 12})
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=['#3498db', '#2ecc71'])
     ax.axis('equal')
 
     buf = io.BytesIO()
@@ -497,6 +534,7 @@ async def cb_stats(callback: types.CallbackQuery):
     await callback.message.answer_photo(photo=photo, caption=text, reply_markup=kb, parse_mode="HTML")
     await callback.answer()
 
+# ПОДДЕРЖКА
 @dp.callback_query(F.data == "support")
 async def cb_support(callback: types.CallbackQuery):
     lang = get_user_lang(callback.from_user.id)
@@ -507,6 +545,7 @@ async def cb_support(callback: types.CallbackQuery):
     await callback.message.edit_text(t('support_text', lang), reply_markup=kb, parse_mode="HTML")
     await callback.answer()
 
+# ЯЗЫК
 @dp.callback_query(F.data == "lang")
 async def cb_lang(callback: types.CallbackQuery):
     lang = get_user_lang(callback.from_user.id)
@@ -546,18 +585,16 @@ async def cb_main_menu(callback: types.CallbackQuery, state: FSMContext):
 
 @dp.message(Command("cancel"))
 async def cmd_cancel(message: types.Message, state: FSMContext):
+    await state.clear()
     await show_main_menu(message, state)
 
-# 🚀 ЗАПУСК
+# ============ ЗАПУСК ============
 async def main():
-    logging.info("Starting DocSign bot...")
-    logging.info(f"Laravel path: {LARAVEL_PATH}")
-
-    for f in ['check_email.php', 'check_phone.php', 'create_company.php', 'get_stats.php']:
-        exists = (LARAVEL_PATH / f).exists()
-        logging.info(f"  {f}: {'✓' if exists else '✗'}")
-
+    logging.info("🚀 Starting DocSign bot...")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logging.info("🛑 Bot stopped")
