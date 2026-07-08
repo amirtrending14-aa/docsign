@@ -22,7 +22,14 @@ LARAVEL_PATH = Path("C:/OSPanel/home/docsign")
 OWNER_ID = 7298046635
 SUPPORT_LINK = "https://t.me/amnvamr"
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('bot.log', encoding='utf-8'),
+        logging.StreamHandler()
+    ]
+)
 
 bot = Bot(token=BOT_TOKEN)
 storage = MemoryStorage()
@@ -49,36 +56,22 @@ TRANSLATIONS = {
         'cancel': '❌ Отмена',
         'back': '🔙 Назад',
         'main_menu': '🏠 Главное меню',
-
-        # Шаг 1: Название компании
         'company_name_prompt': '🏢 <b>Шаг 1 из 5</b>\n\nВведите название вашей компании:\n\n💡 Например: Alif Group, Tech Solutions',
         'company_name_invalid': '❌ Название должно содержать от 2 до 50 символов',
         'company_name_taken': '❌ <b>Название уже занято!</b>\n\nИспользуйте другое название.',
-
-        # Шаг 2: Имя админа
         'admin_name_prompt': '👤 <b>Шаг 2 из 5</b>\n\nВведите ваше имя (админа):\n\n💡 Например: Иван, Ахмад',
         'admin_name_invalid': '❌ Имя должно содержать от 2 до 50 символов',
-
-        # Шаг 3: Email
         'email_prompt': '📧 <b>Шаг 3 из 5</b>\n\nВведите email:\n\n💡 Email будет использоваться для входа',
         'email_invalid': '❌ Неверный формат email\n💡 Пример: name@example.com',
         'email_taken': '❌ <b>Email уже зарегистрирован!</b>\n\nИспользуйте другой email.',
-
-        # Шаг 4: Телефон
         'phone_prompt': '📱 <b>Шаг 4 из 5</b>\n\nВведите номер телефона:\n\n💡 Например: +992901234567',
         'phone_invalid': '❌ Введите корректный номер телефона (мин. 7 цифр)',
         'phone_taken': '❌ <b>Телефон уже зарегистрирован!</b>\n\nИспользуйте другой номер.',
-
-        # Шаг 5: Пароль
         'password_prompt': '🔐 <b>Шаг 5 из 5</b>\n\nПридумайте надёжный пароль:\n\n💡 Минимум 8 символов',
         'password_short': '❌ Пароль слишком короткий\n💡 Минимум 8 символов',
-
-        # Подтверждение
         'confirm': '📋 <b>Проверьте данные:</b>\n\n🏢 Компания: <b>{company_name}</b>\n👤 Админ: <b>{admin_name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>\n🔐 Пароль: {password}\n\n✅ Всё верно?',
         'create': '✅ Создать компанию',
         'success': '🎉 <b>Компания создана!</b>\n\n🏢 Название: <b>{company_name}</b>\n👤 Админ: <b>{admin_name}</b>\n📧 Email: <code>{email}</code>\n📱 Телефон: <code>{phone}</code>\n\n🔐 Сохраните данные для входа.\n\n⚠️ Удалите это сообщение!',
-
-        # Статистика
         'stats_title': '📊 <b>Статистика DocSign</b>\n\n',
         'stats_companies': '🏢 Компаний: <b>{total}</b>\n',
         'stats_users': '👥 Пользователей: <b>{total}</b>\n\n',
@@ -199,27 +192,58 @@ class CompanyReg(StatesGroup):
     waiting_for_password = State()
     confirming = State()
 
-# ============ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ============
+# ============ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ С ЛОГИРОВАНИЕМ ============
 def execute_php(script_name: str, *args) -> tuple[bool, str]:
     try:
         php_file = LARAVEL_PATH / script_name
         if not php_file.exists():
+            logging.error(f"PHP file not found: {php_file}")
             return False, f"{script_name} not found"
 
         cmd = ['php', str(php_file)] + list(args)
-        result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(LARAVEL_PATH), timeout=30)
-        output = (result.stdout or '').strip()
+        logging.info(f"Executing PHP: {' '.join(cmd)}")
 
-        if output.startswith("OK:"):
-            return True, output[3:]
-        elif output.startswith("ERROR:"):
-            return False, output[6:]
-        elif output.startswith("EXISTS:"):
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            cwd=str(LARAVEL_PATH),
+            timeout=30
+        )
+
+        stdout = (result.stdout or '').strip()
+        stderr = (result.stderr or '').strip()
+
+        logging.info(f"PHP stdout: {stdout}")
+        logging.info(f"PHP stderr: {stderr}")
+        logging.info(f"PHP return code: {result.returncode}")
+
+        # Если есть stderr - это ошибка PHP
+        if stderr:
+            logging.error(f"PHP error: {stderr}")
+            return False, f"PHP Error: {stderr[:200]}"
+
+        if result.returncode != 0:
+            logging.error(f"PHP returned code {result.returncode}")
+            return False, f"PHP error (code {result.returncode}): {stdout[:100]}"
+
+        if stdout.startswith("OK:"):
+            return True, stdout[3:]
+        elif stdout.startswith("ERROR:"):
+            return False, stdout[6:]
+        elif stdout.startswith("EXISTS:"):
             return True, "EXISTS"
-        elif output.startswith("FREE:"):
+        elif stdout.startswith("FREE:"):
             return False, "FREE"
-        return False, f"Unknown: {output[:50]}"
+
+        logging.warning(f"Unknown PHP output: {stdout[:100]}")
+        return False, f"Unknown response: {stdout[:50]}"
+
+    except subprocess.TimeoutExpired:
+        logging.error("PHP script timeout")
+        return False, "Timeout"
     except Exception as e:
+        logging.error(f"Exception in execute_php: {str(e)}", exc_info=True)
         return False, str(e)
 
 def check_company_name_exists(name: str) -> bool:
@@ -235,6 +259,7 @@ def check_phone_exists(phone: str) -> bool:
     return result == "EXISTS"
 
 def create_company(company_name, admin_name, email, phone, password, telegram_id) -> tuple[bool, str]:
+    logging.info(f"Creating company: {company_name}, admin: {admin_name}, email: {email}")
     return execute_php('create_company.php', company_name, admin_name, email, phone, password, str(telegram_id))
 
 def get_stats() -> dict:
@@ -336,7 +361,7 @@ async def process_admin_name(message: types.Message, state: FSMContext):
     ])
     await message.answer(f"✅ <b>{admin_name}</b>\n\n" + t('email_prompt', lang), reply_markup=kb, parse_mode="HTML")
 
-# ШАГ 3: Email (БЕЗ верификации)
+# ШАГ 3: Email
 @dp.message(CompanyReg.waiting_for_email)
 async def process_email(message: types.Message, state: FSMContext):
     lang = get_user_lang(message.from_user.id)
@@ -432,11 +457,13 @@ async def process_password(message: types.Message, state: FSMContext):
         parse_mode="HTML"
     )
 
-# ПОДТВЕРЖДЕНИЕ
+# ПОДТВЕРЖДЕНИЕ С ЛОГИРОВАНИЕМ
 @dp.callback_query(F.data == "confirm_create")
 async def cb_confirm_create(callback: types.CallbackQuery, state: FSMContext):
     lang = get_user_lang(callback.from_user.id)
     data = await state.get_data()
+
+    logging.info(f"User {callback.from_user.id} confirming company creation")
 
     await callback.message.edit_text(t('creating_company', lang))
 
@@ -448,6 +475,8 @@ async def cb_confirm_create(callback: types.CallbackQuery, state: FSMContext):
         data['password'],
         callback.from_user.id
     )
+
+    logging.info(f"Create company result: success={success}, result={result}")
 
     if success:
         kb = InlineKeyboardMarkup(inline_keyboard=[
@@ -463,6 +492,7 @@ async def cb_confirm_create(callback: types.CallbackQuery, state: FSMContext):
             reply_markup=kb,
             parse_mode="HTML"
         )
+        logging.info(f"Company created successfully for user {callback.from_user.id}")
     else:
         kb = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text=t('main_menu', lang), callback_data="main_menu")]
@@ -472,6 +502,7 @@ async def cb_confirm_create(callback: types.CallbackQuery, state: FSMContext):
             reply_markup=kb,
             parse_mode="HTML"
         )
+        logging.error(f"Failed to create company: {result}")
 
     await state.clear()
     await callback.answer()
