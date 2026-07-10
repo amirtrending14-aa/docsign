@@ -571,6 +571,7 @@
         font-size: 16px;
         padding: 4px;
         transition: all 0.2s;
+        z-index: 2;
     }
     .comment-submit:hover {
         color: #fbbf24;
@@ -908,22 +909,370 @@
         color: #22c55e;
     }
 
-    /* Адаптивность */
+    /* ===== RESPONSIVE ===== */
+
+    /* Маленькие ноутбуки и большие планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .doc-show-page { padding: 20px 14px; }
+        .doc-card { padding: 20px; border-radius: 14px; }
+        .doc-title { font-size: 17px; margin-bottom: 16px; }
+        .doc-content { font-size: 12.5px; line-height: 1.65; padding-top: 14px; }
+        .doc-badges { gap: 6px; margin-bottom: 14px; }
+        .badge { padding: 3px 9px; font-size: 8px; }
+
+        .page-header { margin-bottom: 16px; padding-bottom: 14px; }
+        .back-btn { width: 30px; height: 30px; font-size: 12px; }
+        .back-label { font-size: 10px; letter-spacing: 1.2px; }
+        .action-btn { width: 30px; height: 30px; font-size: 12px; }
+
+        .file-card { padding: 14px; border-radius: 10px; margin-top: 14px; gap: 14px; }
+        .file-icon { width: 36px; height: 36px; font-size: 16px; border-radius: 9px; }
+        .file-name { font-size: 11px; max-width: 180px; }
+        .file-btn { padding: 7px 10px; font-size: 9px; border-radius: 7px; }
+
+        .sidebar-card { padding: 18px; border-radius: 12px; }
+        .sidebar-title { font-size: 9px; margin-bottom: 14px; padding-bottom: 9px; }
+        .sidebar-row { padding: 7px 0; }
+        .sidebar-label { font-size: 9px; }
+        .sidebar-value { font-size: 10px; }
+
+        .participant-item { padding: 9px; border-radius: 9px; gap: 9px; }
+        .participant-avatar { width: 30px; height: 30px; font-size: 12px; border-radius: 7px; }
+        .participant-name { font-size: 10px; }
+        .participant-role { font-size: 8px; }
+
+        .comment-item { padding: 12px; border-radius: 10px; }
+        .comment-input { padding: 11px 40px 11px 13px; font-size: 11px; min-height: 55px; }
+        .comment-submit { bottom: 11px; right: 11px; font-size: 15px; }
+        .comment-text { font-size: 11px; }
+        .comment-author { font-size: 9px; }
+        .comment-time { font-size: 8px; padding: 2px 7px; }
+
+        .modal-box { padding: 22px; border-radius: 12px; }
+        .modal-title { font-size: 13px; }
+        .modal-desc { font-size: 11px; }
+        .modal-btn { padding: 7px 14px; font-size: 10px; }
+        .reject-textarea { padding: 11px 13px; font-size: 11px; min-height: 90px; }
+    }
+
+    /* Планшеты (до 768px) */
     @media (max-width: 768px) {
-        .doc-card {
-            padding: 16px;
-        }
-        .file-card {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        .file-actions {
-            justify-content: stretch;
-        }
-        .file-btn {
-            flex: 1;
-            justify-content: center;
-        }
+        .doc-show-page { padding: 18px 12px; }
+        .doc-card { padding: 18px; border-radius: 12px; }
+        .doc-title { font-size: 16px; margin-bottom: 14px; letter-spacing: -0.2px; }
+        .doc-content { font-size: 12px; line-height: 1.6; padding-top: 12px; }
+        .doc-badges { gap: 5px; margin-bottom: 12px; }
+        .badge { padding: 3px 8px; font-size: 8px; letter-spacing: 0.8px; }
+
+        .page-header { margin-bottom: 14px; padding-bottom: 12px; }
+        .page-header-left { gap: 10px; }
+        .back-btn { width: 28px; height: 28px; font-size: 11px; border-radius: 7px; }
+        .back-label { font-size: 9px; letter-spacing: 1px; }
+        .action-btns { gap: 6px; }
+        .action-btn { width: 28px; height: 28px; font-size: 11px; border-radius: 7px; }
+
+        .file-card { flex-direction: column; align-items: stretch; padding: 13px; border-radius: 10px; margin-top: 12px; gap: 12px; }
+        .file-info { gap: 10px; }
+        .file-icon { width: 34px; height: 34px; font-size: 15px; border-radius: 8px; }
+        .file-name { font-size: 11px; max-width: 100%; }
+        .file-meta span { font-size: 8px; }
+        .file-actions { justify-content: stretch; gap: 6px; }
+        .file-btn { flex: 1; justify-content: center; padding: 7px 10px; font-size: 9px; border-radius: 7px; }
+
+        .sidebar-card { padding: 16px; border-radius: 11px; }
+        .sidebar-title { font-size: 9px; margin-bottom: 12px; padding-bottom: 8px; letter-spacing: 1.2px; }
+        .sidebar-row { padding: 6px 0; }
+        .sidebar-label { font-size: 9px; letter-spacing: 0.4px; }
+        .sidebar-value { font-size: 10px; }
+
+        .participants-section { margin-top: 14px; padding-top: 14px; }
+        .participants-title { font-size: 8px; margin-bottom: 10px; letter-spacing: 1.2px; }
+        .participant-item { padding: 8px; border-radius: 8px; gap: 8px; margin-bottom: 6px; }
+        .participant-avatar { width: 28px; height: 28px; font-size: 11px; border-radius: 6px; }
+        .participant-name { font-size: 10px; }
+        .participant-role { font-size: 7px; letter-spacing: 1px; }
+
+        .comments-section { margin-top: 16px; }
+        .section-title { font-size: 9px; margin-bottom: 10px; letter-spacing: 1.2px; }
+        .comment-form { margin-bottom: 14px; }
+        .comment-input { padding: 10px 38px 10px 12px; font-size: 11px; min-height: 50px; border-radius: 9px; }
+        .comment-submit { bottom: 10px; right: 10px; font-size: 14px; }
+        .comments-list { gap: 8px; }
+        .comment-item { padding: 11px; border-radius: 9px; }
+        .comment-header { margin-bottom: 7px; padding-bottom: 7px; }
+        .comment-author { font-size: 9px; letter-spacing: 0.8px; }
+        .comment-time { font-size: 8px; padding: 2px 6px; border-radius: 8px; }
+        .comment-text { font-size: 11px; line-height: 1.45; }
+        .comment-delete { margin-top: 8px; padding-top: 6px; }
+        .comment-delete-btn { font-size: 8px; }
+
+        .comments-empty { padding: 20px; border-radius: 10px; }
+        .comments-empty i { font-size: 18px; margin-bottom: 6px; }
+        .comments-empty p { font-size: 9px; letter-spacing: 0.8px; }
+
+        .live-indicator { padding: 9px 12px; border-radius: 9px; margin-top: 10px; gap: 7px; }
+        .live-dot { width: 5px; height: 5px; }
+        .live-text { font-size: 8px; letter-spacing: 1.2px; }
+
+        .error-toast { top: 70px; max-width: 360px; padding: 0 14px; }
+        .error-toast-inner { padding: 10px 14px; border-radius: 9px; gap: 10px; }
+        .error-toast-icon { width: 28px; height: 28px; font-size: 12px; border-radius: 7px; }
+        .error-toast-title { font-size: 8px; letter-spacing: 1.2px; }
+        .error-toast-text { font-size: 10px; }
+
+        .modal-overlay { padding: 14px; }
+        .modal-box { padding: 20px; border-radius: 12px; max-width: 360px; }
+        .modal-reject { max-width: 420px; }
+        .modal-title { font-size: 13px; gap: 7px; margin-bottom: 7px; }
+        .modal-title i { font-size: 14px; }
+        .modal-desc { font-size: 11px; margin-bottom: 16px; line-height: 1.45; }
+        .modal-actions { gap: 6px; }
+        .modal-btn { padding: 7px 13px; font-size: 10px; border-radius: 7px; }
+        .reject-textarea { padding: 10px 12px; font-size: 11px; min-height: 85px; border-radius: 9px; margin-bottom: 14px; }
+        .reject-hint { font-size: 9px; margin-bottom: 10px; }
+        .reject-hint i { font-size: 11px; }
+    }
+
+    /* Большие телефоны (до 576px) */
+    @media (max-width: 576px) {
+        .doc-show-page { padding: 16px 10px; }
+        .doc-card { padding: 16px; border-radius: 11px; }
+        .doc-title { font-size: 15px; margin-bottom: 12px; }
+        .doc-content { font-size: 11.5px; line-height: 1.55; padding-top: 11px; }
+        .doc-badges { gap: 4px; margin-bottom: 11px; }
+        .badge { padding: 3px 7px; font-size: 8px; letter-spacing: 0.7px; border-radius: 5px; }
+
+        .page-header { margin-bottom: 12px; padding-bottom: 10px; }
+        .page-header-left { gap: 8px; }
+        .back-btn { width: 27px; height: 27px; font-size: 11px; border-radius: 6px; }
+        .back-label { font-size: 9px; letter-spacing: 0.9px; }
+        .action-btns { gap: 5px; }
+        .action-btn { width: 27px; height: 27px; font-size: 11px; border-radius: 6px; }
+
+        .file-card { padding: 12px; border-radius: 9px; margin-top: 11px; gap: 10px; }
+        .file-info { gap: 9px; }
+        .file-icon { width: 32px; height: 32px; font-size: 14px; border-radius: 7px; }
+        .file-name { font-size: 10px; }
+        .file-meta { gap: 5px; margin-top: 3px; }
+        .file-meta span { font-size: 8px; }
+        .file-actions { gap: 5px; }
+        .file-btn { padding: 6px 9px; font-size: 9px; border-radius: 6px; gap: 5px; }
+
+        .sidebar-card { padding: 14px; border-radius: 10px; }
+        .sidebar-title { font-size: 8px; margin-bottom: 11px; padding-bottom: 7px; letter-spacing: 1.1px; }
+        .sidebar-row { padding: 5px 0; }
+        .sidebar-label { font-size: 8px; letter-spacing: 0.3px; }
+        .sidebar-value { font-size: 9px; }
+
+        .participants-section { margin-top: 12px; padding-top: 12px; }
+        .participants-title { font-size: 8px; margin-bottom: 9px; letter-spacing: 1.1px; gap: 5px; }
+        .participants-title i { font-size: 10px; }
+        .participant-item { padding: 7px; border-radius: 7px; gap: 7px; margin-bottom: 5px; }
+        .participant-avatar { width: 26px; height: 26px; font-size: 10px; border-radius: 6px; }
+        .participant-name { font-size: 10px; }
+        .participant-role { font-size: 7px; letter-spacing: 0.9px; }
+
+        .comments-section { margin-top: 14px; }
+        .section-title { font-size: 8px; margin-bottom: 9px; letter-spacing: 1.1px; gap: 6px; }
+        .section-title i { font-size: 11px; }
+        .comment-form { margin-bottom: 12px; }
+        .comment-input { padding: 9px 36px 9px 11px; font-size: 11px; min-height: 48px; border-radius: 8px; }
+        .comment-submit { bottom: 9px; right: 9px; font-size: 13px; }
+        .comments-list { gap: 7px; }
+        .comment-item { padding: 10px; border-radius: 8px; }
+        .comment-header { margin-bottom: 6px; padding-bottom: 6px; }
+        .comment-author { font-size: 8px; letter-spacing: 0.7px; }
+        .comment-time { font-size: 8px; padding: 2px 5px; border-radius: 7px; }
+        .comment-text { font-size: 10.5px; line-height: 1.4; }
+        .comment-delete { margin-top: 7px; padding-top: 5px; }
+        .comment-delete-btn { font-size: 8px; gap: 3px; }
+
+        .comments-empty { padding: 18px; border-radius: 9px; }
+        .comments-empty i { font-size: 16px; margin-bottom: 5px; }
+        .comments-empty p { font-size: 8px; letter-spacing: 0.7px; }
+
+        .live-indicator { padding: 8px 11px; border-radius: 8px; margin-top: 9px; gap: 6px; }
+        .live-dot { width: 5px; height: 5px; }
+        .live-text { font-size: 8px; letter-spacing: 1.1px; }
+
+        .error-toast { top: 60px; max-width: 320px; padding: 0 12px; }
+        .error-toast-inner { padding: 9px 12px; border-radius: 8px; gap: 9px; }
+        .error-toast-icon { width: 26px; height: 26px; font-size: 11px; border-radius: 6px; }
+        .error-toast-title { font-size: 7px; letter-spacing: 1px; }
+        .error-toast-text { font-size: 10px; }
+
+        .modal-overlay { padding: 12px; }
+        .modal-box { padding: 18px; border-radius: 11px; max-width: 340px; }
+        .modal-reject { max-width: 400px; }
+        .modal-title { font-size: 12px; gap: 6px; margin-bottom: 6px; }
+        .modal-title i { font-size: 13px; }
+        .modal-desc { font-size: 10px; margin-bottom: 14px; line-height: 1.4; }
+        .modal-actions { gap: 5px; }
+        .modal-btn { padding: 6px 12px; font-size: 9px; border-radius: 6px; letter-spacing: 0.3px; }
+        .reject-textarea { padding: 9px 11px; font-size: 10px; min-height: 80px; border-radius: 8px; margin-bottom: 12px; }
+        .reject-hint { font-size: 8px; margin-bottom: 9px; gap: 5px; }
+        .reject-hint i { font-size: 10px; }
+    }
+
+    /* Телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .doc-show-page { padding: 14px 8px; }
+        .doc-card { padding: 14px; border-radius: 10px; }
+        .doc-title { font-size: 14px; margin-bottom: 11px; }
+        .doc-content { font-size: 11px; line-height: 1.5; padding-top: 10px; }
+        .doc-badges { gap: 4px; margin-bottom: 10px; }
+        .badge { padding: 2px 6px; font-size: 7px; letter-spacing: 0.6px; border-radius: 5px; }
+
+        .page-header { margin-bottom: 10px; padding-bottom: 9px; }
+        .page-header-left { gap: 7px; }
+        .back-btn { width: 26px; height: 26px; font-size: 10px; border-radius: 6px; }
+        .back-label { font-size: 8px; letter-spacing: 0.8px; }
+        .action-btns { gap: 4px; }
+        .action-btn { width: 26px; height: 26px; font-size: 10px; border-radius: 6px; }
+
+        .file-card { padding: 11px; border-radius: 8px; margin-top: 10px; gap: 9px; }
+        .file-info { gap: 8px; }
+        .file-icon { width: 30px; height: 30px; font-size: 13px; border-radius: 7px; }
+        .file-name { font-size: 10px; }
+        .file-meta { gap: 4px; }
+        .file-meta span { font-size: 7px; }
+        .file-meta .dot { width: 2px; height: 2px; }
+        .file-actions { gap: 4px; }
+        .file-btn { padding: 6px 8px; font-size: 8px; border-radius: 6px; gap: 4px; }
+
+        .sidebar-card { padding: 12px; border-radius: 9px; }
+        .sidebar-title { font-size: 8px; margin-bottom: 10px; padding-bottom: 6px; letter-spacing: 1px; }
+        .sidebar-row { padding: 5px 0; }
+        .sidebar-label { font-size: 8px; letter-spacing: 0.3px; }
+        .sidebar-value { font-size: 9px; }
+
+        .participants-section { margin-top: 11px; padding-top: 11px; }
+        .participants-title { font-size: 7px; margin-bottom: 8px; letter-spacing: 1px; }
+        .participant-item { padding: 7px; border-radius: 7px; gap: 7px; margin-bottom: 5px; }
+        .participant-avatar { width: 25px; height: 25px; font-size: 10px; border-radius: 6px; }
+        .participant-name { font-size: 9px; }
+        .participant-role { font-size: 7px; letter-spacing: 0.8px; }
+
+        .comments-section { margin-top: 12px; }
+        .section-title { font-size: 8px; margin-bottom: 8px; letter-spacing: 1px; gap: 5px; }
+        .section-title i { font-size: 10px; }
+        .comment-form { margin-bottom: 10px; }
+        .comment-input { padding: 8px 34px 8px 10px; font-size: 10px; min-height: 45px; border-radius: 7px; }
+        .comment-submit { bottom: 8px; right: 8px; font-size: 12px; }
+        .comments-list { gap: 6px; }
+        .comment-item { padding: 9px; border-radius: 7px; }
+        .comment-header { margin-bottom: 5px; padding-bottom: 5px; }
+        .comment-author { font-size: 8px; letter-spacing: 0.6px; }
+        .comment-time { font-size: 7px; padding: 1px 5px; border-radius: 6px; }
+        .comment-text { font-size: 10px; line-height: 1.4; }
+        .comment-delete { margin-top: 6px; padding-top: 4px; }
+        .comment-delete-btn { font-size: 7px; gap: 3px; }
+
+        .comments-empty { padding: 16px; border-radius: 8px; }
+        .comments-empty i { font-size: 15px; margin-bottom: 4px; }
+        .comments-empty p { font-size: 8px; letter-spacing: 0.6px; }
+
+        .live-indicator { padding: 7px 10px; border-radius: 7px; margin-top: 8px; gap: 5px; }
+        .live-dot { width: 4px; height: 4px; }
+        .live-text { font-size: 7px; letter-spacing: 1px; }
+
+        .error-toast { top: 50px; max-width: 300px; padding: 0 10px; }
+        .error-toast-inner { padding: 8px 10px; border-radius: 7px; gap: 8px; }
+        .error-toast-icon { width: 24px; height: 24px; font-size: 10px; border-radius: 6px; }
+        .error-toast-title { font-size: 7px; letter-spacing: 0.9px; }
+        .error-toast-text { font-size: 9px; }
+
+        .modal-overlay { padding: 10px; }
+        .modal-box { padding: 16px; border-radius: 10px; max-width: 320px; }
+        .modal-reject { max-width: 380px; }
+        .modal-title { font-size: 11px; gap: 5px; margin-bottom: 5px; }
+        .modal-title i { font-size: 12px; }
+        .modal-desc { font-size: 10px; margin-bottom: 12px; line-height: 1.35; }
+        .modal-actions { gap: 4px; }
+        .modal-btn { padding: 6px 10px; font-size: 9px; border-radius: 5px; letter-spacing: 0.3px; }
+        .reject-textarea { padding: 8px 10px; font-size: 10px; min-height: 75px; border-radius: 7px; margin-bottom: 10px; }
+        .reject-hint { font-size: 8px; margin-bottom: 8px; gap: 4px; }
+        .reject-hint i { font-size: 9px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .doc-show-page { padding: 12px 6px; }
+        .doc-card { padding: 12px; border-radius: 9px; }
+        .doc-title { font-size: 13px; margin-bottom: 10px; }
+        .doc-content { font-size: 10.5px; line-height: 1.45; padding-top: 9px; }
+        .doc-badges { gap: 3px; margin-bottom: 9px; }
+        .badge { padding: 2px 5px; font-size: 7px; letter-spacing: 0.5px; border-radius: 4px; }
+
+        .page-header { margin-bottom: 9px; padding-bottom: 8px; }
+        .page-header-left { gap: 6px; }
+        .back-btn { width: 25px; height: 25px; font-size: 10px; border-radius: 5px; }
+        .back-label { font-size: 7px; letter-spacing: 0.7px; }
+        .action-btns { gap: 3px; }
+        .action-btn { width: 25px; height: 25px; font-size: 10px; border-radius: 5px; }
+
+        .file-card { padding: 10px; border-radius: 7px; margin-top: 9px; gap: 8px; }
+        .file-info { gap: 7px; }
+        .file-icon { width: 28px; height: 28px; font-size: 12px; border-radius: 6px; }
+        .file-name { font-size: 9px; }
+        .file-meta { gap: 3px; }
+        .file-meta span { font-size: 7px; }
+        .file-actions { gap: 3px; }
+        .file-btn { padding: 5px 7px; font-size: 7px; border-radius: 5px; gap: 3px; }
+
+        .sidebar-card { padding: 11px; border-radius: 8px; }
+        .sidebar-title { font-size: 7px; margin-bottom: 9px; padding-bottom: 5px; letter-spacing: 0.9px; }
+        .sidebar-row { padding: 4px 0; }
+        .sidebar-label { font-size: 7px; letter-spacing: 0.2px; }
+        .sidebar-value { font-size: 8px; }
+
+        .participants-section { margin-top: 10px; padding-top: 10px; }
+        .participants-title { font-size: 7px; margin-bottom: 7px; letter-spacing: 0.9px; }
+        .participant-item { padding: 6px; border-radius: 6px; gap: 6px; margin-bottom: 4px; }
+        .participant-avatar { width: 24px; height: 24px; font-size: 9px; border-radius: 5px; }
+        .participant-name { font-size: 9px; }
+        .participant-role { font-size: 6px; letter-spacing: 0.7px; }
+
+        .comments-section { margin-top: 10px; }
+        .section-title { font-size: 7px; margin-bottom: 7px; letter-spacing: 0.9px; gap: 4px; }
+        .section-title i { font-size: 9px; }
+        .comment-form { margin-bottom: 9px; }
+        .comment-input { padding: 7px 32px 7px 9px; font-size: 10px; min-height: 42px; border-radius: 6px; }
+        .comment-submit { bottom: 7px; right: 7px; font-size: 11px; }
+        .comments-list { gap: 5px; }
+        .comment-item { padding: 8px; border-radius: 6px; }
+        .comment-header { margin-bottom: 4px; padding-bottom: 4px; }
+        .comment-author { font-size: 7px; letter-spacing: 0.5px; }
+        .comment-time { font-size: 7px; padding: 1px 4px; border-radius: 5px; }
+        .comment-text { font-size: 9.5px; line-height: 1.35; }
+        .comment-delete { margin-top: 5px; padding-top: 3px; }
+        .comment-delete-btn { font-size: 7px; gap: 2px; }
+
+        .comments-empty { padding: 14px; border-radius: 7px; }
+        .comments-empty i { font-size: 14px; margin-bottom: 3px; }
+        .comments-empty p { font-size: 7px; letter-spacing: 0.5px; }
+
+        .live-indicator { padding: 6px 9px; border-radius: 6px; margin-top: 7px; gap: 4px; }
+        .live-dot { width: 4px; height: 4px; }
+        .live-text { font-size: 7px; letter-spacing: 0.9px; }
+
+        .error-toast { top: 40px; max-width: 280px; padding: 0 8px; }
+        .error-toast-inner { padding: 7px 9px; border-radius: 6px; gap: 7px; }
+        .error-toast-icon { width: 22px; height: 22px; font-size: 9px; border-radius: 5px; }
+        .error-toast-title { font-size: 6px; letter-spacing: 0.8px; }
+        .error-toast-text { font-size: 9px; }
+
+        .modal-overlay { padding: 8px; }
+        .modal-box { padding: 14px; border-radius: 9px; max-width: 300px; }
+        .modal-reject { max-width: 360px; }
+        .modal-title { font-size: 10px; gap: 4px; margin-bottom: 4px; }
+        .modal-title i { font-size: 11px; }
+        .modal-desc { font-size: 9px; margin-bottom: 10px; line-height: 1.3; }
+        .modal-actions { gap: 3px; }
+        .modal-btn { padding: 5px 9px; font-size: 8px; border-radius: 5px; letter-spacing: 0.2px; }
+        .reject-textarea { padding: 7px 9px; font-size: 9px; min-height: 70px; border-radius: 6px; margin-bottom: 9px; }
+        .reject-hint { font-size: 7px; margin-bottom: 7px; gap: 3px; }
+        .reject-hint i { font-size: 8px; }
     }
 </style>
 

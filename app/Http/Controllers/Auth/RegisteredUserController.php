@@ -69,7 +69,7 @@ class RegisteredUserController extends Controller
             Auth::login($user);
 
             // Редирект на страницу для пользователей без компании
-            return redirect()->route('users_no.companies');
+            return redirect()->route('users.no-companies');
         }
 
         // Для остальных ролей (admin, employee, director) - создаём компанию

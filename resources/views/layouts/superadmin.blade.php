@@ -543,10 +543,486 @@
         }
 
         /* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
+
+        /* Overlay для мобильного меню */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 39;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Маленькие десктопы (до 1200px) */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 260px;
+            }
+
+            .main-content {
+                margin-left: 260px;
+                padding: 1.75rem;
+            }
+
+            .sidebar-header {
+                padding: 1.5rem;
+            }
+
+            .nav-item {
+                padding: 0.75rem 1.15rem;
+                font-size: 0.85rem;
+            }
+
+            .top-bar {
+                padding: 1.15rem 1.5rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            table th, table td {
+                padding: 0.9rem 1.15rem;
+            }
+        }
+
+        /* Большие ноутбуки (до 1024px) */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+
+            .main-content {
+                margin-left: 240px;
+                padding: 1.5rem;
+            }
+
+            .sidebar-header {
+                padding: 1.25rem;
+            }
+
+            .nav-item {
+                padding: 0.7rem 1rem;
+                font-size: 0.85rem;
+                gap: 0.75rem;
+            }
+
+            .nav-item svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .top-bar {
+                padding: 1rem 1.25rem;
+                border-radius: 14px;
+            }
+
+            .top-bar h1 {
+                font-size: 1.125rem;
+            }
+
+            .card {
+                padding: 1.25rem;
+                border-radius: 14px;
+            }
+
+            table th, table td {
+                padding: 0.85rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            table th {
+                font-size: 0.65rem;
+            }
+
+            .btn-primary {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.8rem;
+            }
+
+            .btn-ghost {
+                padding: 0.5rem 0.9rem;
+                font-size: 0.75rem;
+            }
+
+            .avatar {
+                width: 38px;
+                height: 38px;
+                font-size: 0.85rem;
+            }
+
+            .badge {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.65rem;
+            }
+
+            .alert {
+                padding: 0.9rem 1.15rem;
+                font-size: 0.85rem;
+                border-radius: 10px;
+            }
+        }
+
+        /* Планшеты (до 768px) */
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; }
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.25rem;
+            }
+
+            .top-bar {
+                padding: 1rem 1.15rem;
+                border-radius: 12px;
+                margin-bottom: 1.5rem;
+            }
+
+            .top-bar h1 {
+                font-size: 1rem;
+            }
+
+            .top-bar p {
+                font-size: 0.7rem;
+            }
+
+            .card {
+                padding: 1.15rem;
+                border-radius: 12px;
+            }
+
+            table th, table td {
+                padding: 0.75rem 0.9rem;
+                font-size: 0.8rem;
+            }
+
+            table th {
+                font-size: 0.6rem;
+            }
+
+            .btn-primary {
+                padding: 0.55rem 1.1rem;
+                font-size: 0.75rem;
+                border-radius: 8px;
+            }
+
+            .btn-ghost {
+                padding: 0.45rem 0.85rem;
+                font-size: 0.7rem;
+                border-radius: 7px;
+            }
+
+            .avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 0.8rem;
+            }
+
+            .badge {
+                padding: 0.2rem 0.55rem;
+                font-size: 0.6rem;
+                border-radius: 5px;
+            }
+
+            .alert {
+                padding: 0.85rem 1rem;
+                font-size: 0.8rem;
+                border-radius: 9px;
+                margin-bottom: 1.25rem;
+            }
+
+            .sidebar-header {
+                padding: 1.15rem;
+            }
+
+            .nav-item {
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
+                margin: 0.25rem 0.75rem;
+            }
+
+            .nav-item svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        /* Большие телефоны (до 640px) */
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .top-bar {
+                padding: 0.9rem 1rem;
+                border-radius: 10px;
+                margin-bottom: 1.25rem;
+            }
+
+            .top-bar h1 {
+                font-size: 0.95rem;
+            }
+
+            .top-bar p {
+                font-size: 0.65rem;
+            }
+
+            .card {
+                padding: 1rem;
+                border-radius: 10px;
+            }
+
+            table th, table td {
+                padding: 0.7rem 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            table th {
+                font-size: 0.55rem;
+            }
+
+            .btn-primary {
+                padding: 0.5rem 1rem;
+                font-size: 0.7rem;
+                gap: 0.4rem;
+            }
+
+            .btn-ghost {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.65rem;
+            }
+
+            .avatar {
+                width: 34px;
+                height: 34px;
+                font-size: 0.75rem;
+                border-width: 1.5px;
+            }
+
+            .badge {
+                padding: 0.15rem 0.5rem;
+                font-size: 0.55rem;
+                gap: 0.3rem;
+            }
+
+            .alert {
+                padding: 0.75rem 0.9rem;
+                font-size: 0.75rem;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+            }
+
+            .sidebar {
+                width: 260px;
+            }
+
+            .sidebar-header {
+                padding: 1rem;
+            }
+
+            .nav-item {
+                padding: 0.7rem 0.9rem;
+                font-size: 0.8rem;
+                margin: 0.2rem 0.65rem;
+                gap: 0.7rem;
+            }
+
+            .nav-item svg {
+                width: 17px;
+                height: 17px;
+            }
+
+            .logo-badge {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.6rem;
+            }
+        }
+
+        /* Телефоны (до 480px) */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0.85rem;
+            }
+
+            .top-bar {
+                padding: 0.8rem 0.9rem;
+                border-radius: 9px;
+                margin-bottom: 1rem;
+            }
+
+            .top-bar h1 {
+                font-size: 0.9rem;
+            }
+
+            .top-bar p {
+                font-size: 0.6rem;
+            }
+
+            .card {
+                padding: 0.9rem;
+                border-radius: 9px;
+            }
+
+            table th, table td {
+                padding: 0.6rem 0.7rem;
+                font-size: 0.7rem;
+            }
+
+            table th {
+                font-size: 0.5rem;
+            }
+
+            .btn-primary {
+                padding: 0.45rem 0.9rem;
+                font-size: 0.65rem;
+                border-radius: 7px;
+            }
+
+            .btn-ghost {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.6rem;
+                border-radius: 6px;
+            }
+
+            .avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.7rem;
+            }
+
+            .badge {
+                padding: 0.15rem 0.45rem;
+                font-size: 0.5rem;
+            }
+
+            .alert {
+                padding: 0.7rem 0.8rem;
+                font-size: 0.7rem;
+                border-radius: 7px;
+                margin-bottom: 0.9rem;
+            }
+
+            .sidebar {
+                width: 240px;
+            }
+
+            .sidebar-header {
+                padding: 0.9rem;
+            }
+
+            .nav-item {
+                padding: 0.65rem 0.85rem;
+                font-size: 0.75rem;
+                margin: 0.2rem 0.6rem;
+                gap: 0.65rem;
+            }
+
+            .nav-item svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .logo-badge {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.55rem;
+            }
+        }
+
+        /* Очень маленькие телефоны (до 380px) */
+        @media (max-width: 380px) {
+            .main-content {
+                padding: 0.75rem;
+            }
+
+            .top-bar {
+                padding: 0.7rem 0.8rem;
+                border-radius: 8px;
+                margin-bottom: 0.9rem;
+            }
+
+            .top-bar h1 {
+                font-size: 0.85rem;
+            }
+
+            .card {
+                padding: 0.8rem;
+                border-radius: 8px;
+            }
+
+            table th, table td {
+                padding: 0.55rem 0.6rem;
+                font-size: 0.65rem;
+            }
+
+            .btn-primary {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.6rem;
+            }
+
+            .btn-ghost {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.55rem;
+            }
+
+            .avatar {
+                width: 30px;
+                height: 30px;
+                font-size: 0.65rem;
+            }
+
+            .badge {
+                padding: 0.1rem 0.4rem;
+                font-size: 0.45rem;
+            }
+
+            .alert {
+                padding: 0.6rem 0.7rem;
+                font-size: 0.65rem;
+                border-radius: 6px;
+            }
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .sidebar-header {
+                padding: 0.8rem;
+            }
+
+            .nav-item {
+                padding: 0.6rem 0.75rem;
+                font-size: 0.7rem;
+                margin: 0.15rem 0.5rem;
+                gap: 0.6rem;
+            }
+
+            .nav-item svg {
+                width: 15px;
+                height: 15px;
+            }
+
+            .logo-badge {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.5rem;
+            }
         }
 
         /* ===== СКРОЛЛБАР ===== */
@@ -573,6 +1049,9 @@
 
 {{-- Анимированный фон --}}
 <div class="bg-aurora"></div>
+
+{{-- Overlay для мобильного меню --}}
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('sidebar').classList.remove('open'); this.classList.remove('active');"></div>
 
 {{-- Боковая панель --}}
 <aside class="sidebar" id="sidebar">
@@ -652,7 +1131,7 @@
     {{-- Верхняя панель --}}
     <div class="top-bar">
         <div class="flex items-center gap-3">
-            <button onclick="document.getElementById('sidebar').classList.toggle('open')" class="md:hidden btn-ghost">
+            <button onclick="document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('active');" class="md:hidden btn-ghost">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
             <div>
@@ -687,6 +1166,28 @@
     {{-- Контент страницы --}}
     @yield('content')
 </main>
+
+<script>
+    // Закрытие sidebar при клике вне его (для мобильных)
+    document.addEventListener('click', function(e) {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const hamburger = e.target.closest('.btn-ghost');
+
+        if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !hamburger) {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+    });
+
+    // Закрытие sidebar при изменении размера экрана
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+    });
+</script>
 
 </body>
 </html>

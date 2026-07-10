@@ -35,7 +35,91 @@
         .badges{display:flex;justify-content:center;gap:20px;margin-top:24px;font:600 11px Figtree,sans-serif;color:var(--muted);opacity:.8}
         .badges svg{width:14px;height:14px;color:var(--ok)}
         .copy{text-align:center;margin-top:16px;font:500 12px Figtree,sans-serif;color:rgba(148,163,184,.5)}
-        @media(max-width:480px){.card{padding:28px 20px}.logo h1{font-size:20px}}
+
+        /* ===== RESPONSIVE ===== */
+
+        /* Планшеты и маленькие ноутбуки (до 768px) */
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .lang { top: 12px; right: 12px; padding: 3px; gap: 3px; }
+            .lang button { padding: 5px 10px; font-size: 11px; }
+            .card { padding: 32px 28px; border-radius: 18px; }
+            .logo { margin-bottom: 20px; }
+            .logo img { width: 56px; height: 56px; border-radius: 14px; margin-bottom: 10px; }
+            .logo h1 { font-size: 22px; }
+            .logo p { font-size: 10px; letter-spacing: 1.8px; }
+            .msg { padding: 13px; font-size: 12px; border-radius: 10px; }
+            .status { padding: 11px; font-size: 12px; border-radius: 10px; }
+            .actions { gap: 10px; }
+            .btn { padding: 13px; font-size: 14px; border-radius: 10px; gap: 7px; }
+            .link { padding: 11px; font-size: 13px; border-radius: 10px; }
+            .badges { gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+            .badges svg { width: 12px; height: 12px; }
+            .copy { margin-top: 14px; font-size: 11px; }
+        }
+
+        /* Большие телефоны (до 576px) */
+        @media (max-width: 576px) {
+            body { padding: 12px; }
+            .lang { top: 10px; right: 10px; padding: 3px; gap: 2px; border-radius: 8px; }
+            .lang button { padding: 4px 8px; font-size: 10px; border-radius: 6px; }
+            .card { padding: 28px 20px; border-radius: 16px; }
+            .logo { margin-bottom: 18px; }
+            .logo img { width: 52px; height: 52px; border-radius: 12px; margin-bottom: 9px; }
+            .logo h1 { font-size: 20px; }
+            .logo p { font-size: 10px; letter-spacing: 1.6px; }
+            .msg { padding: 12px; font-size: 12px; border-radius: 9px; margin-bottom: 14px; }
+            .status { padding: 10px; font-size: 12px; border-radius: 9px; margin-bottom: 14px; }
+            .actions { gap: 9px; }
+            .btn { padding: 12px; font-size: 13px; border-radius: 9px; gap: 6px; }
+            .btn svg { width: 16px; height: 16px; }
+            .link { padding: 10px; font-size: 13px; border-radius: 9px; }
+            .badges { gap: 14px; margin-top: 18px; font-size: 10px; }
+            .badges svg { width: 11px; height: 11px; }
+            .copy { margin-top: 12px; font-size: 11px; }
+        }
+
+        /* Телефоны (до 480px) */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .lang { top: 8px; right: 8px; padding: 2px; gap: 2px; }
+            .lang button { padding: 4px 7px; font-size: 9px; }
+            .card { padding: 24px 18px; border-radius: 14px; }
+            .logo { margin-bottom: 16px; }
+            .logo img { width: 48px; height: 48px; border-radius: 10px; margin-bottom: 8px; }
+            .logo h1 { font-size: 19px; }
+            .logo p { font-size: 9px; letter-spacing: 1.4px; margin-top: 3px; }
+            .msg { padding: 11px; font-size: 11px; border-radius: 8px; margin-bottom: 12px; line-height: 1.45; }
+            .status { padding: 9px; font-size: 11px; border-radius: 8px; margin-bottom: 12px; }
+            .actions { gap: 8px; }
+            .btn { padding: 11px; font-size: 12px; border-radius: 8px; gap: 5px; }
+            .btn svg { width: 15px; height: 15px; }
+            .link { padding: 9px; font-size: 12px; border-radius: 8px; }
+            .badges { gap: 12px; margin-top: 16px; font-size: 9px; }
+            .badges svg { width: 10px; height: 10px; }
+            .copy { margin-top: 10px; font-size: 10px; }
+        }
+
+        /* Очень маленькие телефоны (до 380px) */
+        @media (max-width: 380px) {
+            body { padding: 8px; }
+            .lang { top: 6px; right: 6px; padding: 2px; gap: 1px; }
+            .lang button { padding: 3px 6px; font-size: 8px; }
+            .card { padding: 20px 14px; border-radius: 12px; }
+            .logo { margin-bottom: 14px; }
+            .logo img { width: 44px; height: 44px; border-radius: 9px; margin-bottom: 7px; }
+            .logo h1 { font-size: 18px; }
+            .logo p { font-size: 8px; letter-spacing: 1.2px; }
+            .msg { padding: 10px; font-size: 10px; border-radius: 7px; margin-bottom: 10px; line-height: 1.4; }
+            .status { padding: 8px; font-size: 10px; border-radius: 7px; margin-bottom: 10px; }
+            .actions { gap: 7px; }
+            .btn { padding: 10px; font-size: 11px; border-radius: 7px; gap: 4px; }
+            .btn svg { width: 14px; height: 14px; }
+            .link { padding: 8px; font-size: 11px; border-radius: 7px; }
+            .badges { gap: 10px; margin-top: 14px; font-size: 8px; flex-wrap: wrap; }
+            .badges svg { width: 9px; height: 9px; }
+            .copy { margin-top: 8px; font-size: 9px; }
+        }
     </style>
 </head>
 <body>
@@ -56,7 +140,7 @@
     <div class="msg" data-i18n="msg">Спасибо за регистрацию! Проверьте почту и перейдите по ссылке для подтверждения аккаунта. Если письмо не пришло, мы отправим его повторно.</div>
 
     @if(session('status') == 'verification-link-sent')
-        <div class="status" data-i18n="sent">✅ Ссылка отправлена повторно на вашу почту.</div>
+    <div class="status" data-i18n="sent">✅ Ссылка отправлена повторно на вашу почту.</div>
     @endif
 
     <div class="actions">

@@ -415,9 +415,7 @@
           stroke-dasharray: 0 100;
           stroke-dashoffset: 0;
         }
-        .donut-segment.animated {
-          /* values set via JS */
-        }
+        .donut-segment.animated {}
         .donut-center-text {
           animation: fadeInScale 0.8s ease-out 0.5s both;
         }
@@ -435,6 +433,156 @@
         .donut-header-bar {
           background: linear-gradient(90deg, rgba(30,30,30,0.8), rgba(40,40,40,0.6));
           border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* ===== ПОЛНАЯ АДАПТИВНОСТЬ ===== */
+
+        /* Большие ноутбуки и маленькие десктопы (до 1200px) */
+        @media (max-width: 1200px) {
+            .blob-1 { width: 500px; height: 500px; }
+            .blob-2 { width: 600px; height: 600px; }
+            .blob-3 { width: 400px; height: 400px; }
+            .blob-4 { width: 350px; height: 350px; }
+        }
+
+        /* Маленькие ноутбуки и большие планшеты (до 1024px) */
+        @media (max-width: 1024px) {
+            .hero-title { font-size: 3.5rem !important; }
+            .stat-num { font-size: 2rem; }
+            .blob-1, .blob-2 { width: 400px; height: 400px; }
+            .blob-3, .blob-4 { width: 300px; height: 300px; }
+            .superadmin-card { padding: 32px; }
+            #donutChart { width: 220px !important; height: 220px !important; }
+        }
+
+        /* Планшеты (до 768px) */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem !important; line-height: 1.1 !important; }
+            .stat-num { font-size: 1.75rem; }
+            .blob-1, .blob-2, .blob-3, .blob-4 { opacity: 0.1; }
+            .blob-1, .blob-2 { width: 300px; height: 300px; }
+            .blob-3, .blob-4 { width: 250px; height: 250px; }
+            .superadmin-card { padding: 24px; }
+            .superadmin-card .w-24 { width: 80px; height: 80px; }
+            .superadmin-card .text-3xl { font-size: 1.5rem; }
+            #donutChart { width: 200px !important; height: 200px !important; }
+            .donut-header-bar { padding: 12px 16px; }
+            .donut-header-bar .text-2xl { font-size: 1.25rem; }
+            #mainChart { height: 240px !important; }
+            .glass { padding: 20px; }
+            section { padding-top: 60px !important; padding-bottom: 60px !important; }
+        }
+
+        /* Большие телефоны (до 576px) */
+        @media (max-width: 576px) {
+            .hero-title { font-size: 2rem !important; }
+            .stat-num { font-size: 1.5rem; }
+            .btn-primary, .btn-outline { padding: 10px 16px; font-size: 12px; }
+            .blob-1, .blob-2, .blob-3, .blob-4 { display: none; }
+            .superadmin-card { padding: 20px; }
+            .superadmin-card .w-24 { width: 70px; height: 70px; }
+            .superadmin-card .text-3xl { font-size: 1.25rem; }
+            .superadmin-card .text-2xl { font-size: 1.125rem; }
+            #donutChart { width: 180px !important; height: 180px !important; }
+            .donut-header-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+            #mainChart { height: 200px !important; }
+            .glass { padding: 16px; border-radius: 20px !important; }
+            .card-3d { border-radius: 20px !important; }
+            section { padding-top: 48px !important; padding-bottom: 48px !important; }
+            .icon-blue, .icon-purple, .icon-green, .icon-orange, .icon-pink, .icon-indigo {
+                width: 44px !important;
+                height: 44px !important;
+            }
+            .icon-blue svg, .icon-purple svg, .icon-green svg, .icon-orange svg, .icon-pink svg, .icon-indigo svg {
+                width: 20px !important;
+                height: 20px !important;
+            }
+            .nav-link { font-size: 13px; }
+            footer .grid { gap: 24px; }
+        }
+
+        /* Телефоны (до 480px) */
+        @media (max-width: 480px) {
+            .hero-title { font-size: 1.75rem !important; }
+            .stat-num { font-size: 1.25rem; }
+            .btn-primary, .btn-outline { padding: 9px 14px; font-size: 11px; gap: 6px; }
+            .btn-primary svg, .btn-outline svg { width: 14px; height: 14px; }
+            .superadmin-card { padding: 16px; }
+            .superadmin-card .w-24 { width: 60px; height: 60px; }
+            .superadmin-card .text-3xl { font-size: 1.125rem; }
+            .superadmin-card .text-2xl { font-size: 1rem; }
+            .superadmin-card p { font-size: 12px; }
+            #donutChart { width: 160px !important; height: 160px !important; }
+            .donut-center-text .text-3xl { font-size: 1.5rem; }
+            .donut-center-text span { font-size: 9px !important; }
+            #mainChart { height: 180px !important; }
+            .glass { padding: 14px; border-radius: 16px !important; }
+            .card-3d { border-radius: 16px !important; }
+            section { padding-top: 40px !important; padding-bottom: 40px !important; }
+            .text-3xl, .text-4xl, .text-5xl { font-size: 1.5rem !important; }
+            .text-sm { font-size: 12px; }
+            .text-xs { font-size: 10px; }
+            .text-base { font-size: 13px; }
+            .mb-14 { margin-bottom: 32px !important; }
+            .mb-16 { margin-bottom: 40px !important; }
+            .gap-5 { gap: 12px !important; }
+            .p-6 { padding: 16px !important; }
+            .p-5 { padding: 14px !important; }
+            footer .grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+            footer .text-xs { font-size: 11px; }
+            footer .flex-col { gap: 12px; }
+            .lang-select { padding: 5px 24px 5px 8px; font-size: 10px; }
+        }
+
+        /* Очень маленькие телефоны (до 380px) */
+        @media (max-width: 380px) {
+            .hero-title { font-size: 1.5rem !important; }
+            .stat-num { font-size: 1.125rem; }
+            .btn-primary, .btn-outline { padding: 8px 12px; font-size: 10px; }
+            .superadmin-card { padding: 14px; }
+            .superadmin-card .w-24 { width: 50px; height: 50px; }
+            .superadmin-card .text-3xl { font-size: 1rem; }
+            #donutChart { width: 140px !important; height: 140px !important; }
+            .donut-center-text .text-3xl { font-size: 1.25rem; }
+            #mainChart { height: 160px !important; }
+            .glass { padding: 12px; }
+            section { padding-top: 32px !important; padding-bottom: 32px !important; }
+            .text-3xl, .text-4xl, .text-5xl { font-size: 1.25rem !important; }
+            .grid-cols-2 { grid-template-columns: 1fr !important; }
+        }
+
+        /* Мобильное меню */
+        @media (max-width: 1024px) {
+            #mobileMenu {
+                max-height: calc(100vh - 64px);
+                overflow-y: auto;
+            }
+        }
+
+        /* Отключаем 3D эффект на мобильных для производительности */
+        @media (max-width: 768px) {
+            .card-3d {
+                transform: none !important;
+            }
+            .card-3d:hover {
+                transform: none !important;
+            }
+            .card-3d .card-inner {
+                transform: none !important;
+            }
+            .card-3d:hover .card-inner {
+                transform: none !important;
+            }
+            .card-shine {
+                display: none !important;
+            }
+        }
+
+        /* Скрываем scroll indicator на мобильных */
+        @media (max-width: 768px) {
+            .absolute.bottom-8 {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -531,7 +679,7 @@
                 DocSign — современная платформа для работы с документами. Подписывайте, отправляйте и храните файлы в один клик. Простое и надёжное решение для бизнеса в Таджикистане.
             </p>
             <div class="flex flex-wrap items-center justify-center gap-3 mb-16">
-                <a href="#" class="btn-primary px-6 py-3 rounded-xl text-sm font-semibold shadow-2xl flex items-center gap-2">
+                <a href="/login" class="btn-primary px-6 py-3 rounded-xl text-sm font-semibold shadow-2xl flex items-center gap-2">
                     <span data-i18n="hero_cta">Начать работу</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
@@ -556,8 +704,10 @@
                     <div class="card-border"></div>
                     <div class="card-inner">
                         <div class="text-[10px] uppercase tracking-[0.2em] text-purple-400 font-bold mb-2" data-i18n="stat_users">Пользователи</div>
-                        <div class="stat-num gradient-text"><span class="counter" data-target="1250">0</span>+</div>
-                        <div class="text-xs text-gray-500 mt-1" data-i18n="stat_users_desc">активных в стране</div>
+                        <div class="stat-num gradient-text">
+                            <span class="counter" data-target="{{ \App\Models\User::count() }}">0</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1" data-i18n="stat_users_desc">зарегистрировано</div>
                     </div>
                 </div>
                 <div class="stat-card-green rounded-2xl p-4 text-left card-3d card-green">
@@ -615,11 +765,13 @@
                             </div>
                             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-bold text-emerald-400">
                                 <span class="pulse-dot" style="background:#10b981;box-shadow:0 0 8px #10b981;width:5px;height:5px;"></span>
-                                +12.4%
+                                Live
                             </span>
                         </div>
                         <div class="text-[11px] uppercase tracking-wider text-gray-500 font-bold mb-1.5" data-i18n="analysis_reg_title">Регистрации</div>
-                        <div class="stat-num text-white mb-1"><span class="counter" data-target="1250">0</span></div>
+                        <div class="stat-num gradient-text">
+                            <span class="counter" data-target="{{ \App\Models\User::count() }}">0</span>
+                        </div>
                         <div class="text-xs text-gray-500 mb-5" data-i18n="analysis_reg_desc">пользователей зарегистрировано</div>
                         <!-- Mini chart -->
                         <div class="flex items-end gap-1 h-12">
@@ -647,11 +799,13 @@
                             </div>
                             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-[10px] font-bold text-purple-400">
                                 <span class="pulse-dot" style="background:#8b5cf6;box-shadow:0 0 8px #8b5cf6;width:5px;height:5px;"></span>
-                                +8.7%
+                                Live
                             </span>
                         </div>
                         <div class="text-[11px] uppercase tracking-wider text-gray-500 font-bold mb-1.5" data-i18n="analysis_doc_title">Документы</div>
-                        <div class="stat-num text-white mb-1"><span class="counter" data-target="8430">0</span></div>
+                        <div class="stat-num gradient-text">
+                            <span class="counter" data-target="{{ \App\Models\Document::count() }}">0</span>
+                        </div>
                         <div class="text-xs text-gray-500 mb-5" data-i18n="analysis_doc_desc">документов отправлено</div>
                         <!-- Mini line chart -->
                         <svg viewBox="0 0 200 50" class="w-full h-12" preserveAspectRatio="none">
@@ -684,7 +838,7 @@
                             </span>
                         </div>
                         <div class="text-[11px] uppercase tracking-wider text-gray-500 font-bold mb-1.5" data-i18n="analysis_activity_title">Активность</div>
-                        <div class="stat-num text-white mb-1"><span class="counter" data-target="94">0</span>%</div>
+                        <div class="stat-num text-white mb-1"><span class="counter" data-target="100">0</span>%</div>
                         <div class="text-xs text-gray-500 mb-5" data-i18n="analysis_activity_desc">документов обработано успешно</div>
                         <!-- Donut chart -->
                         <div class="relative flex items-center justify-center h-12">
@@ -692,13 +846,13 @@
                                 <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="3"/>
                                 <circle cx="18" cy="18" r="14" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="88 100" stroke-linecap="round"/>
                             </svg>
-                            <div class="absolute text-[10px] font-bold text-green-400">94%</div>
+                            <div class="absolute text-[10px] font-bold text-green-400">100%</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Big Donut Chart Card (как на фото) -->
+            <!-- Big Donut Chart Card -->
             <div class="glass rounded-3xl p-6 md:p-8 card-3d scroll-reveal mb-6">
                 <div class="card-shine"></div>
                 <div class="card-border"></div>
@@ -720,16 +874,12 @@
                     <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
                         <div class="relative">
                             <svg id="donutChart" viewBox="0 0 200 200" class="w-64 h-64 md:w-72 md:h-72 -rotate-90">
-                                <!-- Background circle -->
                                 <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="22"/>
-
-                                <!-- Segments -->
                                 <circle class="donut-segment" id="seg1" cx="100" cy="100" r="80" fill="none" stroke="#3b82f6" stroke-width="22" stroke-linecap="round" data-percent="35"/>
                                 <circle class="donut-segment" id="seg2" cx="100" cy="100" r="80" fill="none" stroke="#8b5cf6" stroke-width="22" stroke-linecap="round" data-percent="28"/>
                                 <circle class="donut-segment" id="seg3" cx="100" cy="100" r="80" fill="none" stroke="#10b981" stroke-width="22" stroke-linecap="round" data-percent="22"/>
                                 <circle class="donut-segment" id="seg4" cx="100" cy="100" r="80" fill="none" stroke="#f59e0b" stroke-width="22" stroke-linecap="round" data-percent="15"/>
                             </svg>
-                            <!-- Center text -->
                             <div class="absolute inset-0 flex flex-col items-center justify-center donut-center-text">
                                 <span class="text-[11px] uppercase tracking-[0.2em] font-bold text-gray-500" data-i18n="donut_center_label">Документы</span>
                                 <span class="text-3xl font-black text-white mt-1">54</span>
@@ -986,7 +1136,7 @@
                             <h3 class="text-2xl md:text-3xl font-black text-white mb-1 tracking-tight">Аминов Амир</h3>
                             <p class="text-sm text-gray-400 mb-4" data-i18n="admin_role">Создатель системы DocSign</p>
                             <p class="text-sm text-gray-300 leading-relaxed mb-5" data-i18n="admin_desc">Если у вас есть компания и вы хотите стать администратором системы — свяжитесь с главным администратором. Он поможет настроить всё для вашей организации.</p>
-                            <a href="https://t.me/aminov_amir" target="_blank" class="inline-flex items-center gap-2 btn-primary px-5 py-2.5 rounded-xl text-sm font-semibold">
+                            <a href="https://t.me/amnvamr" target="_blank" class="inline-flex items-center gap-2 btn-primary px-5 py-2.5 rounded-xl text-sm font-semibold">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M11.944 0C5.346 0 0 5.346 0 11.944c0 6.597 5.346 11.944 11.944 11.944 6.598 0 11.944-5.347 11.944-11.944C23.888 5.346 18.542 0 11.944 0zM18.17 6.83l-2.113 9.968c-.15.66-.543.824-1.096.515l-3.218-2.373-1.553 1.493c-.17.172-.315.315-.646.315l.23-3.267 5.946-5.372c.258-.23-.056-.358-.401-.13l-7.35 4.628-3.166-1c-.687-.215-.702-.687.143-.1l12.355-4.76c.572-.215 1.07.127.91.892z"/>
                                 </svg>
@@ -1006,8 +1156,8 @@
                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 tracking-tight" data-i18n="contact_title">Готовы начать?</h2>
                 <p class="max-w-xl mx-auto text-sm sm:text-base text-gray-400 mb-8" data-i18n="contact_subtitle">Присоединяйтесь к компаниям, которые уже используют DocSign</p>
                 <div class="flex flex-wrap items-center justify-center gap-3">
-                    <a href="#" class="btn-primary px-6 py-3 rounded-xl text-sm font-semibold shadow-2xl" data-i18n="contact_cta">Начать бесплатно</a>
-                    <a href="https://t.me/aminov_amir" target="_blank" class="btn-outline px-6 py-3 rounded-xl text-sm font-semibold text-gray-300 flex items-center gap-2">
+                    <a href="/login" class="btn-primary px-6 py-3 rounded-xl text-sm font-semibold shadow-2xl" data-i18n="contact_cta">Начать бесплатно</a>
+                    <a href="https://t.me/amnvamr" target="_blank" class="btn-outline px-6 py-3 rounded-xl text-sm font-semibold text-gray-300 flex items-center gap-2">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0C5.346 0 0 5.346 0 11.944c0 6.597 5.346 11.944 11.944 11.944 6.598 0 11.944-5.347 11.944-11.944C23.888 5.346 18.542 0 11.944 0zM18.17 6.83l-2.113 9.968c-.15.66-.543.824-1.096.515l-3.218-2.373-1.553 1.493c-.17.172-.315.315-.646.315l.23-3.267 5.946-5.372c.258-.23-.056-.358-.401-.13l-7.35 4.628-3.166-1c-.687-.215-.702-.687.143-.1l12.355-4.76c.572-.215 1.07.127.91.892z"/></svg>
                         <span data-i18n="contact_tg">Связаться в Telegram</span>
                     </a>
@@ -1031,10 +1181,10 @@
                     </a>
                     <p class="text-sm text-gray-400 max-w-sm mb-5" data-i18n="footer_desc">Платформа электронного документооборота для бизнеса Таджикистана.</p>
                     <div class="flex items-center gap-2">
-                        <a href="https://t.me/aminov_amir" target="_blank" class="w-9 h-9 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-blue-400 hover:border-blue-500/30 transition-all">
+                        <a href="https://t.me/amnvamr" target="_blank" class="w-9 h-9 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-blue-400 hover:border-blue-500/30 transition-all">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0C5.346 0 0 5.346 0 11.944c0 6.597 5.346 11.944 11.944 11.944 6.598 0 11.944-5.347 11.944-11.944C23.888 5.346 18.542 0 11.944 0zM18.17 6.83l-2.113 9.968c-.15.66-.543.824-1.096.515l-3.218-2.373-1.553 1.493c-.17.172-.315.315-.646.315l.23-3.267 5.946-5.372c.258-.23-.056-.358-.401-.13l-7.35 4.628-3.166-1c-.687-.215-.702-.687.143-.1l12.355-4.76c.572-.215 1.07.127.91.892z"/></svg>
                         </a>
-                        <a href="#" class="w-9 h-9 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-purple-400 hover:border-purple-500/30 transition-all">
+                        <a href="https://t.me/amnvamr" target="_blank" class="w-9 h-9 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-purple-400 hover:border-purple-500/30 transition-all">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.558.217.957.477 1.377.896.42.419.68.818.896 1.377.163.422.358 1.057.412 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.217.558-.477.957-.896 1.377-.419.42-.818.68-1.377.896-.422.163-1.057.358-2.227.412-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.558-.217-.957-.477-1.377-.896-.419-.42-.68-.818-.896-1.377-.163-.422-.358-1.057-.412-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.217-.558.477-.957.896-1.377.419-.42.818-.68 1.377-.896.422-.163 1.057-.358 2.227-.412 1.266-.058 1.646-.07 4.85-.07M12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.014 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.355 1.078 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.078-1.354 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.354-1.078-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                         </a>
                     </div>
@@ -1052,7 +1202,7 @@
                     <ul class="space-y-2 text-sm text-gray-400">
                         <li><a href="#admin" class="hover:text-orange-400 transition-colors" data-i18n="footer_admin">Администратор</a></li>
                         <li><a href="#contact" class="hover:text-pink-400 transition-colors" data-i18n="footer_contact">Контакты</a></li>
-                        <li><a href="https://t.me/aminov_amir" target="_blank" class="hover:text-blue-400 transition-colors">Telegram</a></li>
+                        <li><a href="https://t.me/amnvamr" target="_blank" class="hover:text-blue-400 transition-colors">Telegram</a></li>
                     </ul>
                 </div>
             </div>
@@ -1060,7 +1210,7 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
                 <span>© 2026 DocSign. <span data-i18n="footer_rights">Все права защищены.</span></span>
                 <span class="flex items-center gap-2">
-                    <span class="text-sm">🇹</span>
+                    <span class="text-sm">🇹🇯</span>
                     <span data-i18n="footer_made">Сделано в Таджикистане</span>
                 </span>
             </div>
@@ -1081,8 +1231,10 @@
 
       camera.position.z = 5;
 
+      // Меньше частиц на мобильных для производительности
+      const isMobile = window.innerWidth < 768;
       const particlesGeometry = new THREE.BufferGeometry();
-      const particlesCount = 1500;
+      const particlesCount = isMobile ? 600 : 1500;
       const posArray = new Float32Array(particlesCount * 3);
       const colorsArray = new Float32Array(particlesCount * 3);
 
@@ -1182,6 +1334,9 @@
     // ===== 3D CARD TILT EFFECT =====
     document.querySelectorAll('.card-3d').forEach(card => {
       card.addEventListener('mousemove', (e) => {
+        // Отключаем эффект на мобильных
+        if (window.innerWidth < 768) return;
+
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -1207,7 +1362,7 @@
         hero_subtitle: "DocSign — современная платформа для работы с документами. Подписывайте, отправляйте и храните файлы в один клик. Простое и надёжное решение для бизнеса в Таджикистане.",
         hero_cta: "Начать работу", hero_learn: "Узнать больше",
         stat_sec: "сек", stat_speed: "Скорость", stat_speed_desc: "на один документ",
-        stat_users: "Пользователи", stat_users_desc: "активных в стране",
+        stat_users: "Пользователи", stat_users_desc: "зарегистрировано",
         stat_access: "Доступ", stat_access_desc: "всегда онлайн",
         stat_protection: "Защита", stat_protection_desc: "юридическая сила",
         analytics_label: "Аналитика", analytics_title: "Всё под контролем", analytics_subtitle: "Следите за регистрациями, документами и активностью в реальном времени",
@@ -1252,7 +1407,7 @@
         hero_subtitle: "DocSign is a modern platform for working with documents. Sign, send and store files in one click. A simple and reliable solution for business in Tajikistan.",
         hero_cta: "Get Started", hero_learn: "Learn More",
         stat_sec: "sec", stat_speed: "Speed", stat_speed_desc: "per document",
-        stat_users: "Users", stat_users_desc: "active in the country",
+        stat_users: "Users", stat_users_desc: "registered",
         stat_access: "Access", stat_access_desc: "always online",
         stat_protection: "Protection", stat_protection_desc: "legal validity",
         analytics_label: "Analytics", analytics_title: "Everything under control", analytics_subtitle: "Track registrations, documents and activity in real time",
@@ -1297,7 +1452,7 @@
         hero_subtitle: "DocSign — платформаи муосир барои кор бо ҳуҷҷатҳо. Имзо кунед, фиристед ва файлҳоро дар як клик нигоҳ доред. Ҳалли содда ва боэътимод барои бизнеси Тоҷикистон.",
         hero_cta: "Оғоз кунед", hero_learn: "Бештар донед",
         stat_sec: "сония", stat_speed: "Суръат", stat_speed_desc: "барои як ҳуҷҷат",
-        stat_users: "Корбарон", stat_users_desc: "фаъол дар кишвар",
+        stat_users: "Корбарон", stat_users_desc: "ба қайд гирифта шуданд",
         stat_access: "Дастрасӣ", stat_access_desc: "ҳамеша онлайн",
         stat_protection: "Ҳимоя", stat_protection_desc: "қувваи ҳуқуқӣ",
         analytics_label: "Таҳлил", analytics_title: "Ҳама чиз зери назорат", analytics_subtitle: "Бақайдгириҳо, ҳуҷҷатҳо ва фаъолиятро дар вақти воқеӣ пайгирӣ кунед",
@@ -1326,7 +1481,7 @@
         sec3_title: "Таърихи амалҳо", sec3_desc: "Кӣ, кай ва чӣ бо ҳуҷҷат кард — ҳама нигоҳ дошта мешавад ва дастрас аст.",
         sec4_title: "Нусхаҳои эҳтиётӣ", sec4_desc: "Маълумот ба таври худкор нигоҳ дошта мешавад. Ҳатто дар ҳолати вайроншавӣ ҳеҷ чиз гум намешавад.",
         admin_badge: "Маъмури асосӣ", admin_role: "Созандаи системаи DocSign",
-        admin_desc: "Агар шумо ширкат дошта бошед ва хоҳед маъмури система шавед — бо маъмури асосӣ тамос гиред.  ба шумо барои ташкилотатон кӯмак мекунад.",
+        admin_desc: "Агар шумо ширкат дошта бошед ва хоҳед маъмури система шавед — бо маъмури асосӣ тамос гиред. Ӯ ба шумо барои ташкилотатон кӯмак мекунад.",
         admin_contact: "Дар Telegram нависед",
         contact_title: "Омодаед оғоз кунед?", contact_subtitle: "Ба ширкатҳое, ки аллакай DocSign-ро истифода мебаранд, ҳамроҳ шавед",
         contact_cta: "Ройгон оғоз кунед", contact_tg: "Дар Telegram тамос гиред",
@@ -1428,20 +1583,17 @@
     // ===== DONUT CHART ANIMATION =====
     function animateDonutChart() {
       const segments = document.querySelectorAll('.donut-segment');
-      const circumference = 2 * Math.PI * 80; // ~502.65
+      const circumference = 2 * Math.PI * 80;
       let offset = 0;
-      const gap = 2; // gap between segments in percent
+      const gap = 2;
 
       segments.forEach((seg, idx) => {
         const percent = parseFloat(seg.dataset.percent);
         const segLength = percent - gap;
-        const segOffset = 100 - percent;
 
-        // Set initial state
         seg.style.strokeDasharray = `0 ${circumference}`;
         seg.style.strokeDashoffset = `${-offset * (circumference / 100)}`;
 
-        // Animate after small delay
         setTimeout(() => {
           seg.classList.add('animated');
           seg.style.strokeDasharray = `${segLength * (circumference / 100)} ${circumference}`;
@@ -1452,7 +1604,6 @@
       });
     }
 
-    // Trigger donut animation when it comes into view
     const donutObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1540,4 +1691,3 @@
 </script>
 </body>
 </html>
-

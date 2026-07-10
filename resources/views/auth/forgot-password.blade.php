@@ -332,14 +332,155 @@
             color: #34d399;
         }
 
-        /* ===== АДАПТИВ ===== */
+        /* ===== RESPONSIVE ===== */
+
+        /* Планшеты и маленькие ноутбуки (до 768px) */
+        @media (max-width: 768px) {
+            body { padding: 30px 16px; }
+            .lang-switcher { top: 16px; right: 16px; }
+            .lang-switcher select {
+                padding: 9px 32px 9px 14px;
+                font-size: 12px;
+                min-width: 100px;
+                border-radius: 10px;
+            }
+            .reset-card { padding: 40px 32px; border-radius: 22px; }
+            .logo-section { margin-bottom: 28px; }
+            .logo-img { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 14px; }
+            .logo-title { font-size: 26px; }
+            .logo-subtitle { font-size: 11px; letter-spacing: 1.8px; }
+            .info-banner { padding: 13px 15px; font-size: 12px; }
+            .info-banner svg { width: 16px; height: 16px; }
+            .status-banner { padding: 13px 15px; font-size: 12px; }
+            .form-group { margin-bottom: 18px; }
+            .form-label { font-size: 12px; margin-bottom: 7px; }
+            .form-input { padding: 13px 15px 13px 44px; font-size: 14px; border-radius: 12px; }
+            .input-icon { left: 15px; width: 18px; height: 18px; }
+            .submit-btn { padding: 15px; font-size: 14px; border-radius: 12px; }
+            .back-link-section { margin-top: 20px; padding-top: 20px; }
+            .back-link { font-size: 13px; }
+            .footer-badges { gap: 20px; margin-top: 28px; }
+            .badge { font-size: 10px; gap: 5px; }
+            .badge svg { width: 13px; height: 13px; }
+            .copyright { margin-top: 18px; font-size: 11px; }
+            .notification { padding: 12px 20px; font-size: 13px; border-radius: 10px; }
+        }
+
+        /* Большие телефоны (до 520px) */
         @media (max-width: 520px) {
             body { padding: 20px 16px; }
-            .reset-card { padding: 36px 24px; border-radius: 20px; }
-            .logo-title { font-size: 24px; }
-            .logo-img { width: 64px; height: 64px; }
-            .footer-badges { gap: 16px; }
             .lang-switcher { top: 12px; right: 12px; }
+            .lang-switcher select {
+                padding: 8px 28px 8px 12px;
+                font-size: 11px;
+                min-width: 90px;
+                border-radius: 9px;
+                background-position: right 10px center;
+                background-size: 12px;
+            }
+            .reset-card { padding: 36px 24px; border-radius: 20px; }
+            .logo-section { margin-bottom: 24px; }
+            .logo-img { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 12px; }
+            .logo-title { font-size: 24px; }
+            .logo-subtitle { font-size: 10px; letter-spacing: 1.6px; }
+            .info-banner { padding: 12px 14px; gap: 10px; margin-bottom: 20px; border-radius: 10px; }
+            .info-banner svg { width: 16px; height: 16px; }
+            .info-banner p { font-size: 12px; }
+            .status-banner { padding: 12px 14px; font-size: 12px; border-radius: 10px; }
+            .status-banner svg { width: 14px; height: 14px; }
+            .form-group { margin-bottom: 16px; }
+            .form-label { font-size: 12px; margin-bottom: 6px; }
+            .form-input { padding: 12px 14px 12px 42px; font-size: 14px; border-radius: 11px; }
+            .input-icon { left: 14px; width: 18px; height: 18px; }
+            .error-message { font-size: 11px; margin-top: 5px; }
+            .error-message svg { width: 11px; height: 11px; }
+            .submit-btn { padding: 14px; font-size: 14px; border-radius: 11px; margin-top: 6px; }
+            .submit-btn.loading::after { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+            .back-link-section { margin-top: 18px; padding-top: 18px; }
+            .back-link { font-size: 13px; padding: 5px 10px; border-radius: 7px; }
+            .back-link svg { width: 14px; height: 14px; }
+            .footer-badges { gap: 16px; margin-top: 24px; }
+            .badge { font-size: 10px; gap: 5px; }
+            .badge svg { width: 12px; height: 12px; }
+            .copyright { margin-top: 16px; font-size: 11px; }
+            .notification { padding: 11px 18px; font-size: 12px; border-radius: 9px; top: 16px; }
+        }
+
+        /* Телефоны (до 480px) */
+        @media (max-width: 480px) {
+            body { padding: 16px 12px; }
+            .lang-switcher { top: 10px; right: 10px; }
+            .lang-switcher select {
+                padding: 7px 26px 7px 10px;
+                font-size: 10px;
+                min-width: 85px;
+                border-radius: 8px;
+                letter-spacing: 0.3px;
+            }
+            .reset-card { padding: 32px 20px; border-radius: 18px; }
+            .logo-section { margin-bottom: 22px; }
+            .logo-img { width: 60px; height: 60px; border-radius: 15px; margin-bottom: 10px; }
+            .logo-title { font-size: 22px; }
+            .logo-subtitle { font-size: 10px; letter-spacing: 1.4px; }
+            .info-banner { padding: 11px 13px; gap: 9px; margin-bottom: 18px; border-radius: 9px; }
+            .info-banner svg { width: 15px; height: 15px; }
+            .info-banner p { font-size: 11px; line-height: 1.5; }
+            .status-banner { padding: 11px 13px; font-size: 11px; border-radius: 9px; gap: 6px; }
+            .status-banner svg { width: 13px; height: 13px; }
+            .form-group { margin-bottom: 14px; }
+            .form-label { font-size: 11px; margin-bottom: 5px; }
+            .form-input { padding: 11px 13px 11px 40px; font-size: 13px; border-radius: 10px; }
+            .input-icon { left: 13px; width: 16px; height: 16px; }
+            .error-message { font-size: 10px; margin-top: 4px; gap: 3px; }
+            .error-message svg { width: 10px; height: 10px; }
+            .submit-btn { padding: 13px; font-size: 13px; border-radius: 10px; margin-top: 5px; letter-spacing: 0.2px; }
+            .submit-btn.loading::after { width: 20px; height: 20px; margin: -10px 0 0 -10px; border-width: 2px; }
+            .back-link-section { margin-top: 16px; padding-top: 16px; }
+            .back-link { font-size: 12px; padding: 5px 9px; gap: 5px; }
+            .back-link svg { width: 13px; height: 13px; }
+            .footer-badges { gap: 14px; margin-top: 20px; }
+            .badge { font-size: 9px; gap: 4px; letter-spacing: 0.3px; }
+            .badge svg { width: 11px; height: 11px; }
+            .copyright { margin-top: 14px; font-size: 10px; }
+            .notification { padding: 10px 16px; font-size: 11px; border-radius: 8px; top: 12px; max-width: 92%; }
+        }
+
+        /* Очень маленькие телефоны (до 380px) */
+        @media (max-width: 380px) {
+            body { padding: 12px 10px; }
+            .lang-switcher { top: 8px; right: 8px; }
+            .lang-switcher select {
+                padding: 6px 24px 6px 9px;
+                font-size: 9px;
+                min-width: 80px;
+                border-radius: 7px;
+            }
+            .reset-card { padding: 28px 16px; border-radius: 16px; }
+            .logo-section { margin-bottom: 20px; }
+            .logo-img { width: 56px; height: 56px; border-radius: 14px; margin-bottom: 9px; }
+            .logo-title { font-size: 20px; }
+            .logo-subtitle { font-size: 9px; letter-spacing: 1.2px; }
+            .info-banner { padding: 10px 12px; gap: 8px; margin-bottom: 16px; border-radius: 8px; }
+            .info-banner svg { width: 14px; height: 14px; }
+            .info-banner p { font-size: 10px; line-height: 1.45; }
+            .status-banner { padding: 10px 12px; font-size: 10px; border-radius: 8px; gap: 5px; }
+            .status-banner svg { width: 12px; height: 12px; }
+            .form-group { margin-bottom: 12px; }
+            .form-label { font-size: 10px; margin-bottom: 4px; }
+            .form-input { padding: 10px 12px 10px 38px; font-size: 12px; border-radius: 9px; }
+            .input-icon { left: 12px; width: 15px; height: 15px; }
+            .error-message { font-size: 9px; margin-top: 3px; }
+            .error-message svg { width: 9px; height: 9px; }
+            .submit-btn { padding: 12px; font-size: 12px; border-radius: 9px; margin-top: 4px; }
+            .submit-btn.loading::after { width: 18px; height: 18px; margin: -9px 0 0 -9px; }
+            .back-link-section { margin-top: 14px; padding-top: 14px; }
+            .back-link { font-size: 11px; padding: 4px 8px; gap: 4px; }
+            .back-link svg { width: 12px; height: 12px; }
+            .footer-badges { gap: 12px; margin-top: 18px; }
+            .badge { font-size: 8px; gap: 3px; }
+            .badge svg { width: 10px; height: 10px; }
+            .copyright { margin-top: 12px; font-size: 9px; }
+            .notification { padding: 9px 14px; font-size: 10px; border-radius: 7px; top: 10px; }
         }
     </style>
 </head>

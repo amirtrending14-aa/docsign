@@ -120,6 +120,64 @@
           -webkit-backdrop-filter: blur(14px);
           border-bottom:1px solid var(--line);
         }
+
+        /* ===== БУРГЕР-МЕНЮ (только для мобильных) ===== */
+        .burger-btn{
+          display:none;
+          width:38px; height:38px;
+          border-radius:10px;
+          background: rgba(255,255,255,0.04);
+          border:1px solid var(--line);
+          cursor:pointer;
+          position:relative;
+          transition:all .25s ease;
+          flex-shrink:0;
+        }
+        .burger-btn:hover{
+          border-color:rgba(var(--glow),0.4);
+          box-shadow:0 0 14px rgba(var(--glow),0.25);
+        }
+        .burger-btn span{
+          position:absolute;
+          left:50%;
+          width:20px;
+          height:2px;
+          background:var(--text);
+          border-radius:2px;
+          transform:translateX(-50%);
+          transition:all .3s ease;
+        }
+        .burger-btn span:nth-child(1){ top:12px; }
+        .burger-btn span:nth-child(2){ top:18px; }
+        .burger-btn span:nth-child(3){ top:24px; }
+        .burger-btn.active span:nth-child(1){
+          top:18px;
+          transform:translateX(-50%) rotate(45deg);
+        }
+        .burger-btn.active span:nth-child(2){
+          opacity:0;
+        }
+        .burger-btn.active span:nth-child(3){
+          top:18px;
+          transform:translateX(-50%) rotate(-45deg);
+        }
+
+        /* ===== OVERLAY (затемнение при открытом меню) ===== */
+        .sidebar-overlay{
+          display:none;
+          position:fixed;
+          inset:0;
+          background:rgba(0,0,0,0.6);
+          backdrop-filter:blur(4px);
+          z-index:35;
+          opacity:0;
+          transition:opacity .3s ease;
+        }
+        .sidebar-overlay.active{
+          display:block;
+          opacity:1;
+        }
+
         .brand{
           display:flex; align-items:center; gap:10px;
           font-weight:700; letter-spacing:1px; font-size:15px;
@@ -523,7 +581,13 @@
           padding:16px;
           height:fit-content;
           position:sticky; top:88px;
+          max-height:calc(100vh - 110px);
+          overflow-y:auto;
+          transition: transform .3s ease;
         }
+        .sidebar::-webkit-scrollbar{ width:4px; }
+        .sidebar::-webkit-scrollbar-track{ background:transparent; }
+        .sidebar::-webkit-scrollbar-thumb{ background:rgba(var(--glow),0.3); border-radius:10px; }
         .side-title{
           font-size:10px; letter-spacing:2px; color:var(--muted);
           text-transform:uppercase; margin:12px 8px 8px;
@@ -903,22 +967,516 @@
             opacity:0.5;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1100px){
-          .stats{grid-template-columns:repeat(2,1fr)}
-          .row{grid-template-columns:1fr}
-          .layout{grid-template-columns:1fr}
-          .sidebar{position:static}
-          .search{display:none}
+        /* ===== MOBILE-ONLY ДУБЛИКАТ ВЕРХНЕГО МЕНЮ В САЙДБАРЕ ===== */
+        .mobile-nav-group{
+            display:none;
+            flex-direction:column;
+            gap:4px;
+            margin-bottom:14px;
+            padding-bottom:14px;
+            border-bottom:1px solid var(--line);
         }
-        @media (max-width: 640px){
-          .nav{display:none}
-          .stats{grid-template-columns:1fr}
-          .amb-panel{right:12px; left:12px; width:auto}
-          .lang-btn{min-width:auto; padding:8px 10px}
-          .lang-btn .lang-name{display:none}
-          .amb-btn .amb-label{display:none}
-          .amb-btn{padding:8px 10px}
+
+        /* ===== MOBILE-ONLY ПОИСК В САЙДБАРЕ (дублирует .search из топбара) ===== */
+        .mobile-search{
+            display:none;
+            align-items:center; gap:8px;
+            background: rgba(255,255,255,0.05);
+            border:1px solid var(--line);
+            padding:9px 12px; border-radius:10px;
+            margin-bottom:14px;
+        }
+        .mobile-search svg{ width:14px; height:14px; color:var(--muted); flex-shrink:0; }
+        .mobile-search input{
+            background:transparent; border:0; outline:0;
+            color:var(--text); font:13px 'Inter',sans-serif; width:100%;
+        }
+        .mobile-search input::placeholder{ color:var(--muted); }
+
+        /* ===== ПОЛНАЯ АДАПТИВНОСТЬ ===== */
+
+        /* Большие десктопы (от 1400px) — по умолчанию */
+
+        /* Маленькие десктопы (до 1200px) */
+        @media (max-width: 1200px) {
+            .topbar { padding: 12px 18px; gap: 12px; }
+            .search { min-width: 200px; }
+            .layout { padding: 18px; gap: 18px; }
+            .sidebar { padding: 14px; }
+            .panel { padding: 18px; }
+            .card { padding: 16px; }
+            .stat-value { font-size: 24px; }
+            .page-head h1 { font-size: 24px; }
+        }
+
+        /* Планшеты в ландшафте (до 1100px) - ПОКАЗЫВАЕМ БУРГЕР */
+        @media (max-width: 1100px) {
+            .burger-btn { display: flex; align-items: center; justify-content: center; }
+
+            .layout {
+                grid-template-columns: 1fr;
+                padding: 16px;
+                gap: 16px;
+            }
+
+            /* Sidebar становится off-canvas */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100vh;
+                max-height: 100vh;
+                z-index: 36;
+                border-radius: 0;
+                transform: translateX(-100%);
+                padding-top: 80px;
+                background: linear-gradient(180deg, rgba(10,12,18,0.98), rgba(10,12,18,0.95));
+                backdrop-filter: blur(20px);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            /* На мобильных верхнее меню дублируется в сайдбаре,
+               чтобы ни один пункт не потерялся */
+            .mobile-nav-group{ display:flex; }
+
+            /* На мобильных строка поиска тоже переезжает в сайдбар */
+            .mobile-search{ display:flex; }
+
+            /* Повышаем контраст пунктов меню в открытом мобильном сайдбаре —
+               серый текст на почти чёрном фоне читался плохо */
+            .sidebar .side-item{
+                color: rgba(231,236,243,0.85);
+            }
+            .sidebar .side-item:hover,
+            .sidebar .side-item.active{
+                color:#fff;
+            }
+            .sidebar .side-title{
+                color: rgba(136,146,166,0.9);
+            }
+
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .row { grid-template-columns: 1fr; }
+            .search { display: none; }
+            .topbar { padding: 12px 16px; }
+            .nav button { padding: 7px 12px; font-size: 12px; }
+            .nav button svg { width: 14px; height: 14px; }
+            .brand { font-size: 14px; gap: 8px; }
+            .brand-dot { width: 30px; height: 30px; }
+            .brand-dot svg { width: 16px; height: 16px; }
+            .lang-btn { min-width: 80px; padding: 7px 10px; font-size: 11px; }
+            .lang-btn .flag { font-size: 15px; }
+            .amb-btn { padding: 7px 12px; font-size: 11px; }
+            .amb-btn .amb-swatch { width: 12px; height: 12px; }
+            .icon-btn { width: 36px; height: 36px; }
+            .icon-btn svg { width: 15px; height: 15px; }
+            .profile-btn { width: 36px; height: 36px; font-size: 13px; }
+            .side-item { padding: 10px 12px; font-size: 13px; }
+            .side-item svg { width: 15px; height: 15px; }
+            .side-badge { font-size: 9px; padding: 2px 6px; }
+            .notif-dropdown { width: 320px; }
+            .amb-panel { width: 320px; padding: 18px; }
+            .colors { grid-template-columns: repeat(6, 1fr); }
+            .profile-menu { min-width: 180px; }
+            .profile-menu .menu-item { padding: 9px 12px; font-size: 13px; }
+        }
+
+        /* Планшеты (до 992px) */
+        @media (max-width: 992px) {
+            .topbar { padding: 10px 14px; gap: 10px; }
+            .brand { font-size: 13px; gap: 7px; }
+            .brand-dot { width: 28px; height: 28px; border-radius: 8px; }
+            .brand-dot svg { width: 15px; height: 15px; }
+            .brand small { font-size: 8px; letter-spacing: 2px; }
+            .nav { margin-left: 12px; padding: 3px; }
+            .nav button { padding: 6px 10px; font-size: 11px; gap: 6px; }
+            .nav button svg { width: 13px; height: 13px; }
+            .layout { padding: 14px; gap: 14px; }
+            .sidebar { width: 260px; padding: 12px; border-radius: 0; }
+            .side-title { font-size: 9px; letter-spacing: 1.5px; margin: 10px 6px 6px; }
+            .side-item { padding: 8px 10px; font-size: 12px; gap: 8px; border-radius: 8px; }
+            .side-item svg { width: 13px; height: 13px; }
+            .side-badge { font-size: 9px; padding: 2px 5px; border-radius: 8px; }
+            .storage { padding: 12px; border-radius: 8px; margin-top: 12px; }
+            .storage-head { font-size: 10px; }
+            .storage-bar { height: 5px; }
+            .storage small { font-size: 9px; margin-top: 6px; }
+            .main { gap: 16px; }
+            .page-head h1 { font-size: 22px; }
+            .page-head p { font-size: 12px; }
+            .stats { gap: 14px; }
+            .card { padding: 14px; border-radius: 12px; }
+            .stat-label { font-size: 11px; }
+            .stat-icon { width: 32px; height: 32px; border-radius: 8px; }
+            .stat-icon svg { width: 15px; height: 15px; }
+            .stat-value { font-size: 22px; margin-top: 10px; }
+            .stat-delta { font-size: 10px; padding: 2px 6px; margin-top: 6px; }
+            .stat-spark { height: 36px; margin-top: 12px; }
+            .row { gap: 14px; }
+            .panel { padding: 16px; border-radius: 12px; }
+            .panel-head h3 { font-size: 14px; }
+            .panel-head .sub { font-size: 10px; }
+            .tabs button { font-size: 10px; padding: 4px 8px; }
+            .chart { height: 240px; }
+            th, td { padding: 8px 6px; font-size: 11.5px; }
+            th { font-size: 10px; }
+            .doc-icon { width: 28px; height: 34px; font-size: 8px; }
+            .doc-meta small { font-size: 10px; }
+            .pill { font-size: 10px; padding: 2px 7px; }
+            .activity { gap: 12px; }
+            .act { gap: 10px; }
+            .act-dot { width: 9px; height: 9px; margin-top: 5px; }
+            .act-body p { font-size: 12px; }
+            .act-body small { font-size: 10px; }
+            .signers { gap: 8px; }
+            .signer { padding: 8px; border-radius: 8px; gap: 10px; }
+            .signer-avatar { width: 32px; height: 32px; font-size: 11px; }
+            .signer-info b { font-size: 12px; }
+            .signer-info small { font-size: 10px; }
+            .signer-status { font-size: 9px; padding: 2px 7px; }
+            .notif-dropdown { width: 300px; }
+            .notif-header { padding: 12px 16px; }
+            .notif-header strong { font-size: 0.9rem; }
+            .notif-list { max-height: 280px; }
+            .notif-item { padding: 10px 14px; gap: 8px; }
+            .notif-icon { width: 34px; height: 34px; font-size: 1rem; }
+            .notif-text { font-size: 0.78rem; }
+            .notif-dot { width: 7px; height: 7px; }
+            .notif-empty { padding: 32px 16px; }
+            .notif-footer a { font-size: 0.8rem; }
+            .amb-panel { width: 300px; padding: 16px; border-radius: 16px; }
+            .amb-panel h4 { font-size: 14px; }
+            .amb-panel p { font-size: 10px; margin-bottom: 14px; }
+            .amb-preview { height: 60px; border-radius: 10px; margin-bottom: 14px; }
+            .amb-preview-label { font-size: 9px; }
+            .colors { gap: 6px; margin-bottom: 14px; }
+            .color { border-radius: 8px; }
+            .intensity label { font-size: 10px; }
+            .intensity input[type=range] { height: 5px; }
+            .intensity input[type=range]::-webkit-slider-thumb { width: 16px; height: 16px; }
+            .modes { gap: 5px; margin-top: 12px; }
+            .mode { padding: 8px 6px; font-size: 10px; border-radius: 8px; }
+            .mode svg { width: 11px; height: 11px; }
+            .amb-footer { font-size: 9px; margin-top: 12px; padding-top: 10px; }
+            .lang-menu { min-width: 170px; padding: 5px; }
+            .lang-menu-title { font-size: 9px; padding: 6px 8px 4px; }
+            .lang-option { padding: 8px 9px; font-size: 12px; gap: 8px; }
+            .lang-option .flag { font-size: 16px; }
+            .lang-option .check { width: 12px; height: 12px; }
+            .profile-menu { min-width: 170px; padding: 6px; }
+            .profile-menu .menu-item { padding: 8px 12px; font-size: 12px; gap: 8px; }
+            .profile-menu .menu-divider { margin: 5px 0; }
+        }
+
+        /* Большие телефоны (до 768px) */
+        @media (max-width: 768px) {
+            .topbar { padding: 10px 12px; gap: 8px; }
+            .brand { font-size: 12px; gap: 6px; }
+            .brand-dot { width: 26px; height: 26px; border-radius: 7px; }
+            .brand-dot svg { width: 14px; height: 14px; }
+            .brand small { font-size: 7px; letter-spacing: 1.5px; }
+            .nav { display: none; }
+            .layout { padding: 12px; gap: 12px; }
+            .sidebar { width: 260px; padding: 10px; border-radius: 0; }
+            .side-title { font-size: 9px; letter-spacing: 1.2px; margin: 8px 5px 5px; }
+            .side-item { padding: 9px 10px; font-size: 12px; gap: 7px; border-radius: 7px; }
+            .side-item svg { width: 14px; height: 14px; }
+            .side-badge { font-size: 8px; padding: 1px 5px; }
+            .storage { padding: 10px; margin-top: 10px; }
+            .storage-head { font-size: 9px; margin-bottom: 6px; }
+            .storage-bar { height: 4px; }
+            .storage small { font-size: 8px; margin-top: 5px; }
+            .main { gap: 14px; }
+            .page-head { gap: 12px; }
+            .page-head h1 { font-size: 20px; letter-spacing: -0.3px; }
+            .page-head p { font-size: 11px; margin-top: 3px; }
+            .actions { gap: 8px; }
+            .btn { padding: 8px 12px; font-size: 12px; border-radius: 8px; gap: 6px; }
+            .btn svg { width: 12px; height: 12px; }
+            .stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .card { padding: 12px; border-radius: 10px; }
+            .stat-label { font-size: 10px; }
+            .stat-icon { width: 30px; height: 30px; border-radius: 7px; }
+            .stat-icon svg { width: 14px; height: 14px; }
+            .stat-value { font-size: 20px; margin-top: 8px; }
+            .stat-delta { font-size: 9px; padding: 2px 5px; margin-top: 5px; border-radius: 5px; }
+            .stat-spark { height: 32px; margin-top: 10px; border-radius: 6px; }
+            .row { gap: 12px; }
+            .panel { padding: 14px; border-radius: 10px; }
+            .panel-head { margin-bottom: 14px; gap: 8px; }
+            .panel-head h3 { font-size: 13px; }
+            .panel-head .sub { font-size: 10px; }
+            .tabs { padding: 2px; border-radius: 7px; }
+            .tabs button { font-size: 10px; padding: 4px 8px; border-radius: 5px; }
+            .chart { height: 220px; }
+            table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            th, td { padding: 7px 6px; font-size: 11px; white-space: nowrap; }
+            th { font-size: 9px; letter-spacing: 0.8px; }
+            .doc-cell { gap: 8px; }
+            .doc-icon { width: 26px; height: 32px; font-size: 8px; border-radius: 4px; }
+            .doc-meta small { font-size: 9px; }
+            .pill { font-size: 9px; padding: 2px 6px; gap: 4px; border-radius: 16px; }
+            .pill::before { width: 5px; height: 5px; }
+            .activity { gap: 10px; }
+            .act { gap: 8px; }
+            .act-dot { width: 8px; height: 8px; margin-top: 4px; }
+            .act-body p { font-size: 11px; }
+            .act-body small { font-size: 9px; }
+            .signers { gap: 7px; }
+            .signer { padding: 7px; border-radius: 7px; gap: 8px; }
+            .signer-avatar { width: 30px; height: 30px; font-size: 10px; }
+            .signer-info b { font-size: 11px; }
+            .signer-info small { font-size: 9px; }
+            .signer-status { font-size: 9px; padding: 2px 6px; border-radius: 8px; }
+            .notif-dropdown { width: 280px; right: -10px; }
+            .notif-header { padding: 10px 14px; }
+            .notif-header strong { font-size: 0.85rem; }
+            .notif-list { max-height: 260px; }
+            .notif-item { padding: 9px 12px; gap: 7px; }
+            .notif-icon { width: 32px; height: 32px; font-size: 0.95rem; border-radius: 8px; }
+            .notif-text { font-size: 0.75rem; }
+            .notif-dot { width: 6px; height: 6px; }
+            .notif-empty { padding: 28px 14px; }
+            .notif-empty i { font-size: 1.5rem; }
+            .notif-footer { padding: 8px; }
+            .notif-footer a { font-size: 0.78rem; }
+            .amb-panel { width: 280px; padding: 14px; border-radius: 14px; right: 0; }
+            .amb-panel::before { display: none; }
+            .amb-panel h4 { font-size: 13px; gap: 6px; }
+            .amb-panel h4 .live-dot { width: 7px; height: 7px; }
+            .amb-panel p { font-size: 9px; margin-bottom: 12px; }
+            .amb-preview { height: 55px; border-radius: 8px; margin-bottom: 12px; }
+            .amb-preview-label { font-size: 8px; bottom: 6px; left: 10px; }
+            .colors { grid-template-columns: repeat(6, 1fr); gap: 5px; margin-bottom: 12px; }
+            .color { border-radius: 7px; }
+            .color.active::after { font-size: 12px; }
+            .intensity { gap: 5px; }
+            .intensity label { font-size: 9px; }
+            .intensity input[type=range] { height: 5px; }
+            .intensity input[type=range]::-webkit-slider-thumb { width: 15px; height: 15px; }
+            .modes { gap: 4px; margin-top: 10px; }
+            .mode { padding: 7px 5px; font-size: 9px; border-radius: 7px; gap: 4px; }
+            .mode svg { width: 10px; height: 10px; }
+            .amb-footer { font-size: 8px; margin-top: 10px; padding-top: 8px; }
+            .lang-menu { min-width: 160px; padding: 4px; border-radius: 10px; }
+            .lang-menu-title { font-size: 8px; letter-spacing: 1.2px; padding: 5px 7px 3px; }
+            .lang-option { padding: 7px 8px; font-size: 11px; gap: 7px; border-radius: 6px; }
+            .lang-option .flag { font-size: 15px; }
+            .lang-option .check { width: 11px; height: 11px; }
+            .profile-menu { min-width: 160px; padding: 5px; border-radius: 12px; }
+            .profile-menu .menu-item { padding: 7px 10px; font-size: 11px; gap: 7px; border-radius: 8px; }
+            .profile-menu .menu-divider { margin: 4px 0; }
+            .lang-btn { min-width: 70px; padding: 6px 9px; font-size: 10px; border-radius: 8px; }
+            .lang-btn .flag { font-size: 14px; }
+            .lang-btn .arrow { width: 10px; height: 10px; }
+            .amb-btn { padding: 6px 10px; font-size: 10px; border-radius: 8px; gap: 6px; }
+            .amb-btn svg { width: 14px; height: 14px; }
+            .amb-btn .amb-swatch { width: 11px; height: 11px; }
+            .amb-btn .amb-label { display: none; }
+            .icon-btn { width: 34px; height: 34px; border-radius: 8px; }
+            .icon-btn svg { width: 14px; height: 14px; }
+            .profile-btn { width: 34px; height: 34px; font-size: 12px; border-radius: 10px; }
+        }
+
+        /* Телефоны (до 640px) */
+        @media (max-width: 640px) {
+            .topbar { padding: 8px 10px; gap: 6px; }
+            .brand { font-size: 11px; gap: 5px; }
+            .brand-dot { width: 24px; height: 24px; border-radius: 6px; }
+            .brand-dot svg { width: 13px; height: 13px; }
+            .brand small { display: none; }
+            .layout { padding: 10px; gap: 10px; }
+            .sidebar { width: 240px; padding: 8px; border-radius: 0; }
+            .side-title { font-size: 8px; letter-spacing: 1px; margin: 6px 4px 4px; }
+            .side-item { padding: 8px 9px; font-size: 11px; gap: 6px; border-radius: 6px; }
+            .side-item svg { width: 13px; height: 13px; }
+            .side-badge { font-size: 8px; padding: 1px 4px; }
+            .storage { padding: 8px; margin-top: 8px; border-radius: 7px; }
+            .storage-head { font-size: 8px; margin-bottom: 5px; }
+            .storage-bar { height: 4px; border-radius: 2px; }
+            .storage small { font-size: 8px; margin-top: 4px; }
+            .main { gap: 12px; }
+            .page-head { gap: 10px; }
+            .page-head h1 { font-size: 18px; }
+            .page-head p { font-size: 10px; }
+            .actions { gap: 6px; }
+            .btn { padding: 7px 10px; font-size: 11px; border-radius: 7px; gap: 5px; }
+            .btn svg { width: 11px; height: 11px; }
+            .stats { grid-template-columns: 1fr; gap: 10px; }
+            .card { padding: 12px; border-radius: 10px; }
+            .stat-top { gap: 8px; }
+            .stat-label { font-size: 10px; }
+            .stat-icon { width: 28px; height: 28px; border-radius: 7px; }
+            .stat-icon svg { width: 13px; height: 13px; }
+            .stat-value { font-size: 20px; margin-top: 8px; }
+            .stat-delta { font-size: 9px; padding: 2px 5px; margin-top: 5px; }
+            .stat-spark { height: 30px; margin-top: 10px; }
+            .row { gap: 10px; }
+            .panel { padding: 12px; border-radius: 10px; }
+            .panel-head { margin-bottom: 12px; gap: 6px; }
+            .panel-head h3 { font-size: 13px; }
+            .panel-head .sub { font-size: 9px; }
+            .tabs { padding: 2px; border-radius: 6px; gap: 3px; }
+            .tabs button { font-size: 9px; padding: 4px 7px; border-radius: 5px; }
+            .chart { height: 200px; }
+            th, td { padding: 6px 5px; font-size: 10px; }
+            th { font-size: 9px; }
+            .doc-cell { gap: 6px; }
+            .doc-icon { width: 24px; height: 30px; font-size: 7px; }
+            .doc-meta small { font-size: 9px; }
+            .pill { font-size: 9px; padding: 2px 5px; gap: 3px; }
+            .pill::before { width: 4px; height: 4px; }
+            .activity { gap: 8px; }
+            .act { gap: 7px; }
+            .act-dot { width: 7px; height: 7px; margin-top: 4px; }
+            .act-body p { font-size: 11px; }
+            .act-body small { font-size: 9px; }
+            .signers { gap: 6px; }
+            .signer { padding: 6px; border-radius: 6px; gap: 7px; }
+            .signer-avatar { width: 28px; height: 28px; font-size: 10px; }
+            .signer-info b { font-size: 11px; }
+            .signer-info small { font-size: 9px; }
+            .signer-status { font-size: 8px; padding: 2px 5px; }
+            .notif-dropdown { width: calc(100vw - 20px); right: -5px; max-width: 300px; }
+            .notif-header { padding: 9px 12px; }
+            .notif-header strong { font-size: 0.82rem; }
+            .notif-list { max-height: 240px; }
+            .notif-item { padding: 8px 10px; gap: 6px; }
+            .notif-icon { width: 30px; height: 30px; font-size: 0.9rem; border-radius: 7px; }
+            .notif-text { font-size: 0.72rem; }
+            .notif-dot { width: 6px; height: 6px; }
+            .notif-empty { padding: 24px 12px; }
+            .notif-empty i { font-size: 1.3rem; }
+            .notif-footer { padding: 7px; }
+            .notif-footer a { font-size: 0.75rem; }
+            .amb-panel { width: calc(100vw - 20px); max-width: 300px; right: 0; padding: 12px; border-radius: 12px; }
+            .amb-panel h4 { font-size: 12px; }
+            .amb-panel p { font-size: 9px; margin-bottom: 10px; }
+            .amb-preview { height: 50px; margin-bottom: 10px; }
+            .colors { grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 10px; }
+            .color { border-radius: 6px; }
+            .color.active::after { font-size: 11px; }
+            .intensity label { font-size: 9px; }
+            .intensity input[type=range]::-webkit-slider-thumb { width: 14px; height: 14px; }
+            .modes { gap: 3px; margin-top: 8px; }
+            .mode { padding: 6px 4px; font-size: 9px; border-radius: 6px; }
+            .amb-footer { font-size: 8px; margin-top: 8px; padding-top: 7px; }
+            .lang-menu { min-width: 150px; padding: 4px; }
+            .lang-menu-title { font-size: 8px; padding: 4px 6px 3px; }
+            .lang-option { padding: 6px 7px; font-size: 10px; gap: 6px; }
+            .lang-option .flag { font-size: 14px; }
+            .lang-option .check { width: 10px; height: 10px; }
+            .profile-menu { min-width: 150px; padding: 4px; }
+            .profile-menu .menu-item { padding: 6px 9px; font-size: 10px; gap: 6px; }
+            .lang-btn { min-width: auto; padding: 6px 8px; border-radius: 7px; }
+            .lang-btn .lang-name { display: none; }
+            .lang-btn .flag { font-size: 14px; }
+            .icon-btn { width: 32px; height: 32px; border-radius: 7px; }
+            .icon-btn svg { width: 13px; height: 13px; }
+            .profile-btn { width: 32px; height: 32px; font-size: 11px; border-radius: 8px; }
+        }
+
+        /* Маленькие телефоны (до 480px) */
+        @media (max-width: 480px) {
+            .topbar { padding: 7px 8px; gap: 5px; }
+            .brand { font-size: 10px; gap: 4px; }
+            .brand-dot { width: 22px; height: 22px; border-radius: 5px; }
+            .brand-dot svg { width: 12px; height: 12px; }
+            .layout { padding: 8px; gap: 8px; }
+            .sidebar { width: 220px; padding: 7px; border-radius: 0; }
+            .side-title { font-size: 8px; letter-spacing: 0.8px; margin: 5px 3px 3px; }
+            .side-item { padding: 7px 8px; font-size: 10px; gap: 5px; border-radius: 5px; }
+            .side-item svg { width: 12px; height: 12px; }
+            .storage { padding: 7px; margin-top: 7px; }
+            .storage-head { font-size: 8px; }
+            .storage-bar { height: 3px; }
+            .storage small { font-size: 7px; }
+            .main { gap: 10px; }
+            .page-head h1 { font-size: 16px; }
+            .page-head p { font-size: 9px; }
+            .btn { padding: 6px 9px; font-size: 10px; border-radius: 6px; gap: 4px; }
+            .btn svg { width: 10px; height: 10px; }
+            .card { padding: 10px; border-radius: 8px; }
+            .stat-label { font-size: 9px; }
+            .stat-icon { width: 26px; height: 26px; border-radius: 6px; }
+            .stat-icon svg { width: 12px; height: 12px; }
+            .stat-value { font-size: 18px; margin-top: 7px; }
+            .stat-delta { font-size: 8px; padding: 1px 4px; margin-top: 4px; }
+            .stat-spark { height: 28px; margin-top: 8px; }
+            .panel { padding: 10px; border-radius: 8px; }
+            .panel-head h3 { font-size: 12px; }
+            .panel-head .sub { font-size: 9px; }
+            .tabs button { font-size: 9px; padding: 3px 6px; }
+            .chart { height: 180px; }
+            th, td { padding: 5px 4px; font-size: 9px; }
+            .doc-icon { width: 22px; height: 28px; font-size: 7px; }
+            .pill { font-size: 8px; padding: 1px 4px; }
+            .act-body p { font-size: 10px; }
+            .act-body small { font-size: 8px; }
+            .signer { padding: 5px; gap: 6px; }
+            .signer-avatar { width: 26px; height: 26px; font-size: 9px; }
+            .signer-info b { font-size: 10px; }
+            .signer-info small { font-size: 8px; }
+            .notif-dropdown { width: calc(100vw - 16px); right: -3px; }
+            .notif-item { padding: 7px 9px; }
+            .notif-icon { width: 28px; height: 28px; font-size: 0.85rem; }
+            .notif-text { font-size: 0.7rem; }
+            .amb-panel { width: calc(100vw - 16px); padding: 10px; }
+            .amb-panel h4 { font-size: 11px; }
+            .amb-panel p { font-size: 8px; }
+            .amb-preview { height: 45px; }
+            .colors { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+            .mode { font-size: 8px; padding: 5px 3px; }
+            .lang-menu { min-width: 140px; }
+            .lang-option { padding: 5px 6px; font-size: 9px; }
+            .profile-menu { min-width: 140px; }
+            .profile-menu .menu-item { padding: 5px 8px; font-size: 9px; }
+            .lang-btn { padding: 5px 7px; }
+            .icon-btn { width: 30px; height: 30px; }
+            .icon-btn svg { width: 12px; height: 12px; }
+            .profile-btn { width: 30px; height: 30px; font-size: 10px; }
+        }
+
+        /* Очень маленькие телефоны (до 380px) */
+        @media (max-width: 380px) {
+            .topbar { padding: 6px 7px; gap: 4px; }
+            .brand { font-size: 9px; gap: 3px; }
+            .brand-dot { width: 20px; height: 20px; border-radius: 4px; }
+            .brand-dot svg { width: 11px; height: 11px; }
+            .layout { padding: 6px; gap: 6px; }
+            .sidebar { width: 200px; padding: 6px; border-radius: 0; }
+            .side-title { font-size: 7px; letter-spacing: 0.6px; margin: 4px 2px 2px; }
+            .side-item { padding: 6px 7px; font-size: 9px; gap: 4px; border-radius: 4px; }
+            .side-item svg { width: 11px; height: 11px; }
+            .storage { padding: 6px; margin-top: 6px; }
+            .storage-head { font-size: 7px; }
+            .storage-bar { height: 3px; }
+            .storage small { font-size: 7px; }
+            .main { gap: 8px; }
+            .page-head h1 { font-size: 15px; }
+            .page-head p { font-size: 9px; }
+            .btn { padding: 5px 8px; font-size: 9px; border-radius: 5px; }
+            .card { padding: 9px; border-radius: 7px; }
+            .stat-value { font-size: 17px; }
+            .stat-icon { width: 24px; height: 24px; }
+            .stat-spark { height: 26px; }
+            .panel { padding: 9px; border-radius: 7px; }
+            .panel-head h3 { font-size: 11px; }
+            .chart { height: 160px; }
+            th, td { padding: 4px 3px; font-size: 9px; }
+            .notif-dropdown { width: calc(100vw - 12px); }
+            .amb-panel { width: calc(100vw - 12px); padding: 9px; }
+            .colors { grid-template-columns: repeat(4, 1fr); }
+            .mode { font-size: 8px; padding: 4px 3px; }
+            .lang-menu { min-width: 130px; }
+            .lang-option { padding: 5px 5px; font-size: 9px; }
+            .profile-menu { min-width: 130px; }
+            .profile-menu .menu-item { padding: 5px 7px; font-size: 9px; }
+            .icon-btn { width: 28px; height: 28px; }
+            .profile-btn { width: 28px; height: 28px; font-size: 9px; }
         }
     </style>@endpush
     @stack('styles')
@@ -927,6 +1485,13 @@
 
 <!-- TOP BAR -->
 <header class="topbar">
+    <!-- БУРГЕР-КНОПКА (для мобильных) -->
+    <button class="burger-btn" id="burgerBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
     <div class="brand">
         <div class="brand-dot">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -943,11 +1508,10 @@
 
     <nav class="nav" id="nav">
         <a href="/dashboard" class="button-link" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center;">
-
-        <button class="active" data-tab="dashboard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+            <button class="active" data-tab="dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
                 <span data-i18n="dashboard">Обзор</span>
-        </button>
+            </button>
         </a>
         <button data-tab="docs" onclick="window.location.href='/documents'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -972,7 +1536,6 @@
                 <span data-i18n="counterparties">Команда</span>
             </button>
         </a>
-
     </nav>
 
     <div class="spacer"></div>
@@ -1214,7 +1777,6 @@
             let lastKnownTimestamp = Math.max(...Array.from(document.querySelectorAll('.notif-item[data-ts]'))
                 .map(el => parseInt(el.dataset.ts) || 0), 0);
 
-            // Открытие/закрытие
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 dropdown.classList.toggle('active');
@@ -1226,7 +1788,6 @@
                 }
             });
 
-            // Клик по уведомлению — отметка прочитанного + переход
             list.addEventListener('click', function(e) {
                 const item = e.target.closest('.notif-item.unread');
                 if (!item) return;
@@ -1253,7 +1814,6 @@
                 }
             });
 
-            // Обновление бейджа
             function updateBadge(count) {
                 if (count > 0) {
                     if (!badge) {
@@ -1288,7 +1848,6 @@
                 }
             }
 
-            // Рендер нового уведомления
             function renderNotification(n) {
                 const isComment = n.type === 'comment' || /коммент/i.test(n.message || '');
                 const action = isComment ? 'оставил комментарий к' : 'назначил вам документ';
@@ -1318,14 +1877,11 @@
                     <span class="notif-dot"></span>
                 `;
 
-                // Удаляем "пусто" если было
                 const empty = list.querySelector('.notif-empty');
                 if (empty) empty.remove();
 
-                // Вставляем сверху
                 list.insertBefore(item, list.firstChild);
 
-                // Убираем подсветку через 3 секунды
                 setTimeout(() => item.classList.remove('fresh'), 3000);
             }
 
@@ -1335,15 +1891,13 @@
                 return div.innerHTML;
             }
 
-            // Звонок колокольчика
             function ringBell() {
                 btn.classList.remove('ringing');
-                void btn.offsetWidth; // reflow
+                void btn.offsetWidth;
                 btn.classList.add('ringing');
                 setTimeout(() => btn.classList.remove('ringing'), 800);
             }
 
-            // Real-time polling
             async function checkNotifications() {
                 try {
                     const res = await fetch('/notifications/check', {
@@ -1357,7 +1911,6 @@
                     const data = await res.json();
                     updateBadge(data.unreadCount);
 
-                    // Ищем новые уведомления
                     const newOnes = (data.notifications || [])
                         .filter(n => n.createdAt > lastKnownTimestamp)
                         .sort((a, b) => a.createdAt - b.createdAt);
@@ -1367,21 +1920,15 @@
                         lastKnownTimestamp = Math.max(...newOnes.map(n => n.createdAt));
                         ringBell();
 
-                        // Показываем dropdown если скрыт
                         if (!dropdown.classList.contains('active')) {
                             dropdown.classList.add('active');
                             setTimeout(() => dropdown.classList.remove('active'), 5000);
                         }
                     }
-                } catch (e) {
-                    // тихо игнорируем
-                }
+                } catch (e) {}
             }
 
-            // Запускаем проверку каждые 15 секунд
             setInterval(checkNotifications, 15000);
-
-            // Первая проверка через 5 секунд после загрузки
             setTimeout(checkNotifications, 5000);
         })();
     </script>
@@ -1464,12 +2011,51 @@
     </script>
 </header>
 
+<!-- OVERLAY для мобильного меню -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- AMBIENT LIGHT STRIP -->
 <div class="ambient" id="ambient"></div>
 
 <!-- LAYOUT -->
 <div class="layout">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
+        <!-- Поиск — виден только на мобильных (когда .search скрыт в топбаре) -->
+        <form action="{{ route('search') }}" method="GET" class="mobile-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+                    type="text"
+                    name="query"
+                    value="{{ request('query') }}"
+                    data-i18n-placeholder="search_placeholder"
+                    placeholder="Поиск..."
+            />
+            <button type="submit" style="display: none;"></button>
+        </form>
+
+        <!-- Дубликат верхнего меню — виден только на мобильных (когда .nav скрыт бургером) -->
+        <div class="mobile-nav-group">
+            <a href="/dashboard" class="side-item" style="text-decoration: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                <span data-i18n="dashboard">Обзор</span>
+            </a>
+            <a href="/documents" class="side-item" style="text-decoration: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span data-i18n="documents">Документы</span>
+            </a>
+            <a href="/signatures" class="side-item" style="text-decoration: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+                <span data-i18n="signatures">Подписание</span>
+            </a>
+            <a href="/users" class="side-item" style="text-decoration: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span data-i18n="counterparties">Команда</span>
+            </a>
+        </div>
+
         <div class="side-title" data-i18n="workspace">Рабочее пространство</div>
 
         <a href="{{ route('documents.index', ['type' => 'incoming']) }}" class="side-item" style="text-decoration: none; color: inherit;">
@@ -1510,7 +2096,6 @@
                 <path d="M18 20V10M12 20V4M6 20v-6"/>
             </svg>
             <span data-i18n="analysis">Анализ</span>
-
         </a>
         <a href="{{ route('notifications.index') }}"
            class="side-item"
@@ -1557,16 +2142,17 @@
             </div>
         </a>
 
-        <a href="/site"
-           class="side-item"
-           style="text-decoration: none !important;"
-           data-page="logout">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="side-icon">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4"/>
-            </svg>
-            <span data-i18n="exit">Выход</span>
-        </a>
+        <form method="POST" action="{{ route('logout') }}" id="sidebar-logout-form" style="margin:0;">
+            @csrf
+            <a href="#" class="side-item" onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();" style="text-decoration: none !important; color: #ff6b6b;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="side-icon">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                <span data-i18n="logout">Выход</span>
+            </a>
+        </form>
     </aside>
 
     <!-- MAIN -->
@@ -1575,6 +2161,55 @@
 
 @verbatim
 <script>
+    // ============================================================
+    // ===== БУРГЕР-МЕНЮ (МОБИЛЬНОЕ) =====
+    // ============================================================
+    (function() {
+        const burgerBtn = document.getElementById('burgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function openMenu() {
+            burgerBtn.classList.add('active');
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            burgerBtn.classList.remove('active');
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        burgerBtn.addEventListener('click', function() {
+            if (sidebar.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        overlay.addEventListener('click', closeMenu);
+
+        // Закрытие при клике на пункт меню (на мобильных)
+        sidebar.querySelectorAll('.side-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 1100) {
+                    closeMenu();
+                }
+            });
+        });
+
+        // Закрытие при изменении размера окна
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1100) {
+                closeMenu();
+            }
+        });
+    })();
+
     // ============================================================
     // ===== AMBIENT LIGHTING — ПОЛНАЯ СИСТЕМА С СОХРАНЕНИЕМ =====
     // ============================================================
@@ -1595,7 +2230,6 @@
       { nameKey:'color_ice',      rgb:'226,232,240', hex:'#e2e8f0' },
     ];
 
-    // Загрузка настроек
     function loadAmbient(){
         try {
             const s = JSON.parse(localStorage.getItem(AMBIENT_KEY));
@@ -1604,16 +2238,13 @@
         return { color:'79,140,255', intensity:80, spread:60, mode:'solid' };
     }
 
-    // Сохранение
     function saveAmbient(settings){
         localStorage.setItem(AMBIENT_KEY, JSON.stringify(settings));
     }
 
-    // Применение цвета ко всей странице
     function applyColor(rgb){
         document.documentElement.style.setProperty('--glow', rgb);
 
-        // Обновляем превью
         const preview = document.getElementById('ambPreview');
         if (preview) {
             preview.style.background = `linear-gradient(90deg, rgba(${rgb},0.1), rgba(${rgb},0.7), rgba(${rgb},0.1))`;
@@ -1624,12 +2255,11 @@
         if (label) label.textContent = `RGB(${rgb})`;
     }
 
-    // Применение режима анимации
     function applyMode(mode){
         const ambient = document.getElementById('ambient');
         if (!ambient) return;
         ambient.style.animation = 'none';
-        void ambient.offsetWidth; // reflow
+        void ambient.offsetWidth;
         if (mode === 'pulse') {
             ambient.style.animation = 'pulseFast 1.5s ease-in-out infinite';
         } else if (mode === 'breathe') {
@@ -1639,13 +2269,11 @@
         }
     }
 
-    // Применение интенсивности
     function applyIntensity(val){
         const ambient = document.getElementById('ambient');
         if (ambient) ambient.style.opacity = val / 100;
     }
 
-    // Применение spread
     function applySpread(val){
         const ambient = document.getElementById('ambient');
         if (!ambient) return;
@@ -1654,7 +2282,6 @@
         ambient.style.filter = `blur(${Math.max(0,(val-60)/20)}px)`;
     }
 
-    // Показ индикатора "Сохранено"
     let saveTimer = null;
     function flashSaved(){
         const ind = document.getElementById('savedIndicator');
@@ -1664,11 +2291,9 @@
         saveTimer = setTimeout(()=> ind.classList.remove('show'), 1500);
     }
 
-    // Инициализация при загрузке
     document.addEventListener('DOMContentLoaded', () => {
         const settings = loadAmbient();
 
-        // Строим палитру цветов
         const colorsEl = document.getElementById('colors');
         if (colorsEl) {
             COLORS.forEach((c)=>{
@@ -1693,7 +2318,6 @@
             });
         }
 
-        // Устанавливаем значения контролов
         const intInput = document.getElementById('intensity');
         const intVal = document.getElementById('intVal');
         if (intInput) intInput.value = settings.intensity;
@@ -1704,20 +2328,15 @@
         if (spreadInput) spreadInput.value = settings.spread;
         if (spreadVal) spreadVal.textContent = settings.spread + '%';
 
-        // Режим
         document.querySelectorAll('.mode').forEach(m=>{
             m.classList.toggle('active', m.dataset.mode === settings.mode);
         });
 
-        // Применяем всё
         applyColor(settings.color);
         applyIntensity(settings.intensity);
         applySpread(settings.spread);
         applyMode(settings.mode);
 
-        // === ОБРАБОТЧИКИ ===
-
-        // Кнопка открытия панели
         const ambBtn = document.getElementById('ambBtn');
         const ambPanel = document.getElementById('ambPanel');
         const ambWrapper = document.getElementById('ambWrapper');
@@ -1735,7 +2354,6 @@
             });
         }
 
-        // Интенсивность
         if (intInput) {
             intInput.addEventListener('input', (e)=>{
                 const v = parseInt(e.target.value);
@@ -1748,7 +2366,6 @@
             });
         }
 
-        // Spread
         if (spreadInput) {
             spreadInput.addEventListener('input', (e)=>{
                 const v = parseInt(e.target.value);
@@ -1761,7 +2378,6 @@
             });
         }
 
-        // Режимы
         document.querySelectorAll('.mode').forEach(m=>{
             m.addEventListener('click', ()=>{
                 document.querySelectorAll('.mode').forEach(x=>x.classList.remove('active'));
@@ -1998,7 +2614,6 @@
             else if (action === 'assign' && dict.notif_action_assign) el.textContent = dict.notif_action_assign;
         });
 
-        // Обновляем tooltip у цветов
         document.querySelectorAll('.color').forEach(el => {
             const key = el.dataset.nameKey;
             if (key && dict[key]) el.title = dict[key];
@@ -2009,7 +2624,6 @@
         }));
     }
 
-    // Language switcher
     document.addEventListener('DOMContentLoaded', () => {
         const langBtn = document.getElementById('langBtn');
         const langMenu = document.getElementById('langMenu');
@@ -2041,7 +2655,6 @@
 
         applyLanguage(currentLang);
 
-        // Nav tabs
         document.querySelectorAll('#nav button').forEach(b=>{
           b.addEventListener('click',()=>{
             document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));
@@ -2088,11 +2701,9 @@
             });
         }
 
-        // Запускаем сразу + каждые 60 секунд
         heartbeat();
         setInterval(heartbeat, 60000);
 
-        // При уходе со страницы — помечаем как оффлайн (опционально)
         window.addEventListener('beforeunload', function() {
             fetch('{{ url("/heartbeat") }}?offline=1', {
                 method: 'GET',
@@ -2101,31 +2712,27 @@
             }).catch(() => {});
         });
     })();
-    // Функция для обновления данных
-async function updateData() {
-    try {
-        const response = await fetch('/ваш-url-для-обновления');
+    async function updateData() {
+        try {
+            const response = await fetch('/ваш-url-для-обновления');
 
-        if (!response.ok) {
-            throw new Error(`Ошибка HTTP: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+            }
+
+            const data = await response.text();
+            document.getElementById('container').innerHTML = data;
+            console.log('Данные успешно обновлены:', new Date().toLocaleTimeString());
+
+        } catch (error) {
+            console.error('Ошибка при обновлении данных:', error);
+        } finally {
+            setTimeout(updateData, 6000);
         }
-
-        const data = await response.text();
-        document.getElementById('container').innerHTML = data;
-        console.log('Данные успешно обновлены:', new Date().toLocaleTimeString());
-
-    } catch (error) {
-        console.error('Ошибка при обновлении данных:', error);
-    } finally {
-        // Запуск следующего цикла через 60 секунд ПОСЛЕ завершения текущего
-        setTimeout(updateData, 6000);
     }
-}
 
-// Запуск процесса
-updateData();
+    updateData();
 </script>
 @endif
 </body>
 </html>
-

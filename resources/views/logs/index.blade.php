@@ -193,6 +193,7 @@
             /* ============================================ */
             .logs-scroll {
                 overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
             .logs-scroll::-webkit-scrollbar {
@@ -377,59 +378,55 @@
 
             /* Delete button - КРАСИВАЯ ИКОНКА МУСОРНОГО БАКА */
             .delete-btn-icon {
-                width: 36px;
-                height: 36px;
-                border-radius: 10px;
+                width: 38px;
+                height: 38px;
+                border-radius: 12px;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(220, 38, 38, 0.08));
-                border: 1px solid rgba(239, 68, 68, 0.25);
-                color: #f87171;
+                background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+                border: none;
+                color: #ffffff;
                 cursor: pointer;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
                 position: relative;
                 overflow: hidden;
             }
 
-            .delete-btn-icon::before {
+            .delete-btn-icon::after {
                 content: '';
                 position: absolute;
-                inset: 0;
-                background: radial-gradient(circle at center, rgba(239, 68, 68, 0.3), transparent 70%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: 0.5s;
             }
 
-            .delete-btn-icon i {
-                font-size: 16px;
-                filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.4));
-                transition: all 0.3s ease;
-                position: relative;
-                z-index: 1;
+            .delete-btn-icon:hover::after {
+                left: 100%;
+            }
+
+            .delete-btn-icon svg {
+                transition: transform 0.3s ease;
+                z-index: 2;
             }
 
             .delete-btn-icon:hover {
-                background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(220, 38, 38, 0.2));
-                border-color: rgba(239, 68, 68, 0.5);
-                color: #fff;
-                transform: translateY(-2px) scale(1.05);
-                box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4), 0 0 25px rgba(239, 68, 68, 0.3);
+                transform: translateY(-3px) scale(1.05);
+                box-shadow: 0 8px 20px rgba(239, 68, 68, 0.6);
+                background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
             }
 
-            .delete-btn-icon:hover::before {
-                opacity: 1;
-            }
-
-            .delete-btn-icon:hover i {
-                transform: rotate(-12deg) scale(1.15);
-                filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+            .delete-btn-icon:hover svg {
+                transform: rotate(15deg);
             }
 
             .delete-btn-icon:active {
-                transform: translateY(0) scale(0.98);
-                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+                transform: translateY(0) scale(0.95);
+                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
             }
 
             /* Empty state */
@@ -473,6 +470,7 @@
                 align-items: center;
                 gap: 10px;
                 margin-top: 20px;
+                flex-wrap: wrap;
             }
 
             .pagination-btn {
@@ -510,17 +508,159 @@
                 pointer-events: none;
             }
 
-            /* Responsive */
+            /* ============================================ */
+            /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+            /* ============================================ */
+
+            /* Маленькие десктопы (до 1200px) */
+            @media (max-width: 1200px) {
+                .logs-page { padding: 20px 16px; }
+                .logs-container { max-width: 100%; }
+                .logs-title { font-size: 20px; }
+                .logs-header { gap: 14px; }
+                .logs-table th, .logs-table td { padding: 12px 14px; }
+                .cell-doc-title { max-width: 280px; }
+                .user-name { max-width: 160px; }
+                .cell-meta { max-width: 240px; }
+            }
+
+            /* Планшеты (до 992px) */
+            @media (max-width: 992px) {
+                .logs-page { padding: 18px 14px; }
+                .logs-title { font-size: 19px; }
+                .logs-subtitle { font-size: 9px; }
+                .logs-header { margin-bottom: 16px; gap: 12px; }
+                .logs-counter { padding: 7px 12px; }
+                .logs-counter-text { font-size: 10px; }
+                .glass-card { border-radius: 14px; }
+                .logs-table th { padding: 10px 12px; font-size: 8px; }
+                .logs-table td { padding: 12px; font-size: 12px; }
+                .cell-doc-title { max-width: 220px; font-size: 12px; }
+                .mini-avatar { width: 30px; height: 30px; font-size: 11px; }
+                .user-name { max-width: 140px; font-size: 12px; }
+                .action-badge { padding: 4px 10px; font-size: 9px; }
+                .cell-meta { max-width: 200px; font-size: 11px; }
+                .cell-time { font-size: 11px; }
+                .delete-btn-icon { width: 34px; height: 34px; }
+                .pagination-btn { min-width: 120px; height: 38px; padding: 0 18px; font-size: 11px; }
+            }
+
+            /* Большие телефоны (до 768px) */
             @media (max-width: 768px) {
                 .logs-page { padding: 16px 12px; }
                 .logs-title { font-size: 18px; }
-                .logs-table th, .logs-table td { padding: 10px 12px; font-size: 12px; }
-                .cell-doc-title, .user-name, .cell-meta { max-width: 200px; }
-                .pagination-btn { min-width: 110px; height: 38px; padding: 0 16px; font-size: 11px; }
-                .delete-btn-icon { width: 32px; height: 32px; }
-                .delete-btn-icon i { font-size: 14px; }
+                .logs-subtitle { font-size: 9px; letter-spacing: 0.2em; }
+                .logs-header { margin-bottom: 14px; gap: 10px; }
+                .logs-counter { padding: 6px 10px; gap: 8px; }
+                .logs-counter-text { font-size: 10px; gap: 5px; }
+                .pulse-dot { width: 6px; height: 6px; }
+                .glass-card { border-radius: 12px; }
+                .logs-table { min-width: 800px; }
+                .logs-table th { padding: 9px 10px; font-size: 8px; letter-spacing: 0.1em; }
+                .logs-table td { padding: 10px; font-size: 11px; }
+                .cell-id { font-size: 10px; }
+                .cell-doc-title { max-width: 180px; font-size: 11px; line-height: 1.4; }
+                .mini-avatar { width: 28px; height: 28px; font-size: 10px; border-radius: 7px; }
+                .user-cell { gap: 8px; }
+                .user-name { max-width: 120px; font-size: 11px; }
+                .action-badge { padding: 4px 8px; font-size: 8px; gap: 4px; }
+                .cell-meta { max-width: 160px; font-size: 10px; }
+                .cell-time { font-size: 10px; }
+                .delete-btn-icon { width: 32px; height: 32px; border-radius: 9px; }
+                .delete-btn-icon svg { width: 15px; height: 15px; }
+                .empty-state { padding: 40px 16px; }
+                .empty-icon-wrap { width: 48px; height: 48px; }
+                .empty-icon-wrap i { font-size: 20px; }
+                .empty-text { font-size: 9px; }
+                .pagination-wrapper { gap: 8px; margin-top: 16px; }
+                .pagination-btn { min-width: 110px; height: 36px; padding: 0 16px; font-size: 11px; border-radius: 9px; }
             }
 
+            /* Телефоны (до 640px) */
+            @media (max-width: 640px) {
+                .logs-page { padding: 14px 10px; }
+                .logs-title { font-size: 16px; }
+                .logs-subtitle { font-size: 8px; letter-spacing: 0.18em; margin-top: 3px; }
+                .logs-header { margin-bottom: 12px; gap: 8px; }
+                .logs-counter { padding: 5px 9px; gap: 7px; border-radius: 10px; }
+                .logs-counter-text { font-size: 9px; gap: 4px; }
+                .logs-counter-number { font-size: 10px; }
+                .pulse-dot { width: 5px; height: 5px; }
+                .glass-card { border-radius: 10px; }
+                .logs-table { min-width: 700px; }
+                .logs-table th { padding: 8px 9px; font-size: 7px; }
+                .logs-table td { padding: 9px; font-size: 10px; }
+                .cell-id { font-size: 9px; }
+                .cell-doc-title { max-width: 150px; font-size: 10px; }
+                .mini-avatar { width: 26px; height: 26px; font-size: 9px; border-radius: 6px; }
+                .user-cell { gap: 7px; }
+                .user-name { max-width: 100px; font-size: 10px; }
+                .action-badge { padding: 3px 7px; font-size: 8px; }
+                .cell-meta { max-width: 140px; font-size: 9px; }
+                .cell-time { font-size: 9px; }
+                .delete-btn-icon { width: 30px; height: 30px; border-radius: 8px; }
+                .delete-btn-icon svg { width: 14px; height: 14px; }
+                .empty-state { padding: 32px 12px; }
+                .empty-icon-wrap { width: 44px; height: 44px; margin-bottom: 10px; }
+                .empty-icon-wrap i { font-size: 18px; }
+                .empty-text { font-size: 8px; letter-spacing: 0.2em; }
+                .pagination-wrapper { gap: 6px; margin-top: 14px; }
+                .pagination-btn { min-width: 100px; height: 34px; padding: 0 14px; font-size: 10px; border-radius: 8px; }
+            }
+
+            /* Маленькие телефоны (до 480px) */
+            @media (max-width: 480px) {
+                .logs-page { padding: 12px 8px; }
+                .logs-title { font-size: 15px; }
+                .logs-subtitle { font-size: 8px; }
+                .logs-header { margin-bottom: 10px; gap: 6px; }
+                .logs-counter { padding: 4px 8px; gap: 6px; }
+                .logs-counter-text { font-size: 8px; }
+                .glass-card { border-radius: 9px; }
+                .logs-table { min-width: 650px; }
+                .logs-table th { padding: 7px 8px; font-size: 7px; }
+                .logs-table td { padding: 8px; font-size: 10px; }
+                .cell-id { font-size: 9px; }
+                .cell-doc-title { max-width: 130px; font-size: 9px; }
+                .mini-avatar { width: 24px; height: 24px; font-size: 9px; }
+                .user-cell { gap: 6px; }
+                .user-name { max-width: 90px; font-size: 9px; }
+                .action-badge { padding: 3px 6px; font-size: 7px; }
+                .cell-meta { max-width: 120px; font-size: 9px; }
+                .cell-time { font-size: 9px; }
+                .delete-btn-icon { width: 28px; height: 28px; }
+                .delete-btn-icon svg { width: 13px; height: 13px; }
+                .empty-state { padding: 28px 10px; }
+                .empty-icon-wrap { width: 40px; height: 40px; }
+                .empty-icon-wrap i { font-size: 16px; }
+                .empty-text { font-size: 8px; }
+                .pagination-wrapper { gap: 5px; margin-top: 12px; }
+                .pagination-btn { min-width: 90px; height: 32px; padding: 0 12px; font-size: 9px; }
+            }
+
+            /* Очень маленькие телефоны (до 380px) */
+            @media (max-width: 380px) {
+                .logs-page { padding: 10px 6px; }
+                .logs-title { font-size: 14px; }
+                .logs-subtitle { font-size: 7px; }
+                .logs-header { margin-bottom: 8px; }
+                .logs-counter { padding: 4px 7px; }
+                .logs-counter-text { font-size: 8px; }
+                .glass-card { border-radius: 8px; }
+                .logs-table { min-width: 600px; }
+                .logs-table th { padding: 6px 7px; font-size: 6px; }
+                .logs-table td { padding: 7px; font-size: 9px; }
+                .cell-doc-title { max-width: 110px; }
+                .mini-avatar { width: 22px; height: 22px; font-size: 8px; }
+                .user-name { max-width: 80px; font-size: 9px; }
+                .action-badge { padding: 2px 5px; font-size: 7px; }
+                .cell-meta { max-width: 100px; }
+                .delete-btn-icon { width: 26px; height: 26px; }
+                .delete-btn-icon svg { width: 12px; height: 12px; }
+                .pagination-btn { min-width: 80px; height: 30px; font-size: 8px; }
+            }
+
+            /* Скрытие колонок на очень маленьких экранах */
             @media (max-width: 1024px) {
                 .hidden-lg { display: none !important; }
             }
@@ -645,8 +785,6 @@
                             {{ $log->created_at->format('d.m.y / H:i') }}
                         </td>
 
-                        {{-- DELETE - КРАСИВАЯ ИКОНКА МУСОРНОГО БАКА --}}
-                        {{-- DELETE - ЯРКАЯ КНОПКА --}}
                         {{-- DELETE - ЯРКАЯ КНОПКА С SVG --}}
                         <td style="text-align: right;">
                             <form action="{{ route('logs.destroy', $log->id) }}" method="POST" style="display: inline-block;">
@@ -660,70 +798,6 @@
                                 </button>
                             </form>
                         </td>
-<style>
-    /* Delete button - ЯРКАЯ И ЗАМЕТНАЯ */
-.delete-btn-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    /* Яркий градиентный фон */
-    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-    border: none;
-
-    /* Белая иконка для контраста */
-    color: #ffffff;
-
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    /* Красивая тень */
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Блик при наведении */
-.delete-btn-icon::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: 0.5s;
-}
-
-.delete-btn-icon:hover::after {
-    left: 100%;
-}
-
-.delete-btn-icon i {
-    font-size: 18px;
-    transition: transform 0.3s ease;
-    z-index: 2;
-}
-
-/* Эффект при наведении */
-.delete-btn-icon:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.6);
-    background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
-}
-
-.delete-btn-icon:hover i {
-    transform: rotate(15deg);
-}
-
-.delete-btn-icon:active {
-    transform: translateY(0) scale(0.95);
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-}
-</style>
                     </tr>
                     @empty
                     <tr>

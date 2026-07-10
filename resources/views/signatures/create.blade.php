@@ -240,7 +240,6 @@
         display: block;
     }
 
-    /* === FORMAT BADGE - УЛУЧШЕННАЯ ВЕРСИЯ === */
     .format-badge {
         display: none;
         align-items: center;
@@ -741,11 +740,221 @@
         display: block;
     }
 
+    /* ============================================ */
+    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+    /* ============================================ */
+
+    /* Маленькие десктопы (до 1200px) */
+    @media (max-width: 1200px) {
+        .sig-container { padding: 28px 20px; }
+        .sig-layout { gap: 18px; }
+        .sig-panel { padding: 20px; }
+        .sig-panel-title { font-size: 15px; margin-bottom: 16px; }
+        .info-box { padding: 14px; margin-bottom: 16px; }
+        .info-box h3 { font-size: 10px; }
+        .info-box p { font-size: 11px; }
+        .sig-select { padding: 11px 13px; font-size: 12px; }
+        .qr-section { padding: 13px; gap: 12px; margin-bottom: 16px; }
+        .qr-preview-box { width: 75px; height: 75px; }
+        .format-badge { padding: 9px 16px; font-size: 11px; }
+        .viewer-container { height: calc(100vh - 250px); min-height: 500px; }
+        .btn-submit { padding: 15px 30px; font-size: 11px; }
+    }
+
+    /* Планшеты (до 992px) - grid в одну колонку */
+    @media (max-width: 992px) {
+        .sig-container { padding: 24px 18px; }
+        .sig-layout { gap: 16px; }
+        .sig-panel { padding: 18px; position: static !important; }
+        .sig-panel-title { font-size: 14px; margin-bottom: 15px; gap: 9px; }
+        .sig-panel-title::before { width: 3px; height: 16px; }
+        .info-box { padding: 13px; margin-bottom: 15px; border-radius: 11px; }
+        .info-box h3 { font-size: 10px; margin-bottom: 7px; }
+        .info-box h3 i { font-size: 13px; }
+        .info-box p { font-size: 11px; line-height: 1.55; }
+        .sig-select-wrapper { margin-bottom: 16px; }
+        .sig-label { font-size: 9px; margin-bottom: 7px; }
+        .sig-select { padding: 11px 13px; font-size: 12px; border-radius: 9px; }
+        .qr-section { padding: 12px; gap: 11px; margin-bottom: 15px; border-radius: 11px; }
+        .qr-title { font-size: 9px; }
+        .qr-subtitle { font-size: 11px; }
+        .qr-preview-box { width: 70px; height: 70px; border-radius: 10px; }
+        .format-badge { padding: 8px 15px; font-size: 11px; border-radius: 10px; }
+        .format-badge i { font-size: 15px; }
+        .viewer-container { height: calc(100vh - 240px); min-height: 460px; border-radius: 13px; }
+        .viewer-title { font-size: 12px; }
+        .btn-fullscreen { padding: 7px 12px; font-size: 10px; border-radius: 9px; }
+        .btn-submit { padding: 14px 28px; font-size: 11px; border-radius: 11px; }
+        .btn-submit i { font-size: 17px; }
+        .excel-toolbar { padding: 9px 14px; }
+        .excel-file-info { font-size: 11px; }
+        .excel-file-info i { font-size: 17px; }
+        .excel-stats { gap: 12px; font-size: 10px; }
+        .excel-sheet-tab { padding: 6px 14px; font-size: 10px; }
+        .excel-table th { padding: 7px 12px; font-size: 10px; }
+        .excel-table td { padding: 5px 10px; font-size: 11px; }
+        .viewer-empty i { font-size: 50px; }
+        .viewer-empty p { font-size: 12px; }
+    }
+
+    /* Большие телефоны (до 768px) */
     @media (max-width: 768px) {
         .sig-container { padding: 20px 16px; }
-        .sig-panel { padding: 18px; }
-        .viewer-container { height: calc(100vh - 240px); min-height: 400px; }
-        .excel-toolbar { flex-direction: column; align-items: flex-start; }
+        .sig-layout { gap: 15px; }
+        .sig-panel { padding: 16px; border-radius: 13px; }
+        .sig-panel-title { font-size: 13px; margin-bottom: 14px; gap: 8px; }
+        .info-box { padding: 12px; margin-bottom: 14px; border-radius: 10px; }
+        .info-box h3 { font-size: 9px; margin-bottom: 6px; gap: 5px; }
+        .info-box h3 i { font-size: 12px; }
+        .info-box p { font-size: 10px; line-height: 1.5; }
+        .info-box p:last-child { font-size: 10px; }
+        .sig-select-wrapper { margin-bottom: 15px; }
+        .sig-label { font-size: 9px; margin-bottom: 6px; letter-spacing: 0.9px; }
+        .sig-select { padding: 10px 12px; font-size: 11px; border-radius: 9px; }
+        .qr-section { padding: 11px; gap: 10px; margin-bottom: 14px; border-radius: 10px; }
+        .qr-title { font-size: 9px; margin-bottom: 3px; }
+        .qr-subtitle { font-size: 10px; }
+        .qr-preview-box { width: 65px; height: 65px; border-radius: 9px; }
+        .format-badge { padding: 7px 13px; font-size: 10px; border-radius: 9px; gap: 6px; }
+        .format-badge i { font-size: 14px; }
+        .viewer-container { height: calc(100vh - 220px); min-height: 400px; border-radius: 12px; }
+        .viewer-header { gap: 10px; }
+        .viewer-title { font-size: 11px; gap: 7px; }
+        .viewer-title::before { width: 7px; height: 7px; }
+        .btn-fullscreen { padding: 7px 11px; font-size: 10px; border-radius: 8px; gap: 5px; }
+        .btn-submit { padding: 13px 26px; font-size: 10px; border-radius: 10px; max-width: 100%; }
+        .btn-submit i { font-size: 16px; }
+        .excel-toolbar { padding: 8px 12px; gap: 10px; flex-direction: column; align-items: flex-start; }
+        .excel-file-info { font-size: 11px; gap: 8px; }
+        .excel-file-info i { font-size: 16px; }
+        .excel-stats { gap: 10px; font-size: 10px; }
+        .excel-sheet-tabs { padding: 7px 10px; gap: 3px; }
+        .excel-sheet-tab { padding: 6px 12px; font-size: 10px; border-radius: 7px; gap: 5px; }
+        .excel-sheet-tab i { font-size: 11px; }
+        .excel-table th { padding: 6px 10px; font-size: 9px; }
+        .excel-table td { padding: 5px 9px; font-size: 10px; min-width: 70px; }
+        .excel-table td.row-header { min-width: 40px; }
+        .excel-empty-sheet { padding: 50px 18px; font-size: 12px; }
+        .excel-empty-sheet i { font-size: 36px; }
+        .viewer-empty { padding: 30px; }
+        .viewer-empty i { font-size: 46px; margin-bottom: 14px; }
+        .viewer-empty p { font-size: 11px; }
+    }
+
+    /* Телефоны (до 640px) */
+    @media (max-width: 640px) {
+        .sig-container { padding: 18px 14px; }
+        .sig-layout { gap: 14px; }
+        .sig-panel { padding: 15px; border-radius: 12px; }
+        .sig-panel-title { font-size: 12px; margin-bottom: 13px; gap: 7px; letter-spacing: 1.1px; }
+        .info-box { padding: 11px; margin-bottom: 13px; border-radius: 9px; }
+        .info-box h3 { font-size: 9px; margin-bottom: 6px; }
+        .info-box p { font-size: 10px; }
+        .sig-select-wrapper { margin-bottom: 14px; }
+        .sig-label { font-size: 8px; margin-bottom: 6px; }
+        .sig-select { padding: 10px 12px; font-size: 11px; border-radius: 8px; }
+        .qr-section {
+            padding: 10px;
+            gap: 10px;
+            margin-bottom: 13px;
+            border-radius: 9px;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .qr-info { text-align: center; }
+        .qr-preview-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        .format-badge { padding: 7px 12px; font-size: 10px; border-radius: 8px; }
+        .viewer-container { height: calc(100vh - 200px); min-height: 360px; border-radius: 11px; }
+        .viewer-header { gap: 8px; }
+        .viewer-title { font-size: 11px; }
+        .btn-fullscreen { padding: 6px 10px; font-size: 9px; border-radius: 8px; }
+        .btn-submit { padding: 12px 24px; font-size: 10px; border-radius: 9px; letter-spacing: 1.3px; }
+        .btn-submit i { font-size: 15px; }
+        .excel-toolbar { padding: 7px 10px; }
+        .excel-file-info { font-size: 10px; }
+        .excel-stats { gap: 8px; font-size: 9px; }
+        .excel-sheet-tabs { padding: 6px 8px; }
+        .excel-sheet-tab { padding: 5px 10px; font-size: 9px; }
+        .excel-table th { padding: 5px 8px; font-size: 9px; }
+        .excel-table td { padding: 4px 7px; font-size: 10px; min-width: 60px; }
+        .excel-empty-sheet { padding: 40px 15px; font-size: 11px; }
+        .excel-empty-sheet i { font-size: 32px; }
+        .viewer-empty i { font-size: 42px; }
+        .viewer-empty p { font-size: 10px; }
+    }
+
+    /* Маленькие телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .sig-container { padding: 16px 12px; }
+        .sig-layout { gap: 13px; }
+        .sig-panel { padding: 14px; border-radius: 11px; }
+        .sig-panel-title { font-size: 11px; margin-bottom: 12px; gap: 6px; letter-spacing: 1px; }
+        .sig-panel-title::before { width: 2px; height: 14px; }
+        .info-box { padding: 10px; margin-bottom: 12px; border-radius: 8px; }
+        .info-box h3 { font-size: 8px; margin-bottom: 5px; }
+        .info-box h3 i { font-size: 11px; }
+        .info-box p { font-size: 9px; line-height: 1.45; }
+        .info-box p:last-child { font-size: 9px; }
+        .sig-select-wrapper { margin-bottom: 13px; }
+        .sig-label { font-size: 8px; margin-bottom: 5px; letter-spacing: 0.8px; }
+        .sig-select { padding: 9px 11px; font-size: 10px; border-radius: 8px; }
+        .qr-section { padding: 9px; gap: 8px; margin-bottom: 12px; }
+        .qr-title { font-size: 8px; }
+        .qr-subtitle { font-size: 10px; }
+        .qr-preview-box { width: 70px; height: 70px; border-radius: 8px; }
+        .format-badge { padding: 6px 11px; font-size: 9px; border-radius: 7px; gap: 5px; }
+        .format-badge i { font-size: 13px; }
+        .viewer-container { height: calc(100vh - 180px); min-height: 320px; border-radius: 10px; }
+        .viewer-header { gap: 7px; }
+        .viewer-title { font-size: 10px; gap: 6px; }
+        .viewer-title::before { width: 6px; height: 6px; }
+        .btn-fullscreen { padding: 6px 9px; font-size: 9px; border-radius: 7px; }
+        .btn-submit { padding: 11px 22px; font-size: 9px; border-radius: 8px; letter-spacing: 1.2px; }
+        .btn-submit i { font-size: 14px; }
+        .excel-toolbar { padding: 6px 9px; }
+        .excel-file-info { font-size: 10px; gap: 7px; }
+        .excel-file-info i { font-size: 15px; }
+        .excel-stats { gap: 7px; font-size: 9px; }
+        .excel-sheet-tabs { padding: 5px 7px; gap: 3px; }
+        .excel-sheet-tab { padding: 5px 9px; font-size: 9px; border-radius: 6px; }
+        .excel-table th { padding: 5px 7px; font-size: 8px; }
+        .excel-table td { padding: 4px 6px; font-size: 9px; min-width: 55px; }
+        .excel-empty-sheet { padding: 35px 12px; font-size: 10px; }
+        .excel-empty-sheet i { font-size: 28px; }
+        .viewer-empty { padding: 25px; }
+        .viewer-empty i { font-size: 38px; margin-bottom: 12px; }
+        .viewer-empty p { font-size: 10px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .sig-container { padding: 14px 10px; }
+        .sig-layout { gap: 12px; }
+        .sig-panel { padding: 12px; border-radius: 10px; }
+        .sig-panel-title { font-size: 10px; margin-bottom: 11px; letter-spacing: 0.9px; }
+        .info-box { padding: 9px; margin-bottom: 11px; border-radius: 7px; }
+        .info-box h3 { font-size: 8px; }
+        .info-box p { font-size: 9px; }
+        .sig-select { padding: 8px 10px; font-size: 10px; border-radius: 7px; }
+        .qr-section { padding: 8px; gap: 7px; margin-bottom: 11px; }
+        .qr-preview-box { width: 65px; height: 65px; }
+        .format-badge { padding: 5px 10px; font-size: 9px; }
+        .viewer-container { height: calc(100vh - 170px); min-height: 300px; border-radius: 9px; }
+        .viewer-title { font-size: 10px; }
+        .btn-fullscreen { padding: 5px 8px; font-size: 8px; }
+        .btn-submit { padding: 10px 20px; font-size: 9px; border-radius: 7px; }
+        .excel-toolbar { padding: 5px 8px; }
+        .excel-file-info { font-size: 9px; }
+        .excel-stats { font-size: 8px; }
+        .excel-sheet-tab { padding: 4px 8px; font-size: 8px; }
+        .excel-table th { padding: 4px 6px; font-size: 8px; }
+        .excel-table td { padding: 3px 5px; font-size: 9px; }
+        .viewer-empty i { font-size: 34px; }
+        .viewer-empty p { font-size: 9px; }
     }
 </style>
 

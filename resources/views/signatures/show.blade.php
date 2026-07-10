@@ -94,6 +94,14 @@ $formattedSize = $fileSize > 1048576
         background: linear-gradient(180deg, rgba(var(--glow), 1), rgba(var(--glow), 0.3));
         border-radius: 2px;
         box-shadow: 0 0 10px rgba(var(--glow), 0.6);
+        flex-shrink: 0;
+    }
+
+    .title-badges {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
     }
 
     .format-badge {
@@ -109,6 +117,7 @@ $formattedSize = $fileSize > 1048576
         color: #ffffff;
         font-family: 'JetBrains Mono', monospace;
         box-shadow: 0 0 12px currentColor;
+        white-space: nowrap;
     }
 
     .format-badge.pdf {
@@ -141,6 +150,7 @@ $formattedSize = $fileSize > 1048576
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--line);
         border-radius: 8px;
+        white-space: nowrap;
     }
 
     /* Карточки */
@@ -228,6 +238,7 @@ $formattedSize = $fileSize > 1048576
         width: 14px;
         height: 14px;
         opacity: 0.7;
+        flex-shrink: 0;
     }
 
     .info-value {
@@ -412,12 +423,14 @@ $formattedSize = $fileSize > 1048576
         border-radius: 50%;
         background: rgba(var(--glow), 1);
         box-shadow: 0 0 8px rgba(var(--glow), 0.8);
+        flex-shrink: 0;
     }
 
     .preview-actions {
         display: flex;
         align-items: center;
         gap: 8px;
+        flex-wrap: wrap;
     }
 
     .btn-icon {
@@ -457,6 +470,7 @@ $formattedSize = $fileSize > 1048576
         font-weight: 700;
         text-decoration: none;
         transition: all 0.25s ease;
+        white-space: nowrap;
     }
 
     .btn-download:hover {
@@ -505,6 +519,7 @@ $formattedSize = $fileSize > 1048576
         padding: 10px 16px;
         background: linear-gradient(180deg, #1e2638, #161c2a);
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        flex-wrap: wrap;
     }
 
     .excel-file-info {
@@ -540,6 +555,7 @@ $formattedSize = $fileSize > 1048576
         font-weight: 700;
         cursor: pointer;
         transition: all 0.2s ease;
+        white-space: nowrap;
     }
 
     .excel-sheet-tab:hover {
@@ -622,12 +638,278 @@ $formattedSize = $fileSize > 1048576
         transform: translateY(12px);
     }
 
-    /* Responsive */
+    /* ============================================ */
+    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+    /* ============================================ */
+
+    /* Маленькие десктопы (до 1200px) */
+    @media (max-width: 1200px) {
+        .view-sig-page { padding: 28px 20px; }
+        .page-title-row { margin-bottom: 22px; gap: 14px; }
+        .page-title { font-size: 24px; }
+        .page-title::before { width: 4px; height: 26px; }
+        .sig-card { padding: 22px; margin-bottom: 18px; }
+        .info-grid { gap: 22px; }
+        .info-column { gap: 16px; }
+        .info-item { padding: 13px; border-radius: 9px; }
+        .info-label { font-size: 9px; margin-bottom: 5px; }
+        .info-value { font-size: 14px; }
+        .info-value.mono { font-size: 19px; }
+        .info-value.large { font-size: 17px; }
+        .info-sub { font-size: 10px; }
+        .content-text { font-size: 12px; max-height: 90px; }
+        .status-badge { padding: 5px 13px; font-size: 9px; }
+        .btn-sign { padding: 11px 18px; font-size: 10px; }
+        .btn-sign svg { width: 15px; height: 15px; }
+        .verified-box { padding: 11px; }
+        .verified-box img { max-height: 38px; }
+        .verified-text { font-size: 8px; }
+        .preview-header { margin-bottom: 14px; gap: 10px; }
+        .preview-title { font-size: 12px; }
+        .btn-icon { width: 36px; height: 36px; }
+        .btn-icon svg { width: 15px; height: 15px; }
+        .btn-download { padding: 7px 13px; font-size: 10px; }
+        .preview-container { height: 650px; }
+        .excel-toolbar { padding: 9px 14px; }
+        .excel-file-info { font-size: 11px; }
+        .excel-file-info i { font-size: 17px; }
+        .excel-sheet-tab { padding: 6px 14px; font-size: 10px; }
+        .excel-table th { padding: 7px 12px; font-size: 11px; }
+        .excel-table td { padding: 5px 11px; font-size: 11px; }
+        .preview-empty i { font-size: 44px; }
+        .preview-empty p { font-size: 12px; }
+    }
+
+    /* Планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .view-sig-page { padding: 24px 18px; }
+        .back-link { font-size: 10px; margin-bottom: 14px; gap: 7px; }
+        .back-link svg { width: 15px; height: 15px; }
+        .page-title-row { margin-bottom: 20px; gap: 12px; }
+        .page-title { font-size: 22px; gap: 9px; }
+        .page-title::before { width: 3px; height: 24px; }
+        .title-badges { gap: 10px; }
+        .format-badge { padding: 5px 12px; font-size: 9px; border-radius: 9px; letter-spacing: 0.9px; }
+        .file-size { font-size: 11px; padding: 5px 11px; border-radius: 7px; }
+        .sig-card { padding: 20px; margin-bottom: 16px; border-radius: 13px; }
+        .info-grid { gap: 20px; }
+        .info-column { gap: 15px; }
+        .info-item { padding: 12px; border-radius: 9px; }
+        .info-label { font-size: 9px; margin-bottom: 5px; letter-spacing: 0.7px; gap: 5px; }
+        .info-label svg { width: 13px; height: 13px; }
+        .info-value { font-size: 14px; }
+        .info-value.mono { font-size: 18px; }
+        .info-value.large { font-size: 16px; }
+        .info-sub { font-size: 10px; }
+        .divider { margin: 7px 0; }
+        .status-badge { padding: 5px 12px; font-size: 9px; letter-spacing: 0.7px; }
+        .status-badge .dot { width: 5px; height: 5px; }
+        .content-text { font-size: 12px; max-height: 85px; }
+        .btn-sign { padding: 11px 17px; font-size: 10px; border-radius: 9px; letter-spacing: 1.1px; }
+        .btn-sign svg { width: 14px; height: 14px; }
+        .verified-box { padding: 10px; border-radius: 9px; }
+        .verified-box img { max-height: 36px; }
+        .verified-text { font-size: 8px; letter-spacing: 0.9px; }
+        .preview-header { margin-bottom: 13px; gap: 9px; }
+        .preview-title { font-size: 12px; gap: 7px; }
+        .preview-title::before { width: 7px; height: 7px; }
+        .preview-actions { gap: 7px; }
+        .btn-icon { width: 35px; height: 35px; border-radius: 9px; }
+        .btn-icon svg { width: 14px; height: 14px; }
+        .btn-download { padding: 7px 12px; font-size: 10px; border-radius: 9px; }
+        .preview-container { height: 600px; border-radius: 13px; }
+        .excel-toolbar { padding: 8px 13px; gap: 10px; }
+        .excel-file-info { font-size: 11px; gap: 9px; }
+        .excel-file-info i { font-size: 16px; }
+        .excel-sheet-tabs { padding: 7px 11px; gap: 3px; }
+        .excel-sheet-tab { padding: 6px 13px; font-size: 10px; border-radius: 7px; }
+        .excel-table th { padding: 7px 11px; font-size: 11px; }
+        .excel-table td { padding: 5px 10px; font-size: 11px; }
+        .preview-empty i { font-size: 42px; }
+        .preview-empty p { font-size: 12px; }
+    }
+
+    /* Большие телефоны (до 768px) */
     @media (max-width: 768px) {
         .view-sig-page { padding: 20px 16px; }
-        .sig-card { padding: 18px; }
+        .back-link { font-size: 10px; margin-bottom: 13px; gap: 6px; letter-spacing: 0.7px; }
+        .back-link svg { width: 14px; height: 14px; }
+        .page-title-row { margin-bottom: 18px; gap: 10px; }
+        .page-title { font-size: 20px; gap: 8px; }
+        .page-title::before { width: 3px; height: 22px; }
+        .title-badges { gap: 9px; }
+        .format-badge { padding: 5px 11px; font-size: 9px; border-radius: 8px; }
+        .file-size { font-size: 10px; padding: 5px 10px; border-radius: 7px; }
+        .sig-card { padding: 18px; margin-bottom: 15px; border-radius: 12px; }
+        .info-grid { gap: 18px; }
+        .info-column { gap: 14px; }
         .info-column.right { align-items: flex-start; text-align: left; }
-        .preview-container { height: 500px; }
+        .info-item { padding: 11px; border-radius: 8px; }
+        .info-label { font-size: 9px; margin-bottom: 5px; letter-spacing: 0.6px; }
+        .info-value { font-size: 13px; }
+        .info-value.mono { font-size: 17px; }
+        .info-value.large { font-size: 15px; }
+        .info-sub { font-size: 10px; }
+        .divider { margin: 6px 0; }
+        .status-badge { padding: 5px 11px; font-size: 9px; letter-spacing: 0.6px; }
+        .content-text { font-size: 11px; max-height: 80px; }
+        .btn-sign { padding: 10px 16px; font-size: 10px; border-radius: 9px; letter-spacing: 1px; }
+        .btn-sign svg { width: 14px; height: 14px; }
+        .verified-box { padding: 10px; border-radius: 8px; }
+        .verified-box img { max-height: 34px; }
+        .verified-text { font-size: 8px; }
+        .preview-header { margin-bottom: 12px; gap: 8px; }
+        .preview-title { font-size: 11px; gap: 6px; }
+        .preview-title::before { width: 6px; height: 6px; }
+        .preview-actions { gap: 6px; }
+        .btn-icon { width: 34px; height: 34px; border-radius: 8px; }
+        .btn-icon svg { width: 13px; height: 13px; }
+        .btn-download { padding: 7px 11px; font-size: 10px; border-radius: 8px; }
+        .preview-container { height: 500px; border-radius: 12px; }
+        .excel-toolbar { padding: 8px 12px; }
+        .excel-file-info { font-size: 11px; }
+        .excel-file-info i { font-size: 15px; }
+        .excel-sheet-tabs { padding: 6px 10px; }
+        .excel-sheet-tab { padding: 5px 12px; font-size: 10px; }
+        .excel-table th { padding: 6px 10px; font-size: 10px; }
+        .excel-table td { padding: 5px 9px; font-size: 10px; }
+        .preview-empty i { font-size: 38px; }
+        .preview-empty p { font-size: 11px; }
+    }
+
+    /* Телефоны (до 640px) */
+    @media (max-width: 640px) {
+        .view-sig-page { padding: 18px 14px; }
+        .back-link { font-size: 9px; margin-bottom: 12px; letter-spacing: 0.6px; }
+        .back-link svg { width: 13px; height: 13px; }
+        .page-title-row { margin-bottom: 16px; gap: 9px; }
+        .page-title { font-size: 18px; gap: 7px; }
+        .page-title::before { width: 3px; height: 20px; }
+        .title-badges { gap: 8px; width: 100%; }
+        .format-badge { padding: 4px 10px; font-size: 8px; border-radius: 7px; letter-spacing: 0.8px; }
+        .file-size { font-size: 10px; padding: 4px 9px; border-radius: 6px; }
+        .sig-card { padding: 16px; margin-bottom: 14px; border-radius: 11px; }
+        .info-grid { gap: 16px; }
+        .info-column { gap: 13px; }
+        .info-item { padding: 10px; border-radius: 8px; }
+        .info-label { font-size: 8px; margin-bottom: 4px; letter-spacing: 0.5px; gap: 4px; }
+        .info-label svg { width: 12px; height: 12px; }
+        .info-value { font-size: 13px; }
+        .info-value.mono { font-size: 16px; }
+        .info-value.large { font-size: 14px; }
+        .info-sub { font-size: 9px; }
+        .divider { margin: 5px 0; }
+        .status-badge { padding: 4px 10px; font-size: 8px; letter-spacing: 0.5px; }
+        .status-badge .dot { width: 5px; height: 5px; }
+        .content-text { font-size: 11px; max-height: 75px; line-height: 1.5; }
+        .btn-sign { padding: 10px 15px; font-size: 9px; border-radius: 8px; letter-spacing: 0.9px; }
+        .btn-sign svg { width: 13px; height: 13px; }
+        .verified-box { padding: 9px; border-radius: 8px; }
+        .verified-box img { max-height: 32px; }
+        .verified-text { font-size: 7px; letter-spacing: 0.8px; }
+        .preview-header { margin-bottom: 11px; gap: 7px; }
+        .preview-title { font-size: 11px; gap: 5px; }
+        .preview-title::before { width: 6px; height: 6px; }
+        .preview-actions { gap: 5px; width: 100%; }
+        .btn-icon { width: 32px; height: 32px; border-radius: 8px; }
+        .btn-icon svg { width: 13px; height: 13px; }
+        .btn-download { padding: 6px 10px; font-size: 9px; border-radius: 7px; }
+        .preview-container { height: 450px; border-radius: 11px; }
+        .excel-toolbar { padding: 7px 11px; gap: 8px; }
+        .excel-file-info { font-size: 10px; gap: 8px; }
+        .excel-file-info i { font-size: 14px; }
+        .excel-sheet-tabs { padding: 6px 9px; }
+        .excel-sheet-tab { padding: 5px 11px; font-size: 9px; border-radius: 6px; }
+        .excel-table th { padding: 5px 9px; font-size: 10px; }
+        .excel-table td { padding: 4px 8px; font-size: 10px; }
+        .preview-empty i { font-size: 34px; }
+        .preview-empty p { font-size: 10px; }
+    }
+
+    /* Маленькие телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .view-sig-page { padding: 16px 12px; }
+        .back-link { font-size: 9px; margin-bottom: 11px; gap: 5px; letter-spacing: 0.5px; }
+        .back-link svg { width: 13px; height: 13px; }
+        .page-title-row { margin-bottom: 14px; gap: 8px; }
+        .page-title { font-size: 17px; gap: 6px; }
+        .page-title::before { width: 2px; height: 19px; }
+        .title-badges { gap: 7px; }
+        .format-badge { padding: 4px 9px; font-size: 8px; border-radius: 7px; }
+        .file-size { font-size: 9px; padding: 4px 8px; }
+        .sig-card { padding: 14px; margin-bottom: 13px; border-radius: 10px; }
+        .info-grid { gap: 14px; }
+        .info-column { gap: 12px; }
+        .info-item { padding: 10px; border-radius: 7px; }
+        .info-label { font-size: 8px; margin-bottom: 4px; letter-spacing: 0.4px; }
+        .info-value { font-size: 12px; }
+        .info-value.mono { font-size: 15px; }
+        .info-value.large { font-size: 13px; }
+        .info-sub { font-size: 9px; }
+        .status-badge { padding: 4px 9px; font-size: 8px; }
+        .content-text { font-size: 10px; max-height: 70px; }
+        .btn-sign { padding: 9px 14px; font-size: 9px; border-radius: 8px; }
+        .btn-sign svg { width: 12px; height: 12px; }
+        .verified-box { padding: 8px; border-radius: 7px; }
+        .verified-box img { max-height: 30px; }
+        .verified-text { font-size: 7px; }
+        .preview-header { margin-bottom: 10px; gap: 6px; }
+        .preview-title { font-size: 10px; }
+        .btn-icon { width: 30px; height: 30px; border-radius: 7px; }
+        .btn-icon svg { width: 12px; height: 12px; }
+        .btn-download { padding: 6px 9px; font-size: 9px; border-radius: 7px; }
+        .preview-container { height: 400px; border-radius: 10px; }
+        .excel-toolbar { padding: 6px 10px; }
+        .excel-file-info { font-size: 10px; }
+        .excel-file-info i { font-size: 13px; }
+        .excel-sheet-tabs { padding: 5px 8px; }
+        .excel-sheet-tab { padding: 4px 10px; font-size: 9px; }
+        .excel-table th { padding: 5px 8px; font-size: 9px; }
+        .excel-table td { padding: 4px 7px; font-size: 9px; }
+        .preview-empty i { font-size: 30px; }
+        .preview-empty p { font-size: 10px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .view-sig-page { padding: 14px 10px; }
+        .back-link { font-size: 8px; margin-bottom: 10px; }
+        .back-link svg { width: 12px; height: 12px; }
+        .page-title-row { margin-bottom: 12px; gap: 7px; }
+        .page-title { font-size: 16px; gap: 5px; }
+        .page-title::before { width: 2px; height: 18px; }
+        .title-badges { gap: 6px; }
+        .format-badge { padding: 3px 8px; font-size: 7px; border-radius: 6px; }
+        .file-size { font-size: 9px; padding: 3px 7px; }
+        .sig-card { padding: 12px; margin-bottom: 12px; border-radius: 9px; }
+        .info-grid { gap: 12px; }
+        .info-column { gap: 11px; }
+        .info-item { padding: 9px; border-radius: 7px; }
+        .info-label { font-size: 7px; margin-bottom: 3px; }
+        .info-value { font-size: 12px; }
+        .info-value.mono { font-size: 14px; }
+        .info-value.large { font-size: 13px; }
+        .info-sub { font-size: 8px; }
+        .status-badge { padding: 3px 8px; font-size: 7px; }
+        .content-text { font-size: 10px; max-height: 65px; }
+        .btn-sign { padding: 9px 13px; font-size: 8px; border-radius: 7px; }
+        .btn-sign svg { width: 12px; height: 12px; }
+        .verified-box { padding: 7px; }
+        .verified-box img { max-height: 28px; }
+        .verified-text { font-size: 7px; }
+        .preview-header { margin-bottom: 9px; }
+        .preview-title { font-size: 10px; }
+        .btn-icon { width: 28px; height: 28px; border-radius: 7px; }
+        .btn-icon svg { width: 11px; height: 11px; }
+        .btn-download { padding: 5px 8px; font-size: 8px; border-radius: 6px; }
+        .preview-container { height: 360px; border-radius: 9px; }
+        .excel-toolbar { padding: 5px 9px; }
+        .excel-file-info { font-size: 9px; }
+        .excel-sheet-tab { padding: 4px 9px; font-size: 8px; }
+        .excel-table th { padding: 4px 7px; font-size: 9px; }
+        .excel-table td { padding: 3px 6px; font-size: 9px; }
+        .preview-empty i { font-size: 26px; }
+        .preview-empty p { font-size: 9px; }
     }
 </style>
 
@@ -645,7 +927,7 @@ $formattedSize = $fileSize > 1048576
     <div class="page-title-row animate-in">
         <h1 class="page-title" data-i18n="cardTitle">Карточка документа</h1>
         @if($extension)
-        <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="title-badges">
             <span class="format-badge {{ $isPdf ? 'pdf' : ($isWord ? 'word' : ($isExcel ? 'excel' : 'rtf')) }}">
                 <i class="bi bi-file-earmark-{{ $isPdf ? 'pdf' : ($isWord ? 'word' : ($isExcel ? 'excel' : 'text')) }}"></i>
                 {{ strtoupper($extension) }}
@@ -807,9 +1089,6 @@ $formattedSize = $fileSize > 1048576
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // ============================================================
-        // ЛОКАЛЬНЫЙ СЛОВАРЬ СТРАНИЦЫ ПРОСМОТРА ПОДПИСИ
-        // ============================================================
         const SIGN_VIEW_TRANSLATIONS = {
             ru: {
                 backToList: 'Реестр документов',
@@ -885,9 +1164,6 @@ $formattedSize = $fileSize > 1048576
             }
         };
 
-        // ============================================================
-        // ФУНКЦИЯ ПРИМЕНЕНИЯ ПЕРЕВОДОВ
-        // ============================================================
         function applySignViewTranslations(lang) {
             const dict = SIGN_VIEW_TRANSLATIONS[lang] || SIGN_VIEW_TRANSLATIONS.ru;
 
@@ -906,9 +1182,6 @@ $formattedSize = $fileSize > 1048576
             }
         }
 
-        // ============================================================
-        // EXCEL RENDER
-        // ============================================================
         const excelContainer = document.getElementById("excel-preview");
         if (excelContainer) {
             const fileUrl = excelContainer.getAttribute("data-url");
@@ -924,7 +1197,6 @@ $formattedSize = $fileSize > 1048576
                     const container = document.createElement('div');
                     container.className = 'excel-preview-container';
 
-                    // Toolbar
                     const toolbar = document.createElement('div');
                     toolbar.className = 'excel-toolbar';
                     toolbar.innerHTML = `
@@ -938,7 +1210,6 @@ $formattedSize = $fileSize > 1048576
                     `;
                     container.appendChild(toolbar);
 
-                    // Tabs
                     if (workbook.SheetNames.length > 0) {
                         const tabsDiv = document.createElement('div');
                         tabsDiv.className = 'excel-sheet-tabs';
@@ -956,12 +1227,10 @@ $formattedSize = $fileSize > 1048576
                         });
                         container.appendChild(tabsDiv);
 
-                        // Table wrapper
                         const tableWrapper = document.createElement('div');
                         tableWrapper.className = 'excel-table-wrapper';
                         container.appendChild(tableWrapper);
 
-                        // Render first sheet
                         renderSheet(workbook.Sheets[workbook.SheetNames[0]], tableWrapper);
                     }
 
@@ -985,7 +1254,6 @@ $formattedSize = $fileSize > 1048576
             const table = document.createElement('table');
             table.className = 'excel-table';
 
-            // Header
             const thead = document.createElement('thead');
             const headerRow = document.createElement('tr');
             if (jsonData.length > 0) {
@@ -998,7 +1266,6 @@ $formattedSize = $fileSize > 1048576
             thead.appendChild(headerRow);
             table.appendChild(thead);
 
-            // Body
             const tbody = document.createElement('tbody');
             for (let i = 1; i < jsonData.length; i++) {
                 const row = jsonData[i];
@@ -1017,9 +1284,6 @@ $formattedSize = $fileSize > 1048576
             container.appendChild(table);
         }
 
-        // ============================================================
-        // WORD RENDER
-        // ============================================================
         const wordContainer = document.getElementById("word-preview");
         if (wordContainer) {
             const fileUrl = wordContainer.getAttribute("data-url");
@@ -1039,9 +1303,6 @@ $formattedSize = $fileSize > 1048576
                 });
         }
 
-        // ============================================================
-        // АНИМАЦИЯ
-        // ============================================================
         document.querySelectorAll('.animate-in').forEach((el, i) => {
             setTimeout(() => {
                 el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
@@ -1050,9 +1311,6 @@ $formattedSize = $fileSize > 1048576
             }, 100 + (i * 120));
         });
 
-        // ============================================================
-        // ПРИМЕНЕНИЕ ПЕРЕВОДОВ
-        // ============================================================
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';
         applySignViewTranslations(initialLang);
 
@@ -1067,9 +1325,6 @@ $formattedSize = $fileSize > 1048576
         });
     });
 
-    // ============================================================
-    // FULLSCREEN
-    // ============================================================
     function toggleFullScreen() {
         const el = document.getElementById('previewBox');
         if (!el) return;

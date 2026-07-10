@@ -41,7 +41,105 @@
         .copy{text-align:center;margin-top:16px;font:500 12px Figtree,sans-serif;color:rgba(148,163,184,.5)}
         .err{font:500 12px Figtree,sans-serif;color:#ef4444;margin-top:6px}
         .input input.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.15)}
-        @media(max-width:480px){.card{padding:28px 20px}.logo h1{font-size:20px}}
+
+        /* === RESPONSIVE === */
+
+        /* Планшеты и маленькие ноутбуки (до 768px) */
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .lang { top: 12px; right: 12px; padding: 3px; gap: 3px; }
+            .lang button { padding: 5px 10px; font-size: 11px; }
+            .card { padding: 32px 28px; border-radius: 18px; }
+            .logo img { width: 56px; height: 56px; border-radius: 14px; }
+            .logo h1 { font-size: 22px; }
+            .logo p { font-size: 10px; letter-spacing: 1.8px; }
+            .info { padding: 11px 13px; font-size: 12px; }
+            .badges { gap: 16px; flex-wrap: wrap; }
+        }
+
+        /* Большие телефоны и маленькие планшеты (до 576px) */
+        @media (max-width: 576px) {
+            body { padding: 12px; }
+            .lang { top: 10px; right: 10px; padding: 3px; gap: 2px; border-radius: 8px; }
+            .lang button { padding: 4px 8px; font-size: 10px; border-radius: 6px; }
+            .card { padding: 28px 20px; border-radius: 16px; }
+            .logo { margin-bottom: 20px; }
+            .logo img { width: 52px; height: 52px; border-radius: 12px; margin-bottom: 10px; }
+            .logo h1 { font-size: 20px; }
+            .logo p { font-size: 10px; letter-spacing: 1.6px; }
+            .info { padding: 10px 12px; font-size: 12px; gap: 8px; border-radius: 8px; }
+            .info svg { width: 16px; height: 16px; }
+            .field { margin-bottom: 16px; }
+            .field label { font-size: 12px; margin-bottom: 5px; }
+            .input input { padding: 11px 13px 11px 40px; font-size: 13px; border-radius: 10px; }
+            .input svg { left: 13px; width: 16px; height: 16px; }
+            .toggle { right: 10px; }
+            .btn { padding: 13px; font-size: 14px; border-radius: 10px; gap: 6px; }
+            .btn svg { width: 16px; height: 16px; }
+            .back { margin-top: 16px; }
+            .back a { font-size: 13px; }
+            .back a svg { width: 14px; height: 14px; }
+            .badges { gap: 14px; margin-top: 20px; font-size: 10px; }
+            .badges svg { width: 12px; height: 12px; }
+            .copy { margin-top: 14px; font-size: 11px; }
+            .err { font-size: 11px; }
+        }
+
+        /* Телефоны (до 480px) */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .lang { top: 8px; right: 8px; padding: 2px; gap: 2px; }
+            .lang button { padding: 4px 7px; font-size: 9px; }
+            .card { padding: 24px 18px; border-radius: 14px; }
+            .logo { margin-bottom: 18px; }
+            .logo img { width: 48px; height: 48px; border-radius: 10px; margin-bottom: 8px; }
+            .logo h1 { font-size: 19px; }
+            .logo p { font-size: 9px; letter-spacing: 1.4px; margin-top: 3px; }
+            .info { padding: 9px 11px; font-size: 11px; gap: 7px; margin-bottom: 16px; border-radius: 8px; }
+            .info svg { width: 15px; height: 15px; }
+            .field { margin-bottom: 14px; }
+            .field label { font-size: 11px; margin-bottom: 4px; }
+            .input input { padding: 10px 12px 10px 38px; font-size: 13px; border-radius: 9px; }
+            .input svg { left: 12px; width: 15px; height: 15px; }
+            .toggle { right: 8px; padding: 3px; }
+            .btn { padding: 12px; font-size: 13px; border-radius: 9px; gap: 5px; }
+            .btn svg { width: 15px; height: 15px; }
+            .back { margin-top: 14px; }
+            .back a { font-size: 12px; gap: 5px; }
+            .back a svg { width: 13px; height: 13px; }
+            .badges { gap: 12px; margin-top: 18px; font-size: 9px; }
+            .badges svg { width: 11px; height: 11px; }
+            .copy { margin-top: 12px; font-size: 10px; }
+            .err { font-size: 10px; margin-top: 5px; }
+        }
+
+        /* Очень маленькие телефоны (до 380px) */
+        @media (max-width: 380px) {
+            body { padding: 8px; }
+            .lang { top: 6px; right: 6px; padding: 2px; gap: 1px; }
+            .lang button { padding: 3px 6px; font-size: 8px; }
+            .card { padding: 20px 14px; border-radius: 12px; }
+            .logo { margin-bottom: 16px; }
+            .logo img { width: 44px; height: 44px; border-radius: 9px; margin-bottom: 7px; }
+            .logo h1 { font-size: 18px; }
+            .logo p { font-size: 8px; letter-spacing: 1.2px; }
+            .info { padding: 8px 10px; font-size: 10px; gap: 6px; margin-bottom: 14px; }
+            .info svg { width: 14px; height: 14px; }
+            .field { margin-bottom: 12px; }
+            .field label { font-size: 10px; margin-bottom: 3px; }
+            .input input { padding: 9px 11px 9px 36px; font-size: 12px; border-radius: 8px; }
+            .input svg { left: 11px; width: 14px; height: 14px; }
+            .toggle { right: 6px; padding: 2px; }
+            .btn { padding: 11px; font-size: 12px; border-radius: 8px; gap: 4px; }
+            .btn svg { width: 14px; height: 14px; }
+            .back { margin-top: 12px; }
+            .back a { font-size: 11px; gap: 4px; }
+            .back a svg { width: 12px; height: 12px; }
+            .badges { gap: 10px; margin-top: 16px; font-size: 8px; flex-wrap: wrap; }
+            .badges svg { width: 10px; height: 10px; }
+            .copy { margin-top: 10px; font-size: 9px; }
+            .err { font-size: 9px; margin-top: 4px; }
+        }
     </style>
 </head>
 <body>

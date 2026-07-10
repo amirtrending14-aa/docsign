@@ -12,7 +12,6 @@
         color: var(--text);
         font-family: 'Inter', sans-serif;
         position: relative;
-
     }
 
     /* Фоновые blob-ы */
@@ -165,6 +164,11 @@
         font-family: 'JetBrains Mono', monospace;
         font-size: 11px;
         font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .meta-pill svg {
+        flex-shrink: 0;
     }
 
     .btn-back {
@@ -182,6 +186,8 @@
         text-transform: uppercase;
         letter-spacing: 0.8px;
         transition: all 0.25s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
 
     .btn-back:hover {
@@ -249,6 +255,7 @@
         border-radius: 2px;
         background: linear-gradient(180deg, rgba(var(--glow), 1), rgba(var(--glow), 0.4));
         box-shadow: 0 0 10px rgba(var(--glow), 0.6);
+        flex-shrink: 0;
     }
 
     /* === AVATAR BLOCK === */
@@ -445,6 +452,7 @@
         color: rgba(var(--glow), 1);
         margin-top: 10px;
         font-weight: 700;
+        word-break: break-word;
     }
 
     /* === FIELDS === */
@@ -460,10 +468,6 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
-    }
-
-    @media (max-width: 640px) {
-        .field-row { grid-template-columns: 1fr; }
     }
 
     .field-label {
@@ -502,6 +506,7 @@
         border-radius: 10px !important;
         transition: all 0.25s ease;
         font-family: 'Inter', sans-serif;
+        box-sizing: border-box;
     }
 
     .input-custom:focus {
@@ -624,6 +629,7 @@
         box-shadow: 0 8px 28px rgba(var(--glow), 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
         border: 1px solid transparent;
         cursor: pointer;
+        white-space: nowrap;
     }
 
     .btn-submit:hover {
@@ -652,6 +658,7 @@
         letter-spacing: 1.2px;
         transition: all 0.3s ease;
         cursor: pointer;
+        white-space: nowrap;
     }
 
     .btn-delete:hover {
@@ -666,17 +673,264 @@
         height: 18px;
     }
 
-    /* Responsive */
+    /* ============================================ */
+    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+    /* ============================================ */
+
+    /* Маленькие десктопы (до 1200px) */
+    @media (max-width: 1200px) {
+        .edit-user-page { padding: 36px 22px 55px; }
+        .edit-topbar { margin-bottom: 22px; padding: 17px 20px; gap: 14px; }
+        .edit-topbar-icon { width: 46px; height: 46px; border-radius: 12px; }
+        .edit-topbar-icon svg { width: 23px; height: 23px; }
+        .edit-topbar-title { font-size: 19px; }
+        .edit-topbar-subtitle { font-size: 11px; gap: 7px; }
+        .meta-pill { padding: 3px 8px !important; font-size: 10px !important; }
+        .form-card { padding: 32px 28px; }
+        .form-section { margin-bottom: 26px; }
+        .section-title { font-size: 10px; margin-bottom: 15px; }
+        .avatar-block { padding: 20px; gap: 20px; }
+        .avatar-box { width: 105px; height: 105px; }
+        .avatar-letter { font-size: 44px; }
+        .avatar-overlay-content svg { width: 26px; height: 26px; }
+        .avatar-info h3 { font-size: 14px; }
+        .avatar-info p { font-size: 11px; }
+        .btn-upload, .btn-remove { padding: 7px 13px; font-size: 10px; }
+        .input-custom { padding: 12px 15px !important; font-size: 13px !important; }
+        .readonly-box { padding: 13px 15px; font-size: 12px; }
+        .btn-submit { padding: 13px 34px; font-size: 12px; }
+        .btn-delete { padding: 13px 26px; font-size: 12px; }
+    }
+
+    /* Планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .edit-user-page { padding: 32px 20px 50px; }
+        .edit-topbar { margin-bottom: 20px; padding: 16px 18px; gap: 12px; border-radius: 13px; }
+        .edit-topbar-left { gap: 12px; }
+        .edit-topbar-icon { width: 44px; height: 44px; border-radius: 12px; }
+        .edit-topbar-icon svg { width: 22px; height: 22px; }
+        .edit-topbar-title { font-size: 18px; white-space: normal; }
+        .edit-topbar-subtitle { font-size: 11px; gap: 6px; margin-top: 2px; }
+        .meta-pill { padding: 3px 8px !important; font-size: 10px !important; }
+        .btn-back { padding: 9px 16px; font-size: 11px; border-radius: 9px; gap: 7px; }
+        .btn-back svg { width: 13px; height: 13px; }
+        .form-card { padding: 28px 24px; border-radius: 13px; }
+        .form-section { margin-bottom: 24px; }
+        .section-title { font-size: 10px; letter-spacing: 1.4px; margin-bottom: 14px; gap: 9px; }
+        .section-title::before { width: 3px; height: 13px; }
+        .avatar-block { padding: 18px; gap: 18px; border-radius: 13px; }
+        .avatar-box { width: 100px; height: 100px; border-radius: 15px; }
+        .avatar-letter { font-size: 42px; }
+        .avatar-overlay-content svg { width: 24px; height: 24px; }
+        .avatar-overlay-content span { font-size: 9px; }
+        .avatar-info h3 { font-size: 14px; }
+        .avatar-info p { font-size: 11px; }
+        .avatar-actions { gap: 7px; margin-top: 10px; }
+        .btn-upload, .btn-remove { padding: 7px 12px; font-size: 10px; border-radius: 8px; }
+        .btn-upload svg, .btn-remove svg { width: 12px; height: 12px; }
+        .avatar-file-name { font-size: 11px; margin-top: 8px; }
+        .field-group { margin-bottom: 16px; }
+        .field-row { gap: 14px; }
+        .field-label { font-size: 10px; letter-spacing: 0.9px; margin-bottom: 7px; }
+        .input-custom { padding: 12px 14px !important; font-size: 13px !important; border-radius: 9px !important; }
+        .readonly-box { padding: 12px 14px; border-radius: 9px; font-size: 12px; gap: 8px; }
+        .readonly-box .lock-icon { width: 26px; height: 26px; }
+        .readonly-box .meta-item { font-size: 11px; padding: 3px 9px; }
+        .password-toggle { right: 11px; }
+        .password-toggle svg { width: 17px; height: 17px; }
+        .submit-wrap { padding-top: 22px; margin-top: 26px; gap: 10px; }
+        .btn-submit { padding: 12px 32px; font-size: 12px; border-radius: 10px; letter-spacing: 1.1px; }
+        .btn-submit svg { width: 17px; height: 17px; }
+        .btn-delete { padding: 12px 24px; font-size: 12px; border-radius: 10px; letter-spacing: 1.1px; }
+        .btn-delete svg { width: 17px; height: 17px; }
+    }
+
+    /* Большие телефоны (до 768px) */
+    @media (max-width: 768px) {
+        .edit-user-page { padding: 28px 18px 45px; }
+        .edit-topbar { margin-bottom: 18px; padding: 15px 16px; gap: 11px; border-radius: 12px; }
+        .edit-topbar-left { gap: 11px; }
+        .edit-topbar-icon { width: 42px; height: 42px; border-radius: 11px; }
+        .edit-topbar-icon svg { width: 21px; height: 21px; }
+        .edit-topbar-title { font-size: 17px; }
+        .edit-topbar-subtitle { font-size: 10px; gap: 6px; }
+        .meta-pill { padding: 3px 7px !important; font-size: 10px !important; gap: 4px; }
+        .btn-back { padding: 9px 15px; font-size: 11px; border-radius: 9px; gap: 6px; letter-spacing: 0.7px; }
+        .btn-back svg { width: 13px; height: 13px; }
+        .form-card { padding: 24px 20px; border-radius: 12px; }
+        .form-section { margin-bottom: 22px; }
+        .section-title { font-size: 10px; letter-spacing: 1.3px; margin-bottom: 13px; gap: 8px; }
+        .section-title::before { width: 3px; height: 12px; }
+        .avatar-block { padding: 16px; gap: 16px; border-radius: 12px; }
+        .avatar-box { width: 90px; height: 90px; border-radius: 14px; }
+        .avatar-letter { font-size: 38px; }
+        .avatar-overlay-content svg { width: 22px; height: 22px; }
+        .avatar-overlay-content span { font-size: 9px; }
+        .avatar-info h3 { font-size: 13px; }
+        .avatar-info p { font-size: 11px; }
+        .avatar-actions { gap: 6px; margin-top: 10px; }
+        .btn-upload, .btn-remove { padding: 7px 11px; font-size: 10px; border-radius: 8px; }
+        .avatar-file-name { font-size: 11px; margin-top: 8px; }
+        .field-group { margin-bottom: 15px; }
+        .field-row { gap: 13px; }
+        .field-label { font-size: 10px; letter-spacing: 0.8px; margin-bottom: 7px; }
+        .input-custom { padding: 11px 14px !important; font-size: 13px !important; border-radius: 9px !important; }
+        .readonly-box { padding: 11px 13px; border-radius: 9px; font-size: 11px; gap: 7px; }
+        .readonly-box .lock-icon { width: 24px; height: 24px; border-radius: 7px; }
+        .readonly-box .lock-icon svg { width: 13px; height: 13px; }
+        .readonly-box .meta-item { font-size: 10px; padding: 3px 8px; }
+        .password-toggle { right: 10px; }
+        .password-toggle svg { width: 16px; height: 16px; }
+        .submit-wrap { padding-top: 20px; margin-top: 24px; gap: 10px; }
+        .btn-submit { padding: 12px 30px; font-size: 11px; border-radius: 10px; letter-spacing: 1px; }
+        .btn-submit svg { width: 16px; height: 16px; }
+        .btn-delete { padding: 12px 22px; font-size: 11px; border-radius: 10px; letter-spacing: 1px; }
+        .btn-delete svg { width: 16px; height: 16px; }
+    }
+
+    /* Телефоны (до 640px) */
     @media (max-width: 640px) {
         .edit-user-page { padding: 24px 16px 40px; }
-        .edit-topbar { flex-direction: column; align-items: flex-start; }
-        .btn-back { width: 100%; justify-content: center; }
-        .form-card { padding: 24px 18px; }
-        .avatar-block { flex-direction: column; text-align: center; padding: 20px; }
-        .avatar-actions { justify-content: center; }
-        .edit-topbar-title { font-size: 18px; }
-        .submit-wrap { flex-direction: column; }
-        .btn-submit, .btn-delete { width: 100%; justify-content: center; }
+        .edit-topbar {
+            flex-direction: column;
+            align-items: stretch;
+            margin-bottom: 16px;
+            padding: 14px;
+            gap: 12px;
+            border-radius: 11px;
+        }
+        .edit-topbar-left { gap: 10px; width: 100%; }
+        .edit-topbar-icon { width: 40px; height: 40px; border-radius: 10px; }
+        .edit-topbar-icon svg { width: 20px; height: 20px; }
+        .edit-topbar-title { font-size: 16px; white-space: normal; }
+        .edit-topbar-subtitle { font-size: 10px; gap: 5px; }
+        .meta-pill { padding: 2px 7px !important; font-size: 9px !important; }
+        .btn-back {
+            width: 100%;
+            justify-content: center;
+            padding: 10px 14px;
+            font-size: 10px;
+            border-radius: 9px;
+        }
+        .btn-back svg { width: 12px; height: 12px; }
+        .form-card { padding: 22px 18px; border-radius: 11px; }
+        .form-section { margin-bottom: 20px; }
+        .section-title { font-size: 9px; letter-spacing: 1.2px; margin-bottom: 12px; gap: 7px; }
+        .section-title::before { width: 3px; height: 11px; }
+        .avatar-block {
+            flex-direction: column;
+            text-align: center;
+            padding: 18px;
+            gap: 14px;
+            border-radius: 11px;
+        }
+        .avatar-box { width: 85px; height: 85px; border-radius: 13px; }
+        .avatar-letter { font-size: 36px; }
+        .avatar-overlay-content svg { width: 20px; height: 20px; }
+        .avatar-info { text-align: center; width: 100%; }
+        .avatar-info h3 { font-size: 13px; }
+        .avatar-info p { font-size: 10px; }
+        .avatar-actions { justify-content: center; gap: 6px; margin-top: 10px; }
+        .btn-upload, .btn-remove { padding: 7px 11px; font-size: 9px; border-radius: 8px; }
+        .avatar-file-name { font-size: 10px; margin-top: 7px; text-align: center; }
+        .field-group { margin-bottom: 14px; }
+        .field-row { grid-template-columns: 1fr; gap: 14px; }
+        .field-label { font-size: 9px; letter-spacing: 0.7px; margin-bottom: 6px; }
+        .input-custom { padding: 11px 13px !important; font-size: 12px !important; border-radius: 8px !important; }
+        .readonly-box { padding: 10px 12px; border-radius: 8px; font-size: 11px; gap: 6px; justify-content: center; }
+        .readonly-box .lock-icon { width: 22px; height: 22px; border-radius: 6px; }
+        .readonly-box .meta-item { font-size: 10px; padding: 3px 7px; }
+        .password-toggle { right: 10px; padding: 5px; }
+        .password-toggle svg { width: 15px; height: 15px; }
+        .submit-wrap {
+            padding-top: 18px;
+            margin-top: 22px;
+            gap: 10px;
+            flex-direction: column;
+        }
+        .btn-submit, .btn-delete {
+            width: 100%;
+            justify-content: center;
+            padding: 12px 28px;
+            font-size: 11px;
+            border-radius: 9px;
+            letter-spacing: 1px;
+        }
+        .btn-submit svg, .btn-delete svg { width: 15px; height: 15px; }
+    }
+
+    /* Маленькие телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .edit-user-page { padding: 20px 14px 36px; }
+        .edit-topbar { margin-bottom: 14px; padding: 13px 12px; gap: 10px; border-radius: 10px; }
+        .edit-topbar-left { gap: 9px; }
+        .edit-topbar-icon { width: 38px; height: 38px; border-radius: 10px; }
+        .edit-topbar-icon svg { width: 19px; height: 19px; }
+        .edit-topbar-title { font-size: 15px; }
+        .edit-topbar-subtitle { font-size: 10px; gap: 4px; }
+        .meta-pill { padding: 2px 6px !important; font-size: 9px !important; }
+        .btn-back { padding: 9px 13px; font-size: 10px; border-radius: 8px; letter-spacing: 0.6px; }
+        .btn-back svg { width: 12px; height: 12px; }
+        .form-card { padding: 20px 16px; border-radius: 10px; }
+        .form-section { margin-bottom: 18px; }
+        .section-title { font-size: 9px; letter-spacing: 1.1px; margin-bottom: 11px; }
+        .avatar-block { padding: 16px; gap: 12px; border-radius: 10px; }
+        .avatar-box { width: 80px; height: 80px; border-radius: 12px; }
+        .avatar-letter { font-size: 34px; }
+        .avatar-overlay-content svg { width: 18px; height: 18px; }
+        .avatar-overlay-content span { font-size: 8px; }
+        .avatar-info h3 { font-size: 12px; }
+        .avatar-info p { font-size: 10px; }
+        .avatar-actions { gap: 5px; margin-top: 9px; }
+        .btn-upload, .btn-remove { padding: 6px 10px; font-size: 9px; border-radius: 7px; }
+        .btn-upload svg, .btn-remove svg { width: 11px; height: 11px; }
+        .avatar-file-name { font-size: 10px; }
+        .field-group { margin-bottom: 13px; }
+        .field-label { font-size: 9px; letter-spacing: 0.6px; margin-bottom: 6px; }
+        .input-custom { padding: 10px 12px !important; font-size: 12px !important; border-radius: 8px !important; }
+        .readonly-box { padding: 9px 11px; border-radius: 8px; font-size: 10px; gap: 5px; flex-direction: column; align-items: stretch; }
+        .readonly-box .lock-icon { width: 22px; height: 22px; align-self: center; }
+        .readonly-box .meta-item { font-size: 10px; padding: 3px 7px; justify-content: center; }
+        .password-toggle svg { width: 14px; height: 14px; }
+        .submit-wrap { padding-top: 16px; margin-top: 20px; }
+        .btn-submit, .btn-delete { padding: 11px 24px; font-size: 10px; border-radius: 8px; letter-spacing: 0.9px; }
+        .btn-submit svg, .btn-delete svg { width: 14px; height: 14px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .edit-user-page { padding: 18px 12px 32px; }
+        .edit-topbar { margin-bottom: 12px; padding: 12px 10px; gap: 9px; border-radius: 9px; }
+        .edit-topbar-left { gap: 8px; }
+        .edit-topbar-icon { width: 36px; height: 36px; border-radius: 9px; }
+        .edit-topbar-icon svg { width: 18px; height: 18px; }
+        .edit-topbar-title { font-size: 14px; }
+        .edit-topbar-subtitle { font-size: 9px; }
+        .meta-pill { padding: 2px 5px !important; font-size: 8px !important; }
+        .btn-back { padding: 8px 12px; font-size: 9px; border-radius: 7px; }
+        .btn-back svg { width: 11px; height: 11px; }
+        .form-card { padding: 18px 14px; border-radius: 9px; }
+        .form-section { margin-bottom: 16px; }
+        .section-title { font-size: 8px; letter-spacing: 1px; margin-bottom: 10px; }
+        .avatar-block { padding: 14px; gap: 11px; border-radius: 9px; }
+        .avatar-box { width: 75px; height: 75px; border-radius: 11px; }
+        .avatar-letter { font-size: 32px; }
+        .avatar-overlay-content svg { width: 16px; height: 16px; }
+        .avatar-overlay-content span { font-size: 8px; }
+        .avatar-info h3 { font-size: 12px; }
+        .avatar-info p { font-size: 9px; }
+        .avatar-actions { gap: 5px; }
+        .btn-upload, .btn-remove { padding: 6px 9px; font-size: 8px; }
+        .avatar-file-name { font-size: 9px; }
+        .field-group { margin-bottom: 12px; }
+        .field-label { font-size: 8px; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .input-custom { padding: 10px 11px !important; font-size: 11px !important; border-radius: 7px !important; }
+        .readonly-box { padding: 8px 10px; }
+        .readonly-box .meta-item { font-size: 9px; }
+        .password-toggle svg { width: 13px; height: 13px; }
+        .submit-wrap { padding-top: 14px; margin-top: 18px; }
+        .btn-submit, .btn-delete { padding: 10px 22px; font-size: 10px; border-radius: 7px; }
+        .btn-submit svg, .btn-delete svg { width: 13px; height: 13px; }
     }
 </style>
 
@@ -871,8 +1125,7 @@
                     </div>
                 </div>
 
-                {{-- КНОПКИ --}}
-                {{-- КНОПКА СОХРАНИТЬ (внутри формы обновления) --}}
+                {{-- КНОПКА СОХРАНИТЬ --}}
                 <div class="submit-wrap">
                     <button type="submit" class="btn-submit">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
@@ -881,9 +1134,9 @@
                         <span data-i18n="save">Сохранить</span>
                     </button>
                 </div>
-            </form> {{-- ← ЗАКРЫВАЕМ ФОРМУ ОБНОВЛЕНИЯ ЗДЕСЬ --}}
+            </form>
 
-            {{-- ✅ ФОРМА УДАЛЕНИЯ - ОТДЕЛЬНО, ВНЕ ФОРМЫ ОБНОВЛЕНИЯ --}}
+            {{-- ФОРМА УДАЛЕНИЯ --}}
             @if((int)$user->created_by === auth()->id())
             <div class="submit-wrap" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line);">
                 <form method="POST" action="{{ route('users.destroy', $user->id) }}" onsubmit="return confirm('{{ __('users.confirm_delete') }}')" style="margin: 0;">
@@ -898,10 +1151,6 @@
                 </form>
             </div>
             @endif
-        </div> {{-- ← закрываем .form-card --}}
-    </div> {{-- ← закрываем .edit-wrap --}}
-</div> {{-- ← закрываем .edit-user-page --}}
-            </form>
         </div>
     </div>
 </div>
@@ -914,7 +1163,6 @@
         if (input.files && input.files[0]) {
             const file = input.files[0];
 
-            // Проверка размера (2MB) — берём АКТУАЛЬНЫЙ язык
             if (file.size > 2 * 1024 * 1024) {
                 const lang = localStorage.getItem('docsign_lang') || 'ru';
                 const alerts = {
@@ -946,7 +1194,6 @@
     // УДАЛЕНИЕ АВАТАРА
     // ============================================================
     function removeAvatar() {
-        // Берём АКТУАЛЬНЫЙ язык в момент вызова
         const lang = localStorage.getItem('docsign_lang') || 'ru';
         const confirms = {
             ru: 'Удалить фотографию профиля?',
@@ -1005,9 +1252,6 @@
     // ПЕРЕВОДЫ
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-        // ============================================================
-        // ЛОКАЛЬНЫЙ СЛОВАРЬ СТРАНИЦЫ РЕДАКТИРОВАНИЯ ПОЛЬЗОВАТЕЛЯ
-        // ============================================================
         const EDIT_USER_TRANSLATIONS = {
             ru: {
                 editUser: 'Редактировать',
@@ -1083,46 +1327,36 @@
             }
         };
 
-        // ============================================================
-        // ФУНКЦИЯ ПРИМЕНЕНИЯ ПЕРЕВОДОВ
-        // ============================================================
         function applyEditUserTranslations(lang) {
             const dict = EDIT_USER_TRANSLATIONS[lang] || EDIT_USER_TRANSLATIONS.ru;
 
-            // 1) Переводим все элементы с data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (dict[key] !== undefined) el.textContent = dict[key];
             });
 
-            // 2) Переводим placeholder
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
             });
 
-            // 3) Переводим title
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
                 const key = el.getAttribute('data-i18n-title');
                 if (dict[key] !== undefined) el.setAttribute('title', dict[key]);
             });
 
-            // 4) Обновляем обработчики confirm для форм удаления
             document.querySelectorAll('[data-confirm-i18n]').forEach(el => {
                 const key = el.getAttribute('data-confirm-i18n');
                 const message = dict[key] || 'Are you sure?';
 
-                // Клонируем элемент, чтобы сбросить старые обработчики
                 const newEl = el.cloneNode(true);
                 el.parentNode.replaceChild(newEl, el);
 
-                // Если дата-атрибут на форме
                 if (newEl.tagName === 'FORM') {
                     newEl.onsubmit = (e) => {
                         if (!confirm(message)) e.preventDefault();
                     };
                 } else {
-                    // Если на кнопке
                     const form = newEl.closest('form');
                     if (form) {
                         form.onsubmit = (e) => {
@@ -1133,9 +1367,7 @@
             });
         }
 
-        // ============================================================
         // ПАРАЛЛАКС ДЛЯ ФОНОВЫХ ПЯТЕН
-        // ============================================================
         const blobs = document.querySelectorAll('.edit-blob');
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 30;
@@ -1146,23 +1378,14 @@
             });
         });
 
-        // ============================================================
-        // 1. Применяем сразу при загрузке
-        // ============================================================
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';
         applyEditUserTranslations(initialLang);
 
-        // ============================================================
-        // 2. Слушаем событие смены языка от layouts/admin.blade.php
-        // ============================================================
         window.addEventListener('docsign:lang-changed', (e) => {
             const lang = e.detail?.lang || 'ru';
             applyEditUserTranslations(lang);
         });
 
-        // ============================================================
-        // 3. Синхронизация между вкладками браузера
-        // ============================================================
         window.addEventListener('storage', (e) => {
             if (e.key === 'docsign_lang' && e.newValue) {
                 applyEditUserTranslations(e.newValue);

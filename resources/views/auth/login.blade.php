@@ -653,13 +653,136 @@
             color: #f87171;
         }
 
+        /* ===== RESPONSIVE ===== */
+
+        /* Планшеты и маленькие ноутбуки (до 768px) */
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .lang-switcher { top: 16px; right: 16px; }
+            .lang-btn { padding: 7px 12px; font-size: 12px; }
+            .login-card { padding: 40px 32px; border-radius: 22px; }
+            .logo-section { margin-bottom: 32px; }
+            .logo-img { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 14px; }
+            .logo-title { font-size: 26px; }
+            .logo-subtitle { font-size: 11px; letter-spacing: 1.8px; }
+            .form-group { margin-bottom: 18px; }
+            .form-label { font-size: 12px; margin-bottom: 7px; }
+            .form-input { padding: 13px 15px 13px 44px; font-size: 14px; border-radius: 12px; }
+            .input-icon { left: 15px; width: 18px; height: 18px; }
+            .toggle-password { right: 12px; }
+            .toggle-password svg { width: 16px; height: 16px; }
+            .form-options { margin-bottom: 24px; }
+            .remember-me { font-size: 12px; gap: 8px; }
+            .custom-checkbox { width: 18px; height: 18px; }
+            .forgot-link { font-size: 12px; }
+            .submit-btn { padding: 15px; font-size: 14px; border-radius: 12px; }
+            .submit-btn .btn-text { gap: 7px; }
+            .submit-btn .btn-arrow { width: 16px; height: 16px; }
+            .submit-btn.loading::after { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+            .divider { margin: 24px 0; gap: 14px; }
+            .divider-text { font-size: 11px; }
+            .register-text { font-size: 13px; }
+            .session-status { padding: 11px 14px; font-size: 12px; border-radius: 10px; }
+            .notification { padding: 12px 20px; font-size: 13px; border-radius: 10px; top: 16px; }
+        }
+
+        /* Большие телефоны (до 520px) */
         @media (max-width: 520px) {
             .container { padding: 16px; }
+            .lang-switcher { top: 12px; right: 12px; padding: 3px; gap: 1px; border-radius: 10px; }
+            .lang-btn { padding: 6px 10px; font-size: 11px; border-radius: 7px; }
             .login-card { padding: 36px 24px; border-radius: 20px; }
+            .logo-section { margin-bottom: 28px; }
+            .logo-img { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 12px; }
             .logo-title { font-size: 24px; }
-            .lang-switcher { top: 12px; right: 12px; }
-            .lang-btn { padding: 6px 10px; font-size: 12px; }
-            .form-options { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .logo-subtitle { font-size: 10px; letter-spacing: 1.6px; }
+            .form-group { margin-bottom: 16px; }
+            .form-label { font-size: 12px; margin-bottom: 6px; }
+            .form-input { padding: 12px 14px 12px 42px; font-size: 14px; border-radius: 11px; }
+            .input-icon { left: 14px; width: 18px; height: 18px; }
+            .toggle-password { right: 10px; padding: 3px; }
+            .toggle-password svg { width: 16px; height: 16px; }
+            .error-message { font-size: 11px; margin-top: 5px; }
+            .form-options { flex-direction: column; gap: 12px; align-items: flex-start; margin-bottom: 22px; }
+            .remember-me { font-size: 12px; gap: 8px; }
+            .custom-checkbox { width: 18px; height: 18px; border-radius: 5px; }
+            .custom-checkbox svg { width: 10px; height: 10px; }
+            .forgot-link { font-size: 12px; }
+            .submit-btn { padding: 14px; font-size: 14px; border-radius: 11px; }
+            .submit-btn .btn-text { gap: 6px; }
+            .submit-btn .btn-arrow { width: 16px; height: 16px; }
+            .submit-btn.loading::after { width: 20px; height: 20px; margin: -10px 0 0 -10px; border-width: 2px; }
+            .divider { margin: 22px 0; gap: 12px; }
+            .divider-text { font-size: 11px; }
+            .register-text { font-size: 13px; }
+            .session-status { padding: 10px 13px; font-size: 12px; border-radius: 10px; margin-bottom: 18px; }
+            .notification { padding: 11px 18px; font-size: 12px; border-radius: 9px; top: 12px; max-width: 92%; }
+        }
+
+        /* Телефоны (до 480px) */
+        @media (max-width: 480px) {
+            .container { padding: 12px; }
+            .lang-switcher { top: 10px; right: 10px; padding: 3px; gap: 1px; border-radius: 9px; }
+            .lang-btn { padding: 5px 9px; font-size: 10px; border-radius: 6px; letter-spacing: 0.3px; }
+            .login-card { padding: 32px 20px; border-radius: 18px; }
+            .logo-section { margin-bottom: 24px; }
+            .logo-img { width: 60px; height: 60px; border-radius: 15px; margin-bottom: 10px; }
+            .logo-title { font-size: 22px; }
+            .logo-subtitle { font-size: 10px; letter-spacing: 1.4px; }
+            .form-group { margin-bottom: 14px; }
+            .form-label { font-size: 11px; margin-bottom: 5px; }
+            .form-input { padding: 11px 13px 11px 40px; font-size: 13px; border-radius: 10px; }
+            .input-icon { left: 13px; width: 16px; height: 16px; }
+            .toggle-password { right: 9px; padding: 3px; }
+            .toggle-password svg { width: 15px; height: 15px; }
+            .error-message { font-size: 10px; margin-top: 4px; }
+            .form-options { flex-direction: column; gap: 10px; align-items: flex-start; margin-bottom: 20px; }
+            .remember-me { font-size: 11px; gap: 7px; }
+            .custom-checkbox { width: 17px; height: 17px; border-radius: 5px; }
+            .custom-checkbox svg { width: 9px; height: 9px; }
+            .forgot-link { font-size: 11px; }
+            .submit-btn { padding: 13px; font-size: 13px; border-radius: 10px; letter-spacing: 0.2px; }
+            .submit-btn .btn-text { gap: 5px; }
+            .submit-btn .btn-arrow { width: 15px; height: 15px; }
+            .submit-btn.loading::after { width: 18px; height: 18px; margin: -9px 0 0 -9px; border-width: 2px; }
+            .divider { margin: 20px 0; gap: 10px; }
+            .divider-text { font-size: 10px; }
+            .register-text { font-size: 12px; }
+            .session-status { padding: 9px 12px; font-size: 11px; border-radius: 9px; margin-bottom: 16px; }
+            .notification { padding: 10px 16px; font-size: 11px; border-radius: 8px; top: 10px; max-width: 94%; }
+        }
+
+        /* Очень маленькие телефоны (до 380px) */
+        @media (max-width: 380px) {
+            .container { padding: 10px; }
+            .lang-switcher { top: 8px; right: 8px; padding: 2px; gap: 1px; border-radius: 8px; }
+            .lang-btn { padding: 4px 8px; font-size: 9px; border-radius: 5px; }
+            .login-card { padding: 28px 16px; border-radius: 16px; }
+            .logo-section { margin-bottom: 20px; }
+            .logo-img { width: 56px; height: 56px; border-radius: 14px; margin-bottom: 9px; }
+            .logo-title { font-size: 20px; }
+            .logo-subtitle { font-size: 9px; letter-spacing: 1.2px; }
+            .form-group { margin-bottom: 12px; }
+            .form-label { font-size: 10px; margin-bottom: 4px; }
+            .form-input { padding: 10px 12px 10px 38px; font-size: 12px; border-radius: 9px; }
+            .input-icon { left: 12px; width: 15px; height: 15px; }
+            .toggle-password { right: 8px; padding: 2px; }
+            .toggle-password svg { width: 14px; height: 14px; }
+            .error-message { font-size: 9px; margin-top: 3px; }
+            .form-options { flex-direction: column; gap: 8px; align-items: flex-start; margin-bottom: 18px; }
+            .remember-me { font-size: 10px; gap: 6px; }
+            .custom-checkbox { width: 16px; height: 16px; border-radius: 4px; }
+            .custom-checkbox svg { width: 8px; height: 8px; }
+            .forgot-link { font-size: 10px; }
+            .submit-btn { padding: 12px; font-size: 12px; border-radius: 9px; }
+            .submit-btn .btn-text { gap: 4px; }
+            .submit-btn .btn-arrow { width: 14px; height: 14px; }
+            .submit-btn.loading::after { width: 16px; height: 16px; margin: -8px 0 0 -8px; }
+            .divider { margin: 18px 0; gap: 8px; }
+            .divider-text { font-size: 9px; }
+            .register-text { font-size: 11px; }
+            .session-status { padding: 8px 11px; font-size: 10px; border-radius: 8px; margin-bottom: 14px; }
+            .notification { padding: 9px 14px; font-size: 10px; border-radius: 7px; top: 8px; }
         }
     </style>
 </head>
@@ -732,9 +855,9 @@
         <!-- Logo -->
         <div class="logo-section">
             <img
-                src="https://image.qwenlm.ai/public_source/5fabf35d-788a-476d-8837-6431dd4fb2c8/1bb634345-5339-4471-924b-764b665ee39d.png"
-                alt="DocSign Logo"
-                class="logo-img"
+                    src="https://image.qwenlm.ai/public_source/5fabf35d-788a-476d-8837-6431dd4fb2c8/1bb634345-5339-4471-924b-764b665ee39d.png"
+                    alt="DocSign Logo"
+                    class="logo-img"
             >
             <div class="logo-title">Doc<span>Sign</span></div>
             <div class="logo-subtitle" data-i18n="subtitle">Система электронного документооборота</div>
@@ -742,7 +865,7 @@
 
         <!-- Session Status -->
         @if (session('status'))
-            <div class="session-status success">{{ session('status') }}</div>
+        <div class="session-status success">{{ session('status') }}</div>
         @endif
 
         <!-- Laravel Login Form -->
@@ -754,16 +877,16 @@
                 <label class="form-label" for="email" data-i18n="emailLabel">Электронная почта</label>
                 <div class="input-wrapper">
                     <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        class="form-input @error('email') error @enderror"
-                        value="{{ old('email') }}"
-                        data-i18n-placeholder="emailPlaceholder"
-                        placeholder="name@company.com"
-                        required
-                        autofocus
-                        autocomplete="username"
+                            type="email"
+                            name="email"
+                            id="email"
+                            class="form-input @error('email') error @enderror"
+                            value="{{ old('email') }}"
+                            data-i18n-placeholder="emailPlaceholder"
+                            placeholder="name@company.com"
+                            required
+                            autofocus
+                            autocomplete="username"
                     >
                     <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -780,14 +903,14 @@
                 <label class="form-label" for="password" data-i18n="passwordLabel">Пароль</label>
                 <div class="input-wrapper">
                     <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        class="form-input @error('password') error @enderror"
-                        data-i18n-placeholder="passwordPlaceholder"
-                        placeholder="••••••••••"
-                        required
-                        autocomplete="current-password"
+                            type="password"
+                            name="password"
+                            id="password"
+                            class="form-input @error('password') error @enderror"
+                            data-i18n-placeholder="passwordPlaceholder"
+                            placeholder="••••••••••"
+                            required
+                            autocomplete="current-password"
                     >
                     <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
@@ -817,7 +940,7 @@
                     <span data-i18n="remember">Запомнить меня</span>
                 </label>
                 @if (Route::has('password.request'))
-                    <a class="forgot-link" href="{{ route('password.request') }}" data-i18n="forgot">Забыли пароль?</a>
+                <a class="forgot-link" href="{{ route('password.request') }}" data-i18n="forgot">Забыли пароль?</a>
                 @endif
             </div>
 
@@ -1017,4 +1140,3 @@
 </script>
 </body>
 </html>
-

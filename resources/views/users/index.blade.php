@@ -79,6 +79,8 @@
         display: flex;
         align-items: center;
         gap: 16px;
+        min-width: 0;
+        flex: 1;
     }
 
     .users-topbar-icon {
@@ -89,6 +91,7 @@
         display: grid;
         place-items: center;
         box-shadow: 0 0 24px rgba(var(--glow), 0.5), inset 0 0 12px rgba(255,255,255,0.2);
+        flex-shrink: 0;
     }
 
     .users-topbar-icon svg {
@@ -104,6 +107,7 @@
         letter-spacing: -0.3px;
         margin: 0;
         line-height: 1.2;
+        word-break: break-word;
     }
 
     .users-topbar-subtitle {
@@ -129,6 +133,8 @@
         transition: all 0.25s ease;
         box-shadow: 0 8px 24px rgba(var(--glow), 0.35), inset 0 1px 0 rgba(255,255,255,0.3);
         border: 1px solid transparent;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
 
     .btn-add:hover {
@@ -148,7 +154,7 @@
         margin: 0 auto 32px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 7px;
+        gap: 12px;
         position: relative;
         z-index: 1;
     }
@@ -375,7 +381,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 12px;
+        gap: 16px;
     }
 
     /* === USER CARD (COMPACT) === */
@@ -386,7 +392,7 @@
         border-radius: var(--radius);
         overflow: hidden;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        width: 210px;
+        width: 220px;
         flex-shrink: 0;
     }
 
@@ -415,7 +421,7 @@
     .user-photo {
         position: relative;
         width: 100%;
-        height: 105px;
+        height: 110px;
         overflow: hidden;
         background: linear-gradient(135deg, rgba(var(--glow), 0.35), rgba(168, 85, 247, 0.25));
     }
@@ -461,6 +467,7 @@
         justify-content: space-between;
         align-items: flex-start;
         z-index: 2;
+        gap: 6px;
     }
 
     .status-pill {
@@ -477,6 +484,7 @@
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255,255,255,0.18);
         box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+        white-space: nowrap;
     }
 
     .status-pill.online {
@@ -494,6 +502,7 @@
         height: 6px;
         border-radius: 50%;
         background: currentColor;
+        flex-shrink: 0;
     }
 
     .status-dot.active {
@@ -518,11 +527,13 @@
         background: rgba(var(--glow), 0.95);
         color: #0a0d14;
         box-shadow: 0 0 14px rgba(var(--glow), 0.7);
+        white-space: nowrap;
     }
 
     .level-pill svg {
         width: 10px;
         height: 10px;
+        flex-shrink: 0;
     }
 
     /* User body */
@@ -538,6 +549,9 @@
         margin: 0 0 8px;
         letter-spacing: -0.2px;
         line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .user-name a {
@@ -564,6 +578,9 @@
         background: rgba(var(--glow), 0.15);
         border: 1px solid rgba(var(--glow), 0.3);
         margin-bottom: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .admin-tag {
@@ -638,6 +655,9 @@
         font-size: 11px;
         font-weight: 700;
         color: var(--text);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     /* Action row */
@@ -667,12 +687,14 @@
         text-decoration: none;
         transition: all 0.25s ease;
         cursor: pointer;
+        white-space: nowrap;
     }
 
     .act-btn i {
         width: 11px;
         height: 11px;
         font-size: 11px;
+        flex-shrink: 0;
     }
 
     .act-btn.view:hover {
@@ -733,15 +755,301 @@
         margin-bottom: 28px;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-        .users-tree-page { padding: 24px 16px 40px; }
-        .users-topbar { flex-direction: column; align-items: flex-start; }
-        .btn-add { width: 100%; justify-content: center; }
-        .tree-wrap { padding: 24px 16px; }
-        .tree-header h2 { font-size: 20px; }
-        .user-card { width: 100%; max-width: 100%; }
+    /* ============================================ */
+    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+    /* ============================================ */
+
+    /* Маленькие десктопы (до 1200px) */
+    @media (max-width: 1200px) {
+        .users-tree-page { padding: 36px 22px 55px; }
+        .users-topbar { margin-bottom: 24px; gap: 14px; }
+        .users-topbar-icon { width: 48px; height: 48px; border-radius: 13px; }
+        .users-topbar-icon svg { width: 24px; height: 24px; }
+        .users-topbar-title { font-size: 22px; }
+        .users-topbar-subtitle { font-size: 12px; }
+        .btn-add { padding: 11px 20px; font-size: 11px; }
+        .stats-row { margin-bottom: 28px; gap: 10px; }
+        .stat-card { padding: 20px; gap: 16px; }
+        .stat-icon { width: 38px; height: 38px; border-radius: 11px; }
+        .stat-value { font-size: 26px; }
+        .stat-label { font-size: 11px; }
+        .tree-wrap { padding: 36px 28px; }
+        .tree-header { margin-bottom: 36px; }
+        .tree-header h2 { font-size: 24px; }
+        .tree-header p { font-size: 12px; }
+        .user-card { width: 210px; }
+        .user-photo { height: 105px; }
+        .user-photo-placeholder { font-size: 40px; }
+    }
+
+    /* Планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .users-tree-page { padding: 32px 20px 50px; }
+        .users-topbar { margin-bottom: 22px; gap: 12px; }
+        .users-topbar-left { gap: 14px; }
+        .users-topbar-icon { width: 44px; height: 44px; border-radius: 12px; }
+        .users-topbar-icon svg { width: 22px; height: 22px; }
+        .users-topbar-title { font-size: 20px; }
+        .users-topbar-subtitle { font-size: 12px; margin-top: 2px; }
+        .btn-add { padding: 10px 18px; font-size: 11px; border-radius: 9px; }
+        .btn-add svg { width: 15px; height: 15px; }
+        .stats-row { margin-bottom: 26px; gap: 10px; }
+        .stat-card { padding: 18px; gap: 14px; border-radius: 13px; }
+        .stat-icon { width: 36px; height: 36px; border-radius: 10px; }
+        .stat-icon svg, .stat-icon i { width: 22px; height: 22px; }
         .stat-value { font-size: 24px; }
+        .stat-label { font-size: 10px; letter-spacing: 0.7px; margin-top: 5px; }
+        .tree-wrap { padding: 32px 24px; border-radius: 13px; }
+        .tree-header { margin-bottom: 32px; }
+        .tree-header h2 { font-size: 22px; margin-bottom: 6px; }
+        .tree-header p { font-size: 12px; }
+        .level-section { margin-bottom: 36px; }
+        .level-connector { height: 32px; margin-bottom: 20px; }
+        .level-bar { padding: 8px 18px; font-size: 11px; gap: 10px; }
+        .level-header { margin-bottom: 20px; }
+        .users-grid { gap: 14px; }
+        .user-card { width: 200px; border-radius: 13px; }
+        .user-photo { height: 100px; }
+        .user-photo-placeholder { font-size: 38px; }
+        .photo-top { top: 7px; left: 7px; right: 7px; gap: 5px; }
+        .status-pill { padding: 3px 7px; font-size: 8px; }
+        .level-pill { padding: 3px 7px; font-size: 8px; }
+        .level-pill svg { width: 9px; height: 9px; }
+        .user-body { padding: 11px 11px 13px; }
+        .user-name { font-size: 13px; margin-bottom: 7px; }
+        .user-role { font-size: 9px; padding: 4px 9px; margin-bottom: 7px; }
+        .contact-row { padding: 4px 5px; font-size: 10px; gap: 7px; }
+        .contact-row i { width: 12px; height: 12px; font-size: 10px; }
+        .creator-box { padding: 6px 9px; margin: 7px 0; }
+        .creator-box-label { font-size: 8px; }
+        .creator-box-name { font-size: 10px; }
+        .action-row { gap: 4px; padding-top: 9px; margin-top: 9px; }
+        .act-btn { padding: 6px 3px; font-size: 8px; gap: 3px; }
+        .act-btn i { width: 10px; height: 10px; font-size: 10px; }
+        .empty-wrap { padding: 60px 18px; }
+        .empty-icon { width: 80px; height: 80px; border-radius: 22px; margin-bottom: 22px; }
+        .empty-icon i { font-size: 36px; }
+        .empty-title { font-size: 20px; margin-bottom: 9px; }
+        .empty-desc { font-size: 13px; margin-bottom: 24px; }
+    }
+
+    /* Большие телефоны (до 768px) */
+    @media (max-width: 768px) {
+        .users-tree-page { padding: 28px 18px 45px; }
+        .users-topbar {
+            flex-direction: column;
+            align-items: stretch;
+            margin-bottom: 20px;
+            gap: 12px;
+        }
+        .users-topbar-left { gap: 12px; width: 100%; }
+        .users-topbar-icon { width: 42px; height: 42px; border-radius: 11px; }
+        .users-topbar-icon svg { width: 21px; height: 21px; }
+        .users-topbar-title { font-size: 18px; }
+        .users-topbar-subtitle { font-size: 11px; }
+        .btn-add {
+            width: 100%;
+            justify-content: center;
+            padding: 11px 18px;
+            font-size: 11px;
+            border-radius: 10px;
+        }
+        .stats-row { margin-bottom: 24px; gap: 10px; }
+        .stat-card { padding: 16px; gap: 12px; border-radius: 12px; }
+        .stat-icon { width: 34px; height: 34px; border-radius: 9px; }
+        .stat-icon svg, .stat-icon i { width: 20px; height: 20px; }
+        .stat-value { font-size: 22px; }
+        .stat-label { font-size: 10px; margin-top: 4px; }
+        .tree-wrap { padding: 28px 20px; border-radius: 12px; }
+        .tree-header { margin-bottom: 28px; }
+        .tree-header h2 { font-size: 20px; margin-bottom: 5px; }
+        .tree-header p { font-size: 11px; }
+        .level-section { margin-bottom: 32px; }
+        .level-connector { height: 28px; margin-bottom: 18px; }
+        .level-connector::before, .level-connector::after { width: 9px; height: 9px; }
+        .level-bar { padding: 7px 16px; font-size: 10px; letter-spacing: 0.9px; }
+        .level-bar .count { font-size: 10px; padding: 2px 9px; }
+        .level-header { margin-bottom: 18px; }
+        .users-grid { gap: 12px; }
+        .user-card { width: 190px; border-radius: 12px; }
+        .user-photo { height: 95px; }
+        .user-photo-placeholder { font-size: 36px; }
+        .photo-top { top: 6px; left: 6px; right: 6px; }
+        .user-body { padding: 10px 10px 12px; }
+        .user-name { font-size: 13px; margin-bottom: 6px; }
+        .user-role { font-size: 9px; padding: 4px 8px; margin-bottom: 6px; }
+        .contact-row { padding: 4px 5px; font-size: 10px; gap: 6px; }
+        .creator-box { padding: 6px 8px; margin: 6px 0; }
+        .action-row { gap: 4px; padding-top: 8px; margin-top: 8px; }
+        .act-btn { padding: 6px 3px; font-size: 8px; }
+        .empty-wrap { padding: 50px 16px; }
+        .empty-icon { width: 75px; height: 75px; border-radius: 20px; }
+        .empty-icon i { font-size: 32px; }
+        .empty-title { font-size: 18px; }
+        .empty-desc { font-size: 12px; margin-bottom: 22px; }
+    }
+
+    /* Телефоны (до 640px) */
+    @media (max-width: 640px) {
+        .users-tree-page { padding: 24px 16px 40px; }
+        .users-topbar { margin-bottom: 18px; gap: 10px; }
+        .users-topbar-left { gap: 10px; }
+        .users-topbar-icon { width: 40px; height: 40px; border-radius: 10px; }
+        .users-topbar-icon svg { width: 20px; height: 20px; }
+        .users-topbar-title { font-size: 17px; }
+        .users-topbar-subtitle { font-size: 10px; }
+        .btn-add { padding: 10px 16px; font-size: 10px; border-radius: 9px; letter-spacing: 0.9px; }
+        .btn-add svg { width: 14px; height: 14px; }
+        .stats-row { margin-bottom: 22px; gap: 9px; }
+        .stat-card { padding: 14px; gap: 11px; border-radius: 11px; }
+        .stat-icon { width: 32px; height: 32px; border-radius: 9px; }
+        .stat-icon svg, .stat-icon i { width: 19px; height: 19px; }
+        .stat-value { font-size: 20px; }
+        .stat-label { font-size: 9px; letter-spacing: 0.6px; margin-top: 3px; }
+        .tree-wrap { padding: 24px 16px; border-radius: 11px; }
+        .tree-header { margin-bottom: 24px; }
+        .tree-header h2 { font-size: 18px; margin-bottom: 4px; }
+        .tree-header p { font-size: 11px; }
+        .level-section { margin-bottom: 28px; }
+        .level-connector { height: 24px; margin-bottom: 16px; }
+        .level-connector::before, .level-connector::after { width: 8px; height: 8px; }
+        .level-bar { padding: 7px 14px; font-size: 10px; letter-spacing: 0.8px; }
+        .level-bar .count { font-size: 9px; padding: 2px 8px; }
+        .level-header { margin-bottom: 16px; }
+        .users-grid { gap: 11px; }
+        .user-card { width: 100%; max-width: 340px; border-radius: 11px; }
+        .user-photo { height: 120px; }
+        .user-photo-placeholder { font-size: 44px; }
+        .photo-top { top: 8px; left: 8px; right: 8px; gap: 6px; }
+        .status-pill { padding: 4px 8px; font-size: 9px; }
+        .level-pill { padding: 4px 8px; font-size: 9px; }
+        .user-body { padding: 12px 12px 14px; }
+        .user-name { font-size: 14px; margin-bottom: 8px; }
+        .user-role { font-size: 10px; padding: 5px 10px; margin-bottom: 8px; }
+        .admin-tag { font-size: 9px; padding: 3px 8px; }
+        .contact-row { padding: 5px 6px; font-size: 11px; gap: 8px; }
+        .contact-row i { width: 13px; height: 13px; font-size: 11px; }
+        .creator-box { padding: 7px 10px; margin: 8px 0; }
+        .creator-box-label { font-size: 8px; }
+        .creator-box-name { font-size: 11px; }
+        .action-row { gap: 5px; padding-top: 10px; margin-top: 10px; }
+        .act-btn { padding: 7px 4px; font-size: 9px; gap: 4px; }
+        .act-btn i { width: 11px; height: 11px; font-size: 11px; }
+        .empty-wrap { padding: 45px 14px; }
+        .empty-icon { width: 70px; height: 70px; border-radius: 18px; margin-bottom: 20px; }
+        .empty-icon i { font-size: 30px; }
+        .empty-title { font-size: 17px; margin-bottom: 8px; }
+        .empty-desc { font-size: 12px; margin-bottom: 20px; }
+    }
+
+    /* Маленькие телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .users-tree-page { padding: 20px 14px 36px; }
+        .users-topbar { margin-bottom: 16px; gap: 9px; }
+        .users-topbar-left { gap: 9px; }
+        .users-topbar-icon { width: 38px; height: 38px; border-radius: 10px; }
+        .users-topbar-icon svg { width: 19px; height: 19px; }
+        .users-topbar-title { font-size: 16px; }
+        .users-topbar-subtitle { font-size: 10px; }
+        .btn-add { padding: 9px 14px; font-size: 10px; border-radius: 9px; letter-spacing: 0.8px; }
+        .btn-add svg { width: 13px; height: 13px; }
+        .stats-row { margin-bottom: 20px; gap: 8px; }
+        .stat-card { padding: 12px; gap: 10px; border-radius: 10px; }
+        .stat-icon { width: 30px; height: 30px; border-radius: 8px; }
+        .stat-icon svg, .stat-icon i { width: 18px; height: 18px; }
+        .stat-value { font-size: 19px; }
+        .stat-label { font-size: 9px; letter-spacing: 0.5px; }
+        .tree-wrap { padding: 20px 14px; border-radius: 10px; }
+        .tree-header { margin-bottom: 20px; }
+        .tree-header h2 { font-size: 17px; }
+        .tree-header p { font-size: 10px; }
+        .level-section { margin-bottom: 24px; }
+        .level-connector { height: 22px; margin-bottom: 14px; }
+        .level-bar { padding: 6px 12px; font-size: 9px; letter-spacing: 0.7px; }
+        .level-bar .count { font-size: 9px; padding: 2px 7px; }
+        .level-header { margin-bottom: 14px; }
+        .users-grid { gap: 10px; }
+        .user-card { max-width: 100%; border-radius: 10px; }
+        .user-photo { height: 110px; }
+        .user-photo-placeholder { font-size: 40px; }
+        .photo-top { top: 7px; left: 7px; right: 7px; }
+        .status-pill { padding: 3px 7px; font-size: 8px; }
+        .level-pill { padding: 3px 7px; font-size: 8px; }
+        .user-body { padding: 11px 11px 13px; }
+        .user-name { font-size: 13px; margin-bottom: 7px; }
+        .user-role { font-size: 9px; padding: 4px 9px; margin-bottom: 7px; }
+        .admin-tag { font-size: 8px; padding: 2px 7px; }
+        .contact-row { padding: 4px 5px; font-size: 10px; gap: 7px; }
+        .contact-row i { width: 12px; height: 12px; font-size: 10px; }
+        .creator-box { padding: 6px 9px; margin: 7px 0; }
+        .creator-box-label { font-size: 7px; }
+        .creator-box-name { font-size: 10px; }
+        .action-row {
+            gap: 4px;
+            padding-top: 9px;
+            margin-top: 9px;
+            flex-direction: column;
+        }
+        .act-btn {
+            padding: 8px 6px;
+            font-size: 9px;
+            gap: 5px;
+            justify-content: center;
+        }
+        .act-btn i { width: 11px; height: 11px; font-size: 11px; }
+        .empty-wrap { padding: 40px 12px; }
+        .empty-icon { width: 65px; height: 65px; border-radius: 17px; margin-bottom: 18px; }
+        .empty-icon i { font-size: 28px; }
+        .empty-title { font-size: 16px; }
+        .empty-desc { font-size: 11px; margin-bottom: 18px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .users-tree-page { padding: 18px 12px 32px; }
+        .users-topbar { margin-bottom: 14px; gap: 8px; }
+        .users-topbar-left { gap: 8px; }
+        .users-topbar-icon { width: 36px; height: 36px; border-radius: 9px; }
+        .users-topbar-icon svg { width: 18px; height: 18px; }
+        .users-topbar-title { font-size: 15px; }
+        .users-topbar-subtitle { font-size: 9px; }
+        .btn-add { padding: 9px 13px; font-size: 9px; border-radius: 8px; }
+        .btn-add svg { width: 12px; height: 12px; }
+        .stats-row { margin-bottom: 18px; gap: 7px; }
+        .stat-card { padding: 11px; gap: 9px; border-radius: 9px; }
+        .stat-icon { width: 28px; height: 28px; border-radius: 7px; }
+        .stat-icon svg, .stat-icon i { width: 16px; height: 16px; }
+        .stat-value { font-size: 18px; }
+        .stat-label { font-size: 8px; }
+        .tree-wrap { padding: 18px 12px; border-radius: 9px; }
+        .tree-header { margin-bottom: 18px; }
+        .tree-header h2 { font-size: 16px; }
+        .tree-header p { font-size: 10px; }
+        .level-section { margin-bottom: 22px; }
+        .level-connector { height: 20px; margin-bottom: 12px; }
+        .level-bar { padding: 6px 11px; font-size: 9px; }
+        .level-bar .count { font-size: 8px; padding: 2px 6px; }
+        .level-header { margin-bottom: 12px; }
+        .users-grid { gap: 9px; }
+        .user-card { border-radius: 9px; }
+        .user-photo { height: 100px; }
+        .user-photo-placeholder { font-size: 38px; }
+        .photo-top { top: 6px; left: 6px; right: 6px; }
+        .status-pill { padding: 3px 6px; font-size: 8px; }
+        .level-pill { padding: 3px 6px; font-size: 8px; }
+        .user-body { padding: 10px 10px 12px; }
+        .user-name { font-size: 12px; margin-bottom: 6px; }
+        .user-role { font-size: 9px; padding: 4px 8px; margin-bottom: 6px; }
+        .contact-row { padding: 4px 5px; font-size: 10px; }
+        .creator-box { padding: 5px 8px; }
+        .creator-box-name { font-size: 10px; }
+        .action-row { gap: 4px; padding-top: 8px; margin-top: 8px; }
+        .act-btn { padding: 7px 5px; font-size: 8px; }
+        .empty-wrap { padding: 35px 10px; }
+        .empty-icon { width: 60px; height: 60px; border-radius: 15px; }
+        .empty-icon i { font-size: 26px; }
+        .empty-title { font-size: 15px; }
+        .empty-desc { font-size: 10px; }
     }
 </style>
 
@@ -978,9 +1286,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // ============================================================
-        // ЛОКАЛЬНЫЙ СЛОВАРЬ СТРАНИЦЫ ДЕРЕВА ПОЛЬЗОВАТЕЛЕЙ
-        // ============================================================
         const USERS_TREE_TRANSLATIONS = {
             ru: {
                 addBtn: 'Добавить',
@@ -1050,9 +1355,6 @@
             }
         };
 
-        // ============================================================
-        // ФУНКЦИЯ ПРИМЕНЕНИЯ ПЕРЕВОДОВ
-        // ============================================================
         function applyUsersTreeTranslations(lang) {
             const dict = USERS_TREE_TRANSLATIONS[lang] || USERS_TREE_TRANSLATIONS.ru;
 
@@ -1093,9 +1395,6 @@
             });
         }
 
-        // ============================================================
-        // ПАРАЛЛАКС ДЛЯ ФОНОВЫХ ПЯТЕН
-        // ============================================================
         const blobs = document.querySelectorAll('.tree-blob');
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 30;
@@ -1110,23 +1409,14 @@
             });
         });
 
-        // ============================================================
-        // 1. Применяем сразу при загрузке
-        // ============================================================
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';
         applyUsersTreeTranslations(initialLang);
 
-        // ============================================================
-        // 2. Слушаем событие смены языка
-        // ============================================================
         window.addEventListener('docsign:lang-changed', (e) => {
             const lang = e.detail?.lang || 'ru';
             applyUsersTreeTranslations(lang);
         });
 
-        // ============================================================
-        // 3. Синхронизация между вкладками браузера
-        // ============================================================
         window.addEventListener('storage', (e) => {
             if (e.key === 'docsign_lang' && e.newValue) {
                 applyUsersTreeTranslations(e.newValue);

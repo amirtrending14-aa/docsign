@@ -503,12 +503,15 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
         justify-content: space-between;
         align-items: center;
         flex: 1;
+        gap: 12px;
     }
 
     .executor-info {
         display: flex;
         align-items: center;
         gap: 10px;
+        min-width: 0;
+        flex: 1;
     }
 
     .executor-avatar {
@@ -539,10 +542,14 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
         font-weight: 600;
         color: var(--text);
         letter-spacing: -0.2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .deadline-info {
         text-align: right;
+        flex-shrink: 0;
     }
 
     .deadline-label {
@@ -559,6 +566,7 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
         font-weight: 700;
         color: var(--text);
         font-family: 'JetBrains Mono', monospace;
+        white-space: nowrap;
     }
 
     .deadline-value.overdue {
@@ -720,17 +728,268 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
         pointer-events: none;
     }
 
-    /* Responsive */
+    /* ============================================ */
+    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+    /* ============================================ */
+
+    /* Маленькие десктопы (до 1200px) */
+    @media (max-width: 1200px) {
+        .sig-page { padding: 28px 20px; }
+        .sig-header { margin-bottom: 24px; }
+        .sig-title { font-size: 24px; }
+        .sig-title::before { width: 4px; height: 26px; }
+        .stats-grid { margin-bottom: 22px; gap: 14px; }
+        .stat-card { padding: 16px; }
+        .stat-icon { width: 40px; height: 40px; font-size: 19px; }
+        .stat-value { font-size: 24px; margin-top: 10px; }
+        .stat-label { font-size: 9px; }
+        .filters-bar { margin-bottom: 22px; }
+        .filter-btn { padding: 7px 14px; font-size: 11px; }
+        .signatures-grid { gap: 18px; }
+        .sig-card-header { padding: 14px 16px 11px; }
+        .sig-card-title { padding: 12px 16px 9px; }
+        .sig-card-title h3 { font-size: 15px; }
+        .doc-icon { width: 26px; height: 30px; font-size: 13px; }
+        .sig-area { min-height: 120px; padding: 14px; }
+        .sig-qr-wrapper img { width: 75px; height: 75px; }
+        .sig-card-meta { padding: 12px 16px; }
+        .executor-avatar { width: 34px; height: 34px; font-size: 11px; }
+        .executor-name { font-size: 12px; }
+        .deadline-value { font-size: 12px; }
+        .sig-progress { padding: 0 16px 12px; }
+        .sig-card-actions { padding: 11px 16px; gap: 18px; }
+        .pagination-btn { min-width: 130px; height: 42px; padding: 0 22px; font-size: 12px; }
+    }
+
+    /* Планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .sig-page { padding: 24px 18px; }
+        .sig-header { margin-bottom: 22px; }
+        .sig-title { font-size: 22px; gap: 9px; }
+        .sig-title::before { width: 3px; height: 24px; }
+        .sig-subtitle { font-size: 12px; gap: 7px; }
+        .status-indicator { width: 7px; height: 7px; }
+        .stats-grid { margin-bottom: 20px; gap: 13px; }
+        .stat-card { padding: 15px; border-radius: 13px; }
+        .stat-icon { width: 38px; height: 38px; font-size: 18px; border-radius: 9px; }
+        .stat-value { font-size: 23px; margin-top: 10px; }
+        .stat-label { font-size: 9px; letter-spacing: 0.9px; margin-top: 3px; }
+        .filters-bar { margin-bottom: 20px; padding: 3px; border-radius: 11px; gap: 5px; }
+        .filter-btn { padding: 7px 13px; font-size: 11px; border-radius: 8px; letter-spacing: 0.4px; }
+        .signatures-grid { gap: 16px; }
+        .sig-card { border-radius: 13px; }
+        .sig-card-header { padding: 13px 15px 10px; }
+        .sig-card-label { font-size: 9px; letter-spacing: 0.9px; gap: 5px; }
+        .sig-card-id { font-size: 9px; padding: 2px 7px; border-radius: 5px; }
+        .sig-card-title { padding: 11px 15px 8px; }
+        .sig-card-title h3 { font-size: 14px; gap: 7px; }
+        .doc-icon { width: 25px; height: 29px; font-size: 12px; border-radius: 5px; }
+        .sig-area { min-height: 115px; padding: 13px; }
+        .sig-qr-wrapper { padding: 9px; border-radius: 11px; }
+        .sig-qr-wrapper img { width: 70px; height: 70px; }
+        .format-badge { font-size: 8px; padding: 2px 7px; border-radius: 5px; top: 9px; right: 9px; }
+        .signed-badge { font-size: 8px; padding: 3px 9px; border-radius: 7px; top: 9px; left: 9px; letter-spacing: 0.7px; }
+        .sig-card-meta { padding: 11px 15px; gap: 10px; }
+        .executor-avatar { width: 32px; height: 32px; font-size: 11px; border-radius: 9px; }
+        .executor-label { font-size: 8px; margin-bottom: 2px; letter-spacing: 0.7px; }
+        .executor-name { font-size: 11px; }
+        .deadline-label { font-size: 8px; margin-bottom: 2px; letter-spacing: 0.7px; }
+        .deadline-value { font-size: 11px; }
+        .sig-progress { padding: 0 15px 11px; }
+        .progress-bar { height: 3px; }
+        .progress-info { font-size: 9px; margin-top: 5px; }
+        .sig-card-actions { padding: 10px 15px; gap: 16px; }
+        .action-link { font-size: 9px; letter-spacing: 0.9px; }
+        .empty-state { padding: 50px 18px; border-radius: 13px; }
+        .empty-state-icon { font-size: 50px; margin-bottom: 14px; }
+        .empty-state-text { font-size: 12px; }
+        .pagination-wrapper { margin-top: 35px; gap: 11px; }
+        .pagination-btn { min-width: 125px; height: 41px; padding: 0 21px; font-size: 12px; border-radius: 9px; }
+    }
+
+    /* Большие телефоны (до 768px) */
     @media (max-width: 768px) {
         .sig-page { padding: 20px 16px; }
-        .sig-title { font-size: 22px; }
+        .sig-header { margin-bottom: 20px; }
+        .sig-title { font-size: 20px; gap: 8px; }
+        .sig-title::before { width: 3px; height: 22px; }
+        .sig-subtitle { font-size: 11px; gap: 6px; }
+        .stats-grid { margin-bottom: 18px; gap: 12px; }
+        .stat-card { padding: 14px; border-radius: 12px; }
+        .stat-icon { width: 36px; height: 36px; font-size: 17px; border-radius: 8px; }
+        .stat-value { font-size: 22px; margin-top: 9px; }
+        .stat-label { font-size: 8px; letter-spacing: 0.8px; }
+        .filters-bar { margin-bottom: 18px; padding: 3px; border-radius: 10px; gap: 4px; }
+        .filter-btn { padding: 6px 12px; font-size: 10px; border-radius: 7px; letter-spacing: 0.3px; }
+        .signatures-grid { gap: 15px; }
+        .sig-card { border-radius: 12px; }
+        .sig-card-header { padding: 12px 14px 9px; }
+        .sig-card-label { font-size: 9px; letter-spacing: 0.8px; }
+        .sig-card-id { font-size: 9px; padding: 2px 6px; }
+        .sig-card-title { padding: 10px 14px 7px; }
+        .sig-card-title h3 { font-size: 13px; gap: 6px; }
+        .doc-icon { width: 24px; height: 28px; font-size: 12px; }
+        .sig-area { min-height: 110px; padding: 12px; }
+        .sig-qr-wrapper { padding: 8px; border-radius: 10px; }
+        .sig-qr-wrapper img { width: 65px; height: 65px; }
+        .sig-placeholder-icon { font-size: 28px; }
+        .sig-placeholder-text { font-size: 8px; margin-top: 7px; letter-spacing: 0.9px; }
+        .format-badge { font-size: 8px; padding: 2px 6px; top: 8px; right: 8px; }
+        .signed-badge { font-size: 8px; padding: 3px 8px; top: 8px; left: 8px; }
+        .sig-card-meta { padding: 10px 14px; gap: 9px; }
+        .executor-avatar { width: 30px; height: 30px; font-size: 10px; border-radius: 8px; }
+        .executor-label { font-size: 8px; }
+        .executor-name { font-size: 11px; }
+        .deadline-label { font-size: 8px; }
+        .deadline-value { font-size: 11px; }
+        .sig-progress { padding: 0 14px 10px; }
+        .progress-info { font-size: 9px; }
+        .sig-card-actions { padding: 9px 14px; gap: 14px; }
+        .action-link { font-size: 9px; letter-spacing: 0.8px; gap: 3px; }
+        .empty-state { padding: 45px 16px; border-radius: 12px; }
+        .empty-state-icon { font-size: 46px; margin-bottom: 13px; }
+        .empty-state-text { font-size: 11px; }
+        .pagination-wrapper { margin-top: 32px; gap: 10px; }
+        .pagination-btn { min-width: 120px; height: 40px; padding: 0 18px; font-size: 12px; border-radius: 9px; }
+    }
 
-        .pagination-btn {
-            min-width: 120px;
-            height: 40px;
-            padding: 0 18px;
-            font-size: 12px;
-        }
+    /* Телефоны (до 640px) */
+    @media (max-width: 640px) {
+        .sig-page { padding: 18px 14px; }
+        .sig-header { margin-bottom: 18px; }
+        .sig-title { font-size: 18px; gap: 7px; }
+        .sig-title::before { width: 3px; height: 20px; }
+        .sig-subtitle { font-size: 10px; gap: 5px; }
+        .stats-grid { margin-bottom: 16px; gap: 10px; }
+        .stat-card { padding: 13px; border-radius: 11px; }
+        .stat-icon { width: 34px; height: 34px; font-size: 16px; border-radius: 8px; }
+        .stat-value { font-size: 21px; margin-top: 8px; }
+        .stat-label { font-size: 8px; letter-spacing: 0.7px; }
+        .filters-bar { margin-bottom: 16px; padding: 3px; border-radius: 9px; gap: 3px; }
+        .filter-btn { padding: 6px 11px; font-size: 10px; border-radius: 7px; }
+        .signatures-grid { gap: 14px; }
+        .sig-card { border-radius: 11px; }
+        .sig-card-header { padding: 11px 13px 8px; }
+        .sig-card-label { font-size: 8px; letter-spacing: 0.7px; gap: 4px; }
+        .sig-card-id { font-size: 8px; padding: 2px 5px; border-radius: 4px; }
+        .sig-card-title { padding: 9px 13px 6px; }
+        .sig-card-title h3 { font-size: 12px; gap: 5px; }
+        .doc-icon { width: 22px; height: 26px; font-size: 11px; border-radius: 5px; }
+        .sig-area { min-height: 105px; padding: 11px; }
+        .sig-qr-wrapper { padding: 7px; border-radius: 9px; }
+        .sig-qr-wrapper img { width: 60px; height: 60px; }
+        .sig-placeholder-icon { font-size: 26px; }
+        .sig-placeholder-text { font-size: 8px; margin-top: 6px; }
+        .format-badge { font-size: 7px; padding: 2px 5px; top: 7px; right: 7px; }
+        .signed-badge { font-size: 7px; padding: 2px 7px; top: 7px; left: 7px; border-radius: 6px; }
+        .sig-card-meta { padding: 9px 13px; gap: 8px; }
+        .executor-avatar { width: 28px; height: 28px; font-size: 10px; border-radius: 7px; }
+        .executor-label { font-size: 7px; margin-bottom: 2px; }
+        .executor-name { font-size: 10px; }
+        .deadline-label { font-size: 7px; margin-bottom: 2px; }
+        .deadline-value { font-size: 10px; }
+        .sig-progress { padding: 0 13px 9px; }
+        .progress-info { font-size: 8px; margin-top: 4px; }
+        .sig-card-actions { padding: 8px 13px; gap: 12px; }
+        .action-link { font-size: 8px; letter-spacing: 0.7px; }
+        .empty-state { padding: 40px 14px; border-radius: 11px; }
+        .empty-state-icon { font-size: 42px; margin-bottom: 12px; }
+        .empty-state-text { font-size: 10px; }
+        .pagination-wrapper { margin-top: 28px; gap: 9px; }
+        .pagination-btn { min-width: 110px; height: 38px; padding: 0 16px; font-size: 11px; border-radius: 8px; }
+    }
+
+    /* Маленькие телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .sig-page { padding: 16px 12px; }
+        .sig-header { margin-bottom: 16px; }
+        .sig-title { font-size: 17px; gap: 6px; }
+        .sig-title::before { width: 2px; height: 19px; }
+        .sig-subtitle { font-size: 10px; gap: 4px; }
+        .stats-grid { margin-bottom: 14px; gap: 9px; }
+        .stat-card { padding: 12px; border-radius: 10px; }
+        .stat-icon { width: 32px; height: 32px; font-size: 15px; border-radius: 7px; }
+        .stat-value { font-size: 20px; margin-top: 7px; }
+        .stat-label { font-size: 7px; letter-spacing: 0.6px; }
+        .filters-bar { margin-bottom: 14px; padding: 2px; border-radius: 8px; gap: 2px; }
+        .filter-btn { padding: 5px 10px; font-size: 9px; border-radius: 6px; letter-spacing: 0.2px; }
+        .signatures-grid { gap: 13px; }
+        .sig-card { border-radius: 10px; }
+        .sig-card-header { padding: 10px 12px 7px; }
+        .sig-card-label { font-size: 8px; letter-spacing: 0.6px; }
+        .sig-card-id { font-size: 8px; padding: 2px 5px; }
+        .sig-card-title { padding: 8px 12px 5px; }
+        .sig-card-title h3 { font-size: 11px; gap: 4px; }
+        .doc-icon { width: 20px; height: 24px; font-size: 10px; }
+        .sig-area { min-height: 100px; padding: 10px; }
+        .sig-qr-wrapper { padding: 6px; border-radius: 8px; }
+        .sig-qr-wrapper img { width: 55px; height: 55px; }
+        .sig-placeholder-icon { font-size: 24px; }
+        .sig-placeholder-text { font-size: 7px; margin-top: 5px; letter-spacing: 0.8px; }
+        .format-badge { font-size: 7px; padding: 2px 4px; top: 6px; right: 6px; }
+        .signed-badge { font-size: 7px; padding: 2px 6px; top: 6px; left: 6px; }
+        .sig-card-meta { padding: 8px 12px; gap: 7px; }
+        .executor-avatar { width: 26px; height: 26px; font-size: 9px; border-radius: 6px; }
+        .executor-label { font-size: 7px; }
+        .executor-name { font-size: 10px; }
+        .deadline-label { font-size: 7px; }
+        .deadline-value { font-size: 10px; }
+        .sig-progress { padding: 0 12px 8px; }
+        .progress-bar { height: 3px; }
+        .progress-info { font-size: 8px; }
+        .sig-card-actions { padding: 7px 12px; gap: 10px; }
+        .action-link { font-size: 8px; letter-spacing: 0.6px; }
+        .empty-state { padding: 35px 12px; border-radius: 10px; }
+        .empty-state-icon { font-size: 38px; margin-bottom: 11px; }
+        .empty-state-text { font-size: 10px; }
+        .pagination-wrapper { margin-top: 25px; gap: 8px; }
+        .pagination-btn { min-width: 100px; height: 36px; padding: 0 14px; font-size: 10px; border-radius: 7px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .sig-page { padding: 14px 10px; }
+        .sig-header { margin-bottom: 14px; }
+        .sig-title { font-size: 16px; gap: 5px; }
+        .sig-title::before { width: 2px; height: 18px; }
+        .sig-subtitle { font-size: 9px; }
+        .stats-grid { margin-bottom: 12px; gap: 8px; }
+        .stat-card { padding: 11px; border-radius: 9px; }
+        .stat-icon { width: 30px; height: 30px; font-size: 14px; border-radius: 6px; }
+        .stat-value { font-size: 19px; margin-top: 6px; }
+        .stat-label { font-size: 7px; letter-spacing: 0.5px; }
+        .filters-bar { margin-bottom: 12px; padding: 2px; border-radius: 7px; }
+        .filter-btn { padding: 5px 9px; font-size: 8px; border-radius: 5px; }
+        .signatures-grid { gap: 12px; }
+        .sig-card { border-radius: 9px; }
+        .sig-card-header { padding: 9px 11px 6px; }
+        .sig-card-label { font-size: 7px; letter-spacing: 0.5px; }
+        .sig-card-id { font-size: 7px; padding: 1px 4px; }
+        .sig-card-title { padding: 7px 11px 4px; }
+        .sig-card-title h3 { font-size: 11px; gap: 3px; }
+        .doc-icon { width: 19px; height: 23px; font-size: 10px; }
+        .sig-area { min-height: 95px; padding: 9px; }
+        .sig-qr-wrapper { padding: 5px; border-radius: 7px; }
+        .sig-qr-wrapper img { width: 50px; height: 50px; }
+        .sig-placeholder-icon { font-size: 22px; }
+        .sig-placeholder-text { font-size: 7px; margin-top: 4px; }
+        .format-badge { font-size: 6px; padding: 1px 4px; top: 5px; right: 5px; }
+        .signed-badge { font-size: 6px; padding: 2px 5px; top: 5px; left: 5px; }
+        .sig-card-meta { padding: 7px 11px; gap: 6px; }
+        .executor-avatar { width: 24px; height: 24px; font-size: 9px; border-radius: 6px; }
+        .executor-label { font-size: 6px; }
+        .executor-name { font-size: 9px; }
+        .deadline-label { font-size: 6px; }
+        .deadline-value { font-size: 9px; }
+        .sig-progress { padding: 0 11px 7px; }
+        .progress-info { font-size: 7px; }
+        .sig-card-actions { padding: 6px 11px; gap: 9px; }
+        .action-link { font-size: 7px; letter-spacing: 0.5px; }
+        .empty-state { padding: 30px 10px; border-radius: 9px; }
+        .empty-state-icon { font-size: 34px; margin-bottom: 10px; }
+        .empty-state-text { font-size: 9px; }
+        .pagination-wrapper { margin-top: 22px; gap: 7px; }
+        .pagination-btn { min-width: 90px; height: 34px; padding: 0 12px; font-size: 9px; border-radius: 6px; }
     }
 </style>
 
@@ -903,99 +1162,7 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
                 </div>
             </div>
             @endif
-<style>
-    /* === ДЕЙСТВИЯ КАРТОЧКИ ПОДПИСИ === */
-.sig-card-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    align-items: center;
-    justify-content: flex-end;
-}
 
-/* Базовая кнопка-ссылка */
-.action-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    border: 1px solid;
-    background: transparent;
-    font-family: 'Inter', sans-serif;
-    white-space: nowrap;
-}
-
-.action-link i {
-    font-size: 13px;
-    transition: transform 0.25s ease;
-}
-
-/* Кнопка "Открыть" */
-.action-link.open {
-    background: rgba(79, 140, 255, 0.12);
-    border-color: rgba(79, 140, 255, 0.35);
-    color: #4f8cff;
-}
-
-.action-link.open:hover {
-    background: rgba(79, 140, 255, 0.22);
-    border-color: rgba(79, 140, 255, 0.7);
-    box-shadow: 0 0 16px rgba(79, 140, 255, 0.3);
-    color: #fff;
-    transform: translateY(-1px);
-}
-
-.action-link.open:hover i {
-    transform: scale(1.15);
-}
-
-/* Кнопка "Удалить" */
-.action-link.delete {
-    background: rgba(255, 107, 107, 0.08);
-    border-color: rgba(255, 107, 107, 0.25);
-    color: #ff6b6b;
-}
-
-.action-link.delete:hover {
-    background: rgba(255, 107, 107, 0.18);
-    border-color: rgba(255, 107, 107, 0.6);
-    box-shadow: 0 0 16px rgba(255, 107, 107, 0.3);
-    color: #fff;
-    transform: translateY(-1px);
-}
-
-.action-link.delete:hover i {
-    transform: scale(1.15) rotate(-8deg);
-}
-
-/* Активное состояние (при клике) */
-.action-link:active {
-    transform: translateY(0) scale(0.97);
-}
-
-/* === АДАПТИВНОСТЬ === */
-@media (max-width: 640px) {
-    .sig-card-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .action-link {
-        justify-content: center;
-        padding: 10px 14px;
-    }
-}
-</style>
             {{-- Actions --}}
             <div class="sig-card-actions">
                 {{-- Кнопка Открыть --}}
@@ -1017,95 +1184,6 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
                 </form>
                 @endif
             </div>
-
-            {{-- Скрипт для красивой модалки подтверждения --}}
-            <script>
-                function confirmDelete(event, form) {
-                    event.preventDefault();
-
-                    const t = {
-                        ru: { title: 'Удалить подпись?', desc: 'Это действие нельзя отменить.', cancel: 'Отмена', confirm: 'Удалить' },
-                        tj: { title: 'Имзоро нест кардан?', desc: 'Ин амалро бекор кардан ғайриимкон аст.', cancel: 'Лағв', confirm: 'Нест кардан' },
-                        en: { title: 'Delete signature?', desc: 'This action cannot be undone.', cancel: 'Cancel', confirm: 'Delete' }
-                    };
-
-                    const lang = localStorage.getItem('docsign_lang') || 'ru';
-                    const dict = t[lang] || t.ru;
-
-                    // Создаём модалку
-                    const overlay = document.createElement('div');
-                    overlay.className = 'modal-overlay';
-                    overlay.style.cssText = `
-                        position: fixed; inset: 0; z-index: 10000;
-                        background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-                        display: flex; align-items: center; justify-content: center;
-                        padding: 16px; animation: fadeIn 0.2s ease;
-                    `;
-
-                    overlay.innerHTML = `
-                        <div style="
-                            background: linear-gradient(180deg, rgba(22,26,38,0.98), rgba(16,19,28,0.98));
-                            border: 1px solid rgba(255,255,255,0.15);
-                            border-radius: 14px; padding: 24px;
-                            max-width: 380px; width: 100%;
-                            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(255,99,99,0.1);
-                            animation: slideUp 0.3s ease;
-                        ">
-                            <h3 style="
-                                font-size: 14px; font-weight: 700; color: #fff;
-                                margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px;
-                            ">
-                                <i class="bi bi-exclamation-triangle-fill" style="color: #ff6b6b; font-size: 16px;"></i>
-                                ${dict.title}
-                            </h3>
-                            <p style="font-size: 12px; color: #a8b2c1; line-height: 1.5; margin: 0 0 20px 0;">
-                                ${dict.desc}
-                            </p>
-                            <div style="display: flex; justify-content: flex-end; gap: 8px;">
-                                <button id="modal-cancel" style="
-                                    padding: 8px 16px; border-radius: 8px;
-                                    background: rgba(255,255,255,0.04);
-                                    border: 1px solid rgba(255,255,255,0.15);
-                                    color: #8892a6; font-size: 11px; font-weight: 700;
-                                    letter-spacing: 0.5px; text-transform: uppercase;
-                                    cursor: pointer; transition: all 0.2s;
-                                ">${dict.cancel}</button>
-                                <button id="modal-confirm" style="
-                                    padding: 8px 16px; border-radius: 8px;
-                                    background: rgba(255,99,99,0.15);
-                                    border: 1px solid rgba(255,99,99,0.5);
-                                    color: #ff6b6b; font-size: 11px; font-weight: 700;
-                                    letter-spacing: 0.5px; text-transform: uppercase;
-                                    cursor: pointer; transition: all 0.2s;
-                                ">${dict.confirm}</button>
-                            </div>
-                        </div>
-                    `;
-
-                    document.body.appendChild(overlay);
-
-                    // Обработчики
-                    const close = () => overlay.remove();
-                    overlay.querySelector('#modal-cancel').onclick = close;
-                    overlay.querySelector('#modal-confirm').onclick = () => form.submit();
-                    overlay.addEventListener('click', (e) => {
-                        if (e.target === overlay) close();
-                    });
-
-                    return false;
-                }
-            </script>
-
-            <style>
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                @keyframes slideUp {
-                    from { opacity: 0; transform: translateY(20px) scale(0.95); }
-                    to { opacity: 1; transform: translateY(0) scale(1); }
-                }
-            </style>
         </div>
         @empty
         <div class="empty-state">
@@ -1133,11 +1211,97 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
     @endif
 </div>
 
+{{-- Скрипт для красивой модалки подтверждения --}}
+<script>
+    function confirmDelete(event, form) {
+        event.preventDefault();
+
+        const t = {
+            ru: { title: 'Удалить подпись?', desc: 'Это действие нельзя отменить.', cancel: 'Отмена', confirm: 'Удалить' },
+            tj: { title: 'Имзоро нест кардан?', desc: 'Ин амалро бекор кардан ғайриимкон аст.', cancel: 'Лағв', confirm: 'Нест кардан' },
+            en: { title: 'Delete signature?', desc: 'This action cannot be undone.', cancel: 'Cancel', confirm: 'Delete' }
+        };
+
+        const lang = localStorage.getItem('docsign_lang') || 'ru';
+        const dict = t[lang] || t.ru;
+
+        // Создаём модалку
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.style.cssText = `
+            position: fixed; inset: 0; z-index: 10000;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 16px; animation: fadeIn 0.2s ease;
+        `;
+
+        overlay.innerHTML = `
+            <div style="
+                background: linear-gradient(180deg, rgba(22,26,38,0.98), rgba(16,19,28,0.98));
+                border: 1px solid rgba(255,255,255,0.15);
+                border-radius: 14px; padding: 24px;
+                max-width: 380px; width: 100%;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(255,99,99,0.1);
+                animation: slideUp 0.3s ease;
+            ">
+                <h3 style="
+                    font-size: 14px; font-weight: 700; color: #fff;
+                    margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px;
+                ">
+                    <i class="bi bi-exclamation-triangle-fill" style="color: #ff6b6b; font-size: 16px;"></i>
+                    ${dict.title}
+                </h3>
+                <p style="font-size: 12px; color: #a8b2c1; line-height: 1.5; margin: 0 0 20px 0;">
+                    ${dict.desc}
+                </p>
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                    <button id="modal-cancel" style="
+                        padding: 8px 16px; border-radius: 8px;
+                        background: rgba(255,255,255,0.04);
+                        border: 1px solid rgba(255,255,255,0.15);
+                        color: #8892a6; font-size: 11px; font-weight: 700;
+                        letter-spacing: 0.5px; text-transform: uppercase;
+                        cursor: pointer; transition: all 0.2s;
+                    ">${dict.cancel}</button>
+                    <button id="modal-confirm" style="
+                        padding: 8px 16px; border-radius: 8px;
+                        background: rgba(255,99,99,0.15);
+                        border: 1px solid rgba(255,99,99,0.5);
+                        color: #ff6b6b; font-size: 11px; font-weight: 700;
+                        letter-spacing: 0.5px; text-transform: uppercase;
+                        cursor: pointer; transition: all 0.2s;
+                    ">${dict.confirm}</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Обработчики
+        const close = () => overlay.remove();
+        overlay.querySelector('#modal-cancel').onclick = close;
+        overlay.querySelector('#modal-confirm').onclick = () => form.submit();
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) close();
+        });
+
+        return false;
+    }
+</script>
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+</style>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // ============================================================
-        // ЛОКАЛЬНЫЙ СЛОВАРЬ СТРАНИЦЫ РЕЕСТРА ПОДПИСЕЙ
-        // ============================================================
         const SIGN_REGISTRY_TRANSLATIONS = {
             ru: {
                 pageTitle: 'Реестр подписей',
@@ -1219,9 +1383,6 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
             }
         };
 
-        // ============================================================
-        // ФУНКЦИЯ ПРИМЕНЕНИЯ ПЕРЕВОДОВ
-        // ============================================================
         function applySignRegistryTranslations(lang) {
             const dict = SIGN_REGISTRY_TRANSLATIONS[lang] || SIGN_REGISTRY_TRANSLATIONS.ru;
 
@@ -1255,9 +1416,6 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
             });
         }
 
-        // ============================================================
-        // ФИЛЬТРЫ
-        // ============================================================
         const filterBtns = document.querySelectorAll('.filter-btn');
         const cards = document.querySelectorAll('.sig-card');
 
@@ -1288,23 +1446,14 @@ $overdueCount = $signatures->filter(fn($s) => !$s->signed_at && $s->expires_at &
             });
         });
 
-        // ============================================================
-        // 1. Применяем сразу при загрузке
-        // ============================================================
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';
         applySignRegistryTranslations(initialLang);
 
-        // ============================================================
-        // 2. Слушаем событие смены языка от layouts/admin.blade.php
-        // ============================================================
         window.addEventListener('docsign:lang-changed', (e) => {
             const lang = e.detail?.lang || 'ru';
             applySignRegistryTranslations(lang);
         });
 
-        // ============================================================
-        // 3. Синхронизация между вкладками браузера
-        // ============================================================
         window.addEventListener('storage', (e) => {
             if (e.key === 'docsign_lang' && e.newValue) {
                 applySignRegistryTranslations(e.newValue);

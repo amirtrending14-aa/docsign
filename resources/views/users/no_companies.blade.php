@@ -268,6 +268,8 @@
     .nc-info-text strong {
         color: var(--text);
         font-weight: 700;
+        display: block;
+        margin-bottom: 4px;
     }
 
     /* Кнопка */
@@ -354,13 +356,141 @@
         100% { transform: translateY(-100px) translateX(30px); opacity: 0; }
     }
 
-    /* Responsive */
-    @media (max-width: 640px) {
-        .nc-card { padding: 40px 24px; }
-        .nc-title { font-size: 24px; }
+    /* ============================================ */
+    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+    /* ============================================ */
+
+    /* Маленькие десктопы (до 1200px) */
+    @media (max-width: 1200px) {
+        .no-company-page { padding: 36px 22px; }
+        .nc-card { padding: 52px 40px; border-radius: 22px; }
+        .nc-icon-wrap { width: 110px; height: 110px; margin-bottom: 26px; }
+        .nc-icon-bg { border-radius: 26px; }
+        .nc-icon-bg::before { border-radius: 28px; }
+        .nc-icon-svg { width: 52px; height: 52px; }
+        .nc-title { font-size: 26px; margin-bottom: 11px; }
+        .nc-desc { font-size: 13px; margin-bottom: 30px; max-width: 360px; }
+        .nc-divider { margin-bottom: 26px; max-width: 260px; }
+        .nc-info-box { padding: 15px 17px; margin-bottom: 26px; border-radius: 13px; gap: 13px; }
+        .nc-info-icon { width: 34px; height: 34px; border-radius: 9px; }
+        .nc-info-icon svg { width: 17px; height: 17px; }
+        .nc-info-text { font-size: 12px; }
+        .nc-btn { padding: 13px 30px; font-size: 12px; border-radius: 11px; }
+        .nc-btn svg { width: 15px; height: 15px; }
+    }
+
+    /* Планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .no-company-page { padding: 32px 20px; }
+        .nc-card { padding: 48px 36px; border-radius: 20px; }
         .nc-icon-wrap { width: 100px; height: 100px; margin-bottom: 24px; }
-        .nc-icon-svg { width: 46px; height: 46px; }
-        .nc-btn { width: 100%; justify-content: center; }
+        .nc-icon-bg { border-radius: 24px; }
+        .nc-icon-bg::before { border-radius: 26px; }
+        .nc-icon-glow { inset: -18px; }
+        .nc-icon-svg { width: 48px; height: 48px; }
+        .nc-title { font-size: 24px; margin-bottom: 10px; letter-spacing: -0.4px; }
+        .nc-desc { font-size: 13px; line-height: 1.55; margin-bottom: 28px; max-width: 340px; }
+        .nc-divider { margin-bottom: 24px; max-width: 240px; gap: 11px; }
+        .nc-divider-dot { width: 5px; height: 5px; }
+        .nc-info-box { padding: 14px 16px; margin-bottom: 24px; border-radius: 12px; gap: 12px; }
+        .nc-info-icon { width: 32px; height: 32px; border-radius: 9px; }
+        .nc-info-icon svg { width: 16px; height: 16px; }
+        .nc-info-text { font-size: 12px; line-height: 1.45; }
+        .nc-btn { padding: 13px 28px; font-size: 12px; border-radius: 11px; letter-spacing: 1.1px; }
+        .nc-btn svg { width: 15px; height: 15px; }
+    }
+
+    /* Большие телефоны (до 768px) */
+    @media (max-width: 768px) {
+        .no-company-page { padding: 28px 18px; }
+        .nc-card { padding: 44px 32px; border-radius: 18px; }
+        .nc-icon-wrap { width: 95px; height: 95px; margin-bottom: 22px; }
+        .nc-icon-bg { border-radius: 22px; }
+        .nc-icon-bg::before { border-radius: 24px; inset: -1.5px; padding: 1.5px; }
+        .nc-icon-glow { inset: -16px; filter: blur(18px); }
+        .nc-icon-svg { width: 44px; height: 44px; }
+        .nc-title { font-size: 22px; margin-bottom: 10px; }
+        .nc-desc { font-size: 12px; line-height: 1.5; margin-bottom: 26px; max-width: 320px; }
+        .nc-divider { margin-bottom: 22px; max-width: 220px; gap: 10px; }
+        .nc-divider-dot { width: 5px; height: 5px; }
+        .nc-info-box { padding: 13px 15px; margin-bottom: 22px; border-radius: 11px; gap: 11px; }
+        .nc-info-box::before { width: 2.5px; }
+        .nc-info-icon { width: 30px; height: 30px; border-radius: 8px; }
+        .nc-info-icon svg { width: 15px; height: 15px; }
+        .nc-info-text { font-size: 11px; line-height: 1.45; }
+        .nc-btn { padding: 12px 26px; font-size: 11px; border-radius: 10px; letter-spacing: 1px; gap: 9px; }
+        .nc-btn svg { width: 14px; height: 14px; }
+    }
+
+    /* Телефоны (до 640px) */
+    @media (max-width: 640px) {
+        .no-company-page { padding: 24px 16px; }
+        .nc-card { padding: 40px 24px; border-radius: 16px; }
+        .nc-icon-wrap { width: 90px; height: 90px; margin-bottom: 20px; }
+        .nc-icon-bg { border-radius: 20px; }
+        .nc-icon-bg::before { border-radius: 22px; }
+        .nc-icon-glow { inset: -14px; }
+        .nc-icon-svg { width: 42px; height: 42px; }
+        .nc-title { font-size: 20px; margin-bottom: 9px; }
+        .nc-desc { font-size: 12px; line-height: 1.5; margin-bottom: 24px; max-width: 100%; }
+        .nc-divider { margin-bottom: 20px; max-width: 200px; gap: 9px; }
+        .nc-info-box { padding: 12px 14px; margin-bottom: 20px; border-radius: 10px; gap: 10px; }
+        .nc-info-box::before { width: 2.5px; }
+        .nc-info-icon { width: 28px; height: 28px; border-radius: 7px; }
+        .nc-info-icon svg { width: 14px; height: 14px; }
+        .nc-info-text { font-size: 11px; }
+        .nc-info-text strong { font-size: 11px; margin-bottom: 3px; }
+        .nc-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 13px 24px;
+            font-size: 11px;
+            border-radius: 10px;
+            letter-spacing: 1px;
+        }
+        .nc-btn svg { width: 14px; height: 14px; }
+    }
+
+    /* Маленькие телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .no-company-page { padding: 20px 14px; }
+        .nc-card { padding: 36px 20px; border-radius: 15px; }
+        .nc-icon-wrap { width: 85px; height: 85px; margin-bottom: 18px; }
+        .nc-icon-bg { border-radius: 19px; }
+        .nc-icon-bg::before { border-radius: 21px; }
+        .nc-icon-glow { inset: -12px; }
+        .nc-icon-svg { width: 40px; height: 40px; }
+        .nc-title { font-size: 19px; margin-bottom: 9px; letter-spacing: -0.3px; }
+        .nc-desc { font-size: 11px; line-height: 1.45; margin-bottom: 22px; }
+        .nc-divider { margin-bottom: 18px; max-width: 180px; gap: 8px; }
+        .nc-divider-dot { width: 4px; height: 4px; }
+        .nc-info-box { padding: 11px 13px; margin-bottom: 18px; border-radius: 9px; gap: 9px; }
+        .nc-info-icon { width: 26px; height: 26px; border-radius: 7px; }
+        .nc-info-icon svg { width: 13px; height: 13px; }
+        .nc-info-text { font-size: 10px; line-height: 1.4; }
+        .nc-info-text strong { font-size: 10px; margin-bottom: 2px; }
+        .nc-btn { padding: 12px 22px; font-size: 10px; border-radius: 9px; letter-spacing: 0.9px; gap: 8px; }
+        .nc-btn svg { width: 13px; height: 13px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .no-company-page { padding: 18px 12px; }
+        .nc-card { padding: 32px 18px; border-radius: 14px; }
+        .nc-icon-wrap { width: 80px; height: 80px; margin-bottom: 16px; }
+        .nc-icon-bg { border-radius: 18px; }
+        .nc-icon-bg::before { border-radius: 20px; }
+        .nc-icon-glow { inset: -10px; }
+        .nc-icon-svg { width: 38px; height: 38px; }
+        .nc-title { font-size: 18px; margin-bottom: 8px; }
+        .nc-desc { font-size: 11px; line-height: 1.4; margin-bottom: 20px; }
+        .nc-divider { margin-bottom: 16px; max-width: 160px; gap: 7px; }
+        .nc-info-box { padding: 10px 12px; margin-bottom: 16px; border-radius: 8px; gap: 8px; }
+        .nc-info-icon { width: 24px; height: 24px; border-radius: 6px; }
+        .nc-info-icon svg { width: 12px; height: 12px; }
+        .nc-info-text { font-size: 10px; }
+        .nc-btn { padding: 11px 20px; font-size: 10px; border-radius: 8px; letter-spacing: 0.8px; }
+        .nc-btn svg { width: 12px; height: 12px; }
     }
 </style>
 
@@ -435,9 +565,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // ============================================================
-        // ЛОКАЛЬНЫЙ СЛОВАРЬ СТРАНИЦЫ "НЕТ КОМПАНИИ"
-        // ============================================================
         const NO_COMPANY_TRANSLATIONS = {
             ru: {
                 title: 'Нет ',
@@ -465,34 +592,25 @@
             }
         };
 
-        // ============================================================
-        // ФУНКЦИЯ ПРИМЕНЕНИЯ ПЕРЕВОДОВ
-        // ============================================================
         function applyNoCompanyTranslations(lang) {
             const dict = NO_COMPANY_TRANSLATIONS[lang] || NO_COMPANY_TRANSLATIONS.ru;
 
-            // 1) Переводим все элементы с data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (dict[key] !== undefined) el.textContent = dict[key];
             });
 
-            // 2) Переводим placeholder
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
             });
 
-            // 3) Переводим title (подсказки)
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
                 const key = el.getAttribute('data-i18n-title');
                 if (dict[key] !== undefined) el.setAttribute('title', dict[key]);
             });
         }
 
-        // ============================================================
-        // ПАРАЛЛАКС ДЛЯ ФОНОВЫХ ПЯТЕН
-        // ============================================================
         const blobs = document.querySelectorAll('.nc-blob');
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 30;
@@ -507,23 +625,14 @@
             });
         });
 
-        // ============================================================
-        // 1. Применяем сразу при загрузке
-        // ============================================================
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';
         applyNoCompanyTranslations(initialLang);
 
-        // ============================================================
-        // 2. Слушаем событие смены языка от layouts/admin.blade.php
-        // ============================================================
         window.addEventListener('docsign:lang-changed', (e) => {
             const lang = e.detail?.lang || 'ru';
             applyNoCompanyTranslations(lang);
         });
 
-        // ============================================================
-        // 3. Синхронизация между вкладками браузера
-        // ============================================================
         window.addEventListener('storage', (e) => {
             if (e.key === 'docsign_lang' && e.newValue) {
                 applyNoCompanyTranslations(e.newValue);

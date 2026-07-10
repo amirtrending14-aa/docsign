@@ -367,6 +367,7 @@
         border-radius: 10px;
         cursor: pointer;
         transition: all 0.25s ease;
+        white-space: nowrap;
     }
 
     .btn-danger:hover {
@@ -500,12 +501,260 @@
         color: #ff7a7a;
     }
 
-    /* Responsive */
+    /* Телефон инпут */
+    .phone-input-wrapper {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: border-color 0.3s;
+        background: rgba(255,255,255,0.03);
+    }
+
+    .phone-input-wrapper:focus-within {
+        border-color: rgba(var(--glow), 0.6);
+        box-shadow: 0 0 0 3px rgba(var(--glow), 0.15);
+    }
+
+    .phone-input-wrapper .flag-icon {
+        background: rgba(0,0,0,0.3);
+        padding: 10px 14px;
+        border-right: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+    }
+
+    .phone-input-wrapper .form-input {
+        flex: 1;
+        border: none;
+        padding: 12px 16px;
+        outline: none;
+        background: transparent;
+    }
+
+    /* ============================================ */
+    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+    /* ============================================ */
+
+    /* Маленькие десктопы (до 1200px) */
+    @media (max-width: 1200px) {
+        .edit-page { padding: 28px 20px; }
+        .edit-card-body { padding: 22px; }
+        .section-header { padding: 16px 22px; }
+        .danger-content { padding: 22px; }
+        .form-input { padding: 11px 15px; font-size: 13px; }
+        .btn-save { padding: 11px 22px; font-size: 10px; }
+        .modal-content { padding: 28px; }
+    }
+
+    /* Планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .edit-page { padding: 24px 18px; }
+        .back-link { font-size: 10px; margin-bottom: 20px; }
+        .back-link svg { width: 15px; height: 15px; }
+        .section-header { padding: 15px 20px; gap: 9px; }
+        .section-dot { width: 9px; height: 9px; }
+        .section-title { font-size: 9px; letter-spacing: 1.3px; }
+        .edit-card-body { padding: 20px; }
+        .form-group { margin-bottom: 18px; }
+        .form-label { font-size: 9px; margin-bottom: 7px; }
+        .form-input { padding: 11px 14px; font-size: 13px; border-radius: 9px; }
+        .form-error { font-size: 10px; margin-top: 5px; }
+        .avatar-section { gap: 18px; margin-bottom: 18px; }
+        .avatar-preview, .avatar-placeholder { width: 90px; height: 90px; font-size: 36px; border-radius: 14px; }
+        .avatar-upload input[type="file"] { padding: 9px; font-size: 11px; }
+        .avatar-remove { font-size: 11px; margin-top: 9px; }
+        .btn-save { padding: 11px 20px; font-size: 10px; border-radius: 9px; gap: 7px; }
+        .btn-save svg { width: 13px; height: 13px; }
+        .company-info-box { padding: 11px 14px; border-radius: 9px; margin-bottom: 11px; }
+        .company-info-box p { font-size: 11px; }
+        .company-hint { font-size: 10px; margin-top: 5px; }
+        .danger-content { padding: 20px; gap: 18px; }
+        .danger-dot { width: 9px; height: 9px; }
+        .danger-title { font-size: 10px; margin-bottom: 3px; }
+        .danger-text { font-size: 12px; }
+        .btn-danger { padding: 9px 18px; font-size: 9px; border-radius: 9px; }
+        .modal-content { padding: 28px; border-radius: 18px; }
+        .modal-title { font-size: 18px; margin-bottom: 7px; }
+        .modal-description { font-size: 12px; margin-bottom: 22px; }
+        .modal-input { padding: 11px 15px; font-size: 13px; margin-bottom: 18px; }
+        .btn-modal { padding: 9px 18px; font-size: 9px; border-radius: 9px; }
+        .alert { padding: 13px 18px; font-size: 12px; border-radius: 11px; margin-bottom: 18px; }
+    }
+
+    /* Большие телефоны (до 768px) */
     @media (max-width: 768px) {
         .edit-page { padding: 20px 16px; }
-        .edit-card-body { padding: 20px; }
-        .avatar-section { flex-direction: column; align-items: flex-start; }
-        .danger-content { flex-direction: column; align-items: flex-start; }
+        .back-link { font-size: 10px; margin-bottom: 18px; gap: 7px; }
+        .back-link svg { width: 14px; height: 14px; }
+        .section-header { padding: 14px 18px; gap: 8px; }
+        .section-dot { width: 8px; height: 8px; }
+        .section-title { font-size: 9px; letter-spacing: 1.2px; }
+        .edit-card-body { padding: 18px; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { font-size: 9px; margin-bottom: 6px; letter-spacing: 0.7px; }
+        .form-input { padding: 10px 13px; font-size: 12px; border-radius: 8px; }
+        .form-error { font-size: 10px; margin-top: 5px; }
+
+        /* Аватар вертикально */
+        .avatar-section {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .avatar-preview, .avatar-placeholder {
+            width: 80px;
+            height: 80px;
+            font-size: 32px;
+            border-radius: 12px;
+        }
+        .avatar-upload { width: 100%; }
+        .avatar-upload input[type="file"] { padding: 9px; font-size: 11px; border-radius: 8px; }
+        .avatar-remove { font-size: 11px; margin-top: 8px; }
+
+        .btn-save {
+            padding: 10px 18px;
+            font-size: 10px;
+            border-radius: 8px;
+            gap: 7px;
+            width: 100%;
+            justify-content: center;
+        }
+        .btn-save svg { width: 13px; height: 13px; }
+
+        .company-info-box { padding: 10px 13px; border-radius: 8px; margin-bottom: 10px; }
+        .company-info-box p { font-size: 11px; }
+        .company-hint { font-size: 10px; margin-top: 5px; }
+
+        /* Danger Zone вертикально */
+        .danger-content {
+            padding: 18px;
+            gap: 16px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .danger-info { gap: 10px; }
+        .danger-dot { width: 8px; height: 8px; }
+        .danger-title { font-size: 10px; margin-bottom: 3px; }
+        .danger-text { font-size: 12px; }
+        .btn-danger {
+            padding: 9px 16px;
+            font-size: 9px;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .modal-content { padding: 24px; border-radius: 16px; max-width: 100%; }
+        .modal-title { font-size: 17px; margin-bottom: 6px; }
+        .modal-description { font-size: 12px; margin-bottom: 20px; }
+        .modal-input { padding: 10px 14px; font-size: 12px; margin-bottom: 16px; border-radius: 8px; }
+        .modal-actions { gap: 9px; }
+        .btn-modal { padding: 9px 16px; font-size: 9px; border-radius: 8px; }
+
+        .alert { padding: 12px 16px; font-size: 12px; border-radius: 10px; margin-bottom: 16px; }
+
+        .phone-input-wrapper { border-radius: 8px; }
+        .phone-input-wrapper .flag-icon { padding: 9px 12px; }
+        .phone-input-wrapper .form-input { padding: 10px 13px; font-size: 12px; }
+    }
+
+    /* Телефоны (до 640px) */
+    @media (max-width: 640px) {
+        .edit-page { padding: 18px 14px; }
+        .back-link { font-size: 9px; margin-bottom: 16px; }
+        .section-header { padding: 13px 16px; }
+        .edit-card-body { padding: 16px; }
+        .form-group { margin-bottom: 15px; }
+        .form-label { font-size: 8px; margin-bottom: 6px; }
+        .form-input { padding: 10px 12px; font-size: 12px; }
+        .avatar-preview, .avatar-placeholder { width: 70px; height: 70px; font-size: 28px; border-radius: 11px; }
+        .avatar-section { gap: 12px; margin-bottom: 15px; }
+        .avatar-upload input[type="file"] { padding: 8px; font-size: 10px; }
+        .avatar-remove { font-size: 10px; margin-top: 7px; }
+        .btn-save { padding: 10px 16px; font-size: 9px; }
+        .company-info-box { padding: 9px 12px; margin-bottom: 9px; }
+        .company-info-box p { font-size: 10px; }
+        .company-hint { font-size: 9px; }
+        .danger-content { padding: 16px; gap: 14px; }
+        .danger-dot { width: 8px; height: 8px; }
+        .danger-title { font-size: 9px; }
+        .danger-text { font-size: 11px; }
+        .btn-danger { padding: 8px 14px; font-size: 9px; }
+        .modal-content { padding: 22px; border-radius: 14px; }
+        .modal-title { font-size: 16px; }
+        .modal-description { font-size: 11px; margin-bottom: 18px; }
+        .modal-input { padding: 9px 13px; font-size: 12px; margin-bottom: 15px; }
+        .btn-modal { padding: 8px 15px; font-size: 9px; }
+        .alert { padding: 11px 15px; font-size: 11px; border-radius: 9px; margin-bottom: 15px; }
+    }
+
+    /* Маленькие телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .edit-page { padding: 16px 12px; }
+        .back-link { font-size: 9px; margin-bottom: 14px; gap: 6px; }
+        .back-link svg { width: 13px; height: 13px; }
+        .section-header { padding: 12px 14px; gap: 7px; }
+        .section-dot { width: 7px; height: 7px; }
+        .section-title { font-size: 8px; letter-spacing: 1px; }
+        .edit-card-body { padding: 14px; }
+        .form-group { margin-bottom: 14px; }
+        .form-label { font-size: 8px; margin-bottom: 5px; }
+        .form-input { padding: 9px 11px; font-size: 11px; border-radius: 7px; }
+        .form-error { font-size: 9px; margin-top: 4px; }
+        .avatar-preview, .avatar-placeholder { width: 65px; height: 65px; font-size: 26px; border-radius: 10px; }
+        .avatar-section { gap: 10px; margin-bottom: 14px; }
+        .avatar-upload input[type="file"] { padding: 7px; font-size: 10px; border-radius: 7px; }
+        .avatar-remove { font-size: 10px; margin-top: 6px; gap: 6px; }
+        .btn-save { padding: 9px 14px; font-size: 9px; border-radius: 7px; }
+        .btn-save svg { width: 12px; height: 12px; }
+        .company-info-box { padding: 8px 11px; border-radius: 7px; margin-bottom: 8px; }
+        .company-info-box p { font-size: 10px; }
+        .company-hint { font-size: 9px; }
+        .danger-content { padding: 14px; gap: 12px; }
+        .danger-info { gap: 9px; }
+        .danger-dot { width: 7px; height: 7px; }
+        .danger-title { font-size: 9px; margin-bottom: 2px; }
+        .danger-text { font-size: 11px; }
+        .btn-danger { padding: 8px 13px; font-size: 8px; border-radius: 7px; }
+        .modal-content { padding: 20px; border-radius: 13px; }
+        .modal-title { font-size: 15px; margin-bottom: 5px; }
+        .modal-description { font-size: 11px; margin-bottom: 16px; }
+        .modal-input { padding: 9px 12px; font-size: 11px; margin-bottom: 14px; border-radius: 7px; }
+        .modal-actions { gap: 8px; }
+        .btn-modal { padding: 8px 14px; font-size: 8px; border-radius: 7px; }
+        .alert { padding: 10px 14px; font-size: 11px; border-radius: 8px; margin-bottom: 14px; }
+        .phone-input-wrapper { border-radius: 7px; }
+        .phone-input-wrapper .flag-icon { padding: 8px 10px; }
+        .phone-input-wrapper .flag-icon img { width: 20px; height: 14px; }
+        .phone-input-wrapper .form-input { padding: 9px 11px; font-size: 11px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .edit-page { padding: 14px 10px; }
+        .back-link { font-size: 8px; margin-bottom: 12px; }
+        .section-header { padding: 11px 12px; }
+        .edit-card-body { padding: 12px; }
+        .form-group { margin-bottom: 13px; }
+        .form-label { font-size: 8px; }
+        .form-input { padding: 8px 10px; font-size: 11px; }
+        .avatar-preview, .avatar-placeholder { width: 60px; height: 60px; font-size: 24px; border-radius: 9px; }
+        .avatar-section { gap: 9px; margin-bottom: 13px; }
+        .avatar-upload input[type="file"] { padding: 7px; font-size: 9px; }
+        .btn-save { padding: 8px 13px; font-size: 8px; }
+        .company-info-box { padding: 7px 10px; }
+        .company-info-box p { font-size: 9px; }
+        .danger-content { padding: 12px; }
+        .danger-text { font-size: 10px; }
+        .btn-danger { padding: 7px 12px; font-size: 8px; }
+        .modal-content { padding: 18px; border-radius: 12px; }
+        .modal-title { font-size: 14px; }
+        .modal-description { font-size: 10px; }
+        .modal-input { padding: 8px 11px; font-size: 11px; }
+        .btn-modal { padding: 7px 13px; font-size: 8px; }
+        .alert { padding: 9px 13px; font-size: 10px; }
     }
 </style>
 
@@ -599,47 +848,18 @@
                         <div class="form-error">{{ $message }}</div>
                         @enderror
                     </div>
-                    <style>
-                        .phone-input-wrapper {
-                            display: flex;
-                            align-items: center;
-                            border: 1px solid #ddd;
-                            border-radius: 4px;
-                            overflow: hidden;
-                            transition: border-color 0.3s;
-                        }
 
-                        .phone-input-wrapper:focus-within {
-                            border-color: #007bff;
-                            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-                        }
-
-                        .phone-input-wrapper .flag-icon {
-                            background: #f8f9fa;
-                            padding: 8px 12px;
-                            border-right: 1px solid #ddd;
-                            font-size: 20px;
-                            line-height: 1;
-                        }
-
-                        .phone-input-wrapper .form-input {
-                            flex: 1;
-                            border: none;
-                            padding: 8px 12px;
-                            outline: none;
-                            background: transparent;
-                        }
-                    </style>
+                    {{-- Телефон --}}
                     <div class="form-group">
                         <label class="form-label" for="phone">
                             <span data-i18n="labelPhone">Телефон</span>
                         </label>
-                        <div class="phone-input-wrapper" style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; overflow: hidden;">
-        <span style="background: #000; padding: 6px 10px; border-right: 1px solid #ccc; display: flex; align-items: center;">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect fill='%23006600' width='900' height='600'/%3E%3Crect fill='%23fff' width='900' height='400'/%3E%3Crect fill='%23cc0000' width='900' height='200'/%3E%3Cg fill='%23ffcc00'%3E%3Cpath d='M450 320c-25 0-45-20-45-45s20-45 45-45 45 20 45 45-20 45-45 45zm0-70c-14 0-25 11-25 25s11 25 25 25 25-11 25-25-11-25-25-25z'/%3E%3Cpath d='M450 265l-5-15-5 15h10z'/%3E%3Cpath d='M435 290l15 5-10 10-5-15z'/%3E%3C/g%3E%3C/svg%3E"
-                 alt="TJ"
-                 style="width: 24px; height: 16px; object-fit: cover;">
-        </span>
+                        <div class="phone-input-wrapper">
+                            <span class="flag-icon">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600'%3E%3Crect fill='%23006600' width='900' height='600'/%3E%3Crect fill='%23fff' width='900' height='400'/%3E%3Crect fill='%23cc0000' width='900' height='200'/%3E%3Cg fill='%23ffcc00'%3E%3Cpath d='M450 320c-25 0-45-20-45-45s20-45 45-45 45 20 45 45-20 45-45 45zm0-70c-14 0-25 11-25 25s11 25 25 25 25-11 25-25-11-25-25-25z'/%3E%3Cpath d='M450 265l-5-15-5 15h10z'/%3E%3Cpath d='M435 290l15 5-10 10-5-15z'/%3E%3C/g%3E%3C/svg%3E"
+                                     alt="TJ"
+                                     style="width: 24px; height: 16px; object-fit: cover;">
+                            </span>
                             <input type="tel"
                                    id="phone"
                                    name="phone"
@@ -648,13 +868,13 @@
                                    placeholder="+992 XX XXX XX XX"
                                    inputmode="numeric"
                                    autocomplete="tel"
-                                   maxlength="17"
-                                   style="flex: 1; border: none; padding: 8px 12px; outline: none;">
+                                   maxlength="17">
                         </div>
                         @error('phone')
                         <div class="form-error">{{ $message }}</div>
                         @enderror
                     </div>
+
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
                             const phone = document.getElementById('phone');
@@ -721,8 +941,6 @@
                                     e.preventDefault();
                                 }
                             });
-
-                            // ❌ УДАЛЁН обработчик submit, который убирал пробелы
                         });
                     </script>
 
@@ -860,10 +1078,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // ============================================================
-        // ЛОКАЛЬНЫЙ СЛОВАРЬ СТРАНИЦЫ РЕДАКТИРОВАНИЯ ПРОФИЛЯ
-        // (дополняет глобальный TRANSLATIONS из layouts/admin.blade.php)
-        // ============================================================
         const PROFILE_TRANSLATIONS = {
             ru: {
                 btnBack: 'Назад',
@@ -951,49 +1165,33 @@
             }
         };
 
-        // ============================================================
-        // ФУНКЦИЯ ПРИМЕНЕНИЯ ПЕРЕВОДОВ НА ЭТОЙ СТРАНИЦЕ
-        // ============================================================
         function applyProfileTranslations(lang) {
             const dict = PROFILE_TRANSLATIONS[lang] || PROFILE_TRANSLATIONS.ru;
 
-            // 1) Переводим все элементы с data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (dict[key] !== undefined) el.textContent = dict[key];
             });
 
-            // 2) Переводим placeholder
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
             });
 
-            // 3) Переводим title (подсказки)
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
                 const key = el.getAttribute('data-i18n-title');
                 if (dict[key] !== undefined) el.setAttribute('title', dict[key]);
             });
         }
 
-        // ============================================================
-        // 1. Применяем сразу при загрузке
-        // ============================================================
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';
         applyProfileTranslations(initialLang);
 
-        // ============================================================
-        // 2. Слушаем событие смены языка от layouts/admin.blade.php
-        //    (когда юзер кликает на 🇷🇺/🇹🇯/🇬🇧 в админке)
-        // ============================================================
         window.addEventListener('docsign:lang-changed', (e) => {
             const lang = e.detail?.lang || 'ru';
             applyProfileTranslations(lang);
         });
 
-        // ============================================================
-        // 3. Синхронизация между вкладками браузера
-        // ============================================================
         window.addEventListener('storage', (e) => {
             if (e.key === 'docsign_lang' && e.newValue) {
                 applyProfileTranslations(e.newValue);
@@ -1001,9 +1199,6 @@
         });
     });
 
-    // ============================================================
-    // МОДАЛЬНОЕ ОКНО УДАЛЕНИЯ АККАУНТА
-    // ============================================================
     function openCustomDeleteModal() {
         const m = document.getElementById('customDeleteModal');
         m.classList.add('active');

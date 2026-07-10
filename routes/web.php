@@ -96,19 +96,28 @@ Route::middleware(['auth', 'last.seen'])->group(function () {
     Route::post('/documents/{id}/reject', [DocumentController::class, 'reject'])
         ->name('documents.reject');
 
-    // Resources
     Route::resource('documents', DocumentController::class);
-    Route::resource('users', UserController::class);
     Route::resource('signatures', DocumentSignatureController::class);
     Route::resource('versions', DocumentVersionController::class);
 
-    // ✅ ИСТОРИЯ СОБЫТИЙ (logs) - только один раз!
+    // ✅ ИСТОРИЯ СОБЫТИЙ (logs)
     Route::resource('logs', DocumentLogController::class);
     Route::post('/logs/clear', [DocumentLogController::class, 'clear'])->name('logs.clear');
     Route::get('/documents/{document}/logs', [DocumentLogController::class, 'documentLogs'])
         ->name('logs.document');
 
     Route::resource('workflow', DocumentWorkflowController::class);
+
+    // ============================================
+    // ✅ ВАЖНО: МАРШРУТ /users/no-companies
+    // ДОЛЖЕН БЫТЬ ДО Route::resource('users')
+    // ИНАЧЕ no-companies будет восприниматься как {user}
+    // ============================================
+    Route::get('/users/no-companies', [UserController::class, 'noCompanies'])
+        ->name('users.no-companies');
+
+    // Users resource (идёт ПОСЛЕ конкретных маршрутов!)
+    Route::resource('users', UserController::class);
 
     // Search
     Route::get('/search', [SearchController::class, 'index'])->name('search');
@@ -195,12 +204,17 @@ Route::middleware(['auth', 'superadmin', 'last.seen'])
 
         Route::get('/', [SuperAdminController::class, 'index'])->name('dashboard');
 
-        // Пользователи
+        // ✅ ВАЖНО: Конкретные маршруты ДО resource и параметров!
+        Route::get('users/no-companies', [SuperAdminUserController::class, 'noCompanies'])
+            ->name('users.no-companies');
         Route::get('users/export', [SuperAdminUserController::class, 'exportUsers'])
             ->name('users.export');
         Route::post('users/bulk-delete', [SuperAdminUserController::class, 'bulkDelete'])
             ->name('users.bulk');
+
+        // Resource идёт ПОСЛЕ конкретных маршрутов
         Route::resource('users', SuperAdminUserController::class);
+
         Route::post('users/{user}/reset-password', [SuperAdminUserController::class, 'resetPassword'])
             ->name('users.reset-password');
         Route::post('users/{user}/toggle-status', [SuperAdminUserController::class, 'toggleStatus'])
@@ -238,10 +252,6 @@ if (app()->environment('local')) {
         }
     })->name('test.email');
 }
-
-Route::middleware('auth')->get('/users/no-companies', function () {
-    return view('users.no-companies');
-})->name('users.no-companies');
 
 Route::get('/dashboard-update', fn() => 'Данные обновлены успешно!')
     ->name('dashboard.update');

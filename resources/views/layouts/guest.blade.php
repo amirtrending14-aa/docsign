@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="utf-8">
@@ -667,26 +667,171 @@
             color: #f87171;
         }
 
-        /* Responsive */
-        @media (max-width: 520px) {
-            .container {
-                padding: 16px;
-            }
-            .login-card {
-                padding: 36px 24px;
-                border-radius: 20px;
-            }
-            .logo-title {
-                font-size: 24px;
-            }
-            .lang-switcher {
-                top: 12px;
-                right: 12px;
-            }
-            .lang-btn {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
+        /* ===== ПОЛНАЯ АДАПТИВНОСТЬ ===== */
+        
+        /* Маленькие ноутбуки и большие планшеты (до 992px) */
+        @media (max-width: 992px) {
+            .container { padding: 18px; }
+            .login-card { padding: 42px 36px; border-radius: 22px; }
+            .logo-section { margin-bottom: 32px; }
+            .logo-img { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 14px; }
+            .logo-title { font-size: 26px; }
+            .logo-subtitle { font-size: 11px; letter-spacing: 1.8px; }
+            .form-group { margin-bottom: 18px; }
+            .form-label { font-size: 12px; margin-bottom: 7px; }
+            .form-input { padding: 13px 15px 13px 44px; font-size: 14px; border-radius: 12px; }
+            .input-icon { left: 15px; width: 18px; height: 18px; }
+            .toggle-password { right: 12px; }
+            .toggle-password svg { width: 16px; height: 16px; }
+            .form-options { margin-bottom: 24px; }
+            .remember-me { font-size: 12px; gap: 8px; }
+            .custom-checkbox { width: 18px; height: 18px; border-radius: 5px; }
+            .forgot-link { font-size: 12px; }
+            .submit-btn { padding: 15px; font-size: 14px; border-radius: 12px; }
+            .divider { margin: 24px 0; gap: 14px; }
+            .divider-text { font-size: 11px; }
+            .register-text { font-size: 13px; }
+            .footer-badges { gap: 20px; margin-top: 28px; }
+            .badge { font-size: 10px; gap: 5px; }
+            .badge svg { width: 12px; height: 12px; }
+            .copyright { margin-top: 20px; font-size: 11px; }
+            .notification { padding: 12px 20px; font-size: 13px; border-radius: 10px; }
+            .lang-switcher { top: 16px; right: 16px; }
+        }
+
+        /* Планшеты (до 768px) */
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .login-card { padding: 36px 28px; border-radius: 20px; }
+            .logo-section { margin-bottom: 28px; }
+            .logo-img { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 12px; }
+            .logo-title { font-size: 24px; }
+            .logo-subtitle { font-size: 10px; letter-spacing: 1.6px; }
+            .form-group { margin-bottom: 16px; }
+            .form-label { font-size: 12px; margin-bottom: 6px; }
+            .form-input { padding: 12px 14px 12px 42px; font-size: 13px; border-radius: 11px; }
+            .input-icon { left: 14px; width: 17px; height: 17px; }
+            .toggle-password { right: 11px; padding: 3px; }
+            .toggle-password svg { width: 15px; height: 15px; }
+            .form-options { margin-bottom: 22px; flex-direction: column; gap: 12px; align-items: flex-start; }
+            .remember-me { font-size: 12px; gap: 8px; }
+            .custom-checkbox { width: 17px; height: 17px; }
+            .forgot-link { font-size: 12px; }
+            .submit-btn { padding: 14px; font-size: 13px; border-radius: 11px; }
+            .submit-btn .btn-text { gap: 6px; }
+            .submit-btn .btn-arrow { width: 16px; height: 16px; }
+            .submit-btn.loading::after { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+            .divider { margin: 22px 0; gap: 12px; }
+            .divider-text { font-size: 11px; }
+            .register-text { font-size: 13px; }
+            .footer-badges { gap: 16px; margin-top: 24px; }
+            .badge { font-size: 10px; gap: 4px; }
+            .badge svg { width: 11px; height: 11px; }
+            .copyright { margin-top: 18px; font-size: 11px; }
+            .notification { padding: 11px 18px; font-size: 12px; border-radius: 9px; top: 16px; }
+            .lang-switcher { top: 12px; right: 12px; padding: 3px; }
+        }
+
+        /* Большие телефоны (до 576px) */
+        @media (max-width: 576px) {
+            .container { padding: 14px; }
+            .login-card { padding: 32px 24px; border-radius: 18px; }
+            .logo-section { margin-bottom: 24px; }
+            .logo-img { width: 56px; height: 56px; border-radius: 14px; margin-bottom: 10px; }
+            .logo-title { font-size: 22px; }
+            .logo-subtitle { font-size: 10px; letter-spacing: 1.4px; }
+            .form-group { margin-bottom: 14px; }
+            .form-label { font-size: 11px; margin-bottom: 5px; }
+            .form-input { padding: 11px 13px 11px 40px; font-size: 13px; border-radius: 10px; }
+            .input-icon { left: 13px; width: 16px; height: 16px; }
+            .toggle-password { right: 10px; padding: 3px; }
+            .toggle-password svg { width: 14px; height: 14px; }
+            .form-options { margin-bottom: 20px; gap: 10px; }
+            .remember-me { font-size: 11px; gap: 7px; }
+            .custom-checkbox { width: 16px; height: 16px; border-radius: 4px; }
+            .custom-checkbox svg { width: 10px; height: 10px; }
+            .forgot-link { font-size: 11px; }
+            .submit-btn { padding: 13px; font-size: 13px; border-radius: 10px; }
+            .submit-btn .btn-text { gap: 5px; }
+            .submit-btn .btn-arrow { width: 15px; height: 15px; }
+            .submit-btn.loading::after { width: 20px; height: 20px; margin: -10px 0 0 -10px; border-width: 2px; }
+            .divider { margin: 20px 0; gap: 10px; }
+            .divider-text { font-size: 10px; }
+            .register-text { font-size: 12px; }
+            .footer-badges { gap: 14px; margin-top: 20px; flex-wrap: wrap; }
+            .badge { font-size: 9px; gap: 3px; }
+            .badge svg { width: 10px; height: 10px; }
+            .copyright { margin-top: 16px; font-size: 10px; }
+            .notification { padding: 10px 16px; font-size: 11px; border-radius: 8px; top: 12px; max-width: 92%; }
+            .lang-switcher { top: 10px; right: 10px; padding: 3px; border-radius: 9px; }
+        }
+
+        /* Телефоны (до 480px) */
+        @media (max-width: 480px) {
+            .container { padding: 12px; }
+            .login-card { padding: 28px 20px; border-radius: 16px; }
+            .logo-section { margin-bottom: 20px; }
+            .logo-img { width: 52px; height: 52px; border-radius: 12px; margin-bottom: 9px; }
+            .logo-title { font-size: 20px; }
+            .logo-subtitle { font-size: 9px; letter-spacing: 1.2px; }
+            .form-group { margin-bottom: 12px; }
+            .form-label { font-size: 10px; margin-bottom: 4px; }
+            .form-input { padding: 10px 12px 10px 38px; font-size: 12px; border-radius: 9px; }
+            .input-icon { left: 12px; width: 15px; height: 15px; }
+            .toggle-password { right: 9px; padding: 2px; }
+            .toggle-password svg { width: 13px; height: 13px; }
+            .form-options { margin-bottom: 18px; gap: 8px; }
+            .remember-me { font-size: 11px; gap: 6px; }
+            .custom-checkbox { width: 15px; height: 15px; }
+            .custom-checkbox svg { width: 9px; height: 9px; }
+            .forgot-link { font-size: 10px; }
+            .submit-btn { padding: 12px; font-size: 12px; border-radius: 9px; letter-spacing: 0.2px; }
+            .submit-btn .btn-text { gap: 4px; }
+            .submit-btn .btn-arrow { width: 14px; height: 14px; }
+            .submit-btn.loading::after { width: 18px; height: 18px; margin: -9px 0 0 -9px; }
+            .divider { margin: 18px 0; gap: 8px; }
+            .divider-text { font-size: 10px; }
+            .register-text { font-size: 11px; }
+            .footer-badges { gap: 12px; margin-top: 18px; }
+            .badge { font-size: 9px; gap: 3px; }
+            .badge svg { width: 10px; height: 10px; }
+            .copyright { margin-top: 14px; font-size: 10px; }
+            .notification { padding: 9px 14px; font-size: 10px; border-radius: 7px; top: 10px; }
+            .lang-switcher { top: 8px; right: 8px; padding: 2px; border-radius: 8px; }
+        }
+
+        /* Очень маленькие телефоны (до 380px) */
+        @media (max-width: 380px) {
+            .container { padding: 10px; }
+            .login-card { padding: 24px 16px; border-radius: 14px; }
+            .logo-section { margin-bottom: 18px; }
+            .logo-img { width: 48px; height: 48px; border-radius: 10px; margin-bottom: 8px; }
+            .logo-title { font-size: 18px; }
+            .logo-subtitle { font-size: 9px; letter-spacing: 1px; }
+            .form-group { margin-bottom: 10px; }
+            .form-label { font-size: 10px; margin-bottom: 3px; }
+            .form-input { padding: 9px 11px 9px 36px; font-size: 11px; border-radius: 8px; }
+            .input-icon { left: 11px; width: 14px; height: 14px; }
+            .toggle-password { right: 8px; padding: 2px; }
+            .toggle-password svg { width: 12px; height: 12px; }
+            .form-options { margin-bottom: 16px; gap: 7px; }
+            .remember-me { font-size: 10px; gap: 5px; }
+            .custom-checkbox { width: 14px; height: 14px; }
+            .custom-checkbox svg { width: 8px; height: 8px; }
+            .forgot-link { font-size: 10px; }
+            .submit-btn { padding: 11px; font-size: 11px; border-radius: 8px; }
+            .submit-btn .btn-text { gap: 3px; }
+            .submit-btn .btn-arrow { width: 13px; height: 13px; }
+            .submit-btn.loading::after { width: 16px; height: 16px; margin: -8px 0 0 -8px; }
+            .divider { margin: 16px 0; gap: 7px; }
+            .divider-text { font-size: 9px; }
+            .register-text { font-size: 10px; }
+            .footer-badges { gap: 10px; margin-top: 16px; }
+            .badge { font-size: 8px; gap: 2px; }
+            .badge svg { width: 9px; height: 9px; }
+            .copyright { margin-top: 12px; font-size: 9px; }
+            .notification { padding: 8px 12px; font-size: 9px; border-radius: 6px; top: 8px; }
+            .lang-switcher { top: 6px; right: 6px; padding: 2px; }
         }
 
         /* Focus visible for accessibility */
@@ -740,9 +885,9 @@
         <!-- Logo -->
         <div class="logo-section">
             <img
-                src="{{ asset('img/123.png') }}"
-                alt="DocSign Logo"
-                class="logo-img"
+                    src="{{ asset('img/123.png') }}"
+                    alt="DocSign Logo"
+                    class="logo-img"
             >
             <div class="logo-title">Doc<span>Sign</span></div>
             <div class="logo-subtitle" data-i18n="subtitle">Система электронного документооборота</div>
@@ -754,13 +899,13 @@
                 <label class="form-label" data-i18n="emailLabel">Электронная почта</label>
                 <div class="input-wrapper">
                     <input
-                        type="email"
-                        class="form-input"
-                        id="email"
-                        data-i18n-placeholder="emailPlaceholder"
-                        placeholder="name@company.com"
-                        autocomplete="email"
-                        required
+                            type="email"
+                            class="form-input"
+                            id="email"
+                            data-i18n-placeholder="emailPlaceholder"
+                            placeholder="name@company.com"
+                            autocomplete="email"
+                            required
                     >
                     <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -774,13 +919,13 @@
                 <label class="form-label" data-i18n="passwordLabel">Пароль</label>
                 <div class="input-wrapper">
                     <input
-                        type="password"
-                        class="form-input"
-                        id="password"
-                        data-i18n-placeholder="passwordPlaceholder"
-                        placeholder="••••••••••"
-                        autocomplete="current-password"
-                        required
+                            type="password"
+                            class="form-input"
+                            id="password"
+                            data-i18n-placeholder="passwordPlaceholder"
+                            placeholder="••••••••••"
+                            autocomplete="current-password"
+                            required
                     >
                     <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
@@ -1094,4 +1239,3 @@
 </script>
 </body>
 </html>
-

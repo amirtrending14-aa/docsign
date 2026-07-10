@@ -53,7 +53,18 @@ class UserController extends Controller
         $companies = Company::all();
         return view('superadmin.users.create', compact('companies'));
     }
+    public function noCompanies()
+    {
+        $users = \App\Models\User::where(function($q) {
+            $q->whereNull('company_id')
+                ->orWhere('company_id', 0);
+        })
+            ->where('is_super_admin', false)
+            ->latest()
+            ->paginate(20);
 
+        return view('superadmin.users.no-companies', compact('users'));
+    }
     public function store(Request $request)
     {
         $data = $request->validate([

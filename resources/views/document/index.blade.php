@@ -291,6 +291,295 @@ body {
         opacity: 0.4;
         pointer-events: none;
     }
+
+    /* === МОБИЛЬНЫЕ КАРТОЧКИ (скрыты по умолчанию) === */
+    .doc-cards-mobile {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .doc-card-item {
+        background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01));
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.25s ease;
+    }
+    .doc-card-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background: rgba(var(--glow), 0.6);
+        border-radius: 3px 0 0 3px;
+    }
+    .doc-card-item:hover {
+        border-color: rgba(var(--glow), 0.3);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 16px rgba(var(--glow), 0.1);
+        transform: translateY(-2px);
+    }
+
+    .doc-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .doc-card-title {
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.3;
+        flex: 1;
+    }
+    .doc-card-number {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: rgba(var(--glow), 1);
+        background: rgba(var(--glow), 0.1);
+        padding: 2px 7px;
+        border-radius: 5px;
+        border: 1px solid rgba(var(--glow), 0.25);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .doc-card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+        font-size: 11px;
+        color: var(--muted);
+    }
+    .doc-card-meta-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .doc-card-meta-item i {
+        font-size: 11px;
+        opacity: 0.7;
+    }
+
+    .doc-card-desc {
+        font-size: 11.5px;
+        color: var(--muted);
+        opacity: 0.75;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+
+    .doc-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--line);
+    }
+
+    /* ===== RESPONSIVE ===== */
+
+    /* Маленькие ноутбуки и большие планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .doc-page-custom .page-head-custom { margin-bottom: 20px; gap: 12px; }
+        .doc-page-custom h1 { font-size: 22px; gap: 10px; }
+        .doc-page-custom h1 .accent-bar { width: 4px; height: 22px; }
+        .doc-page-custom .btn-new { padding: 9px 16px; font-size: 12px; border-radius: 9px; }
+
+        .doc-table th, .doc-table td { padding: 12px 14px; }
+        .doc-table th { font-size: 10px; letter-spacing: 0.8px; }
+        .doc-table td { font-size: 12px; }
+
+        /* Скрываем колонку ID */
+        .doc-table th:first-child,
+        .doc-table td:first-child {
+            display: none;
+        }
+
+        .doc-title { font-size: 12.5px; }
+        .doc-number { font-size: 9px; padding: 2px 6px; }
+        .doc-author { font-size: 10px; }
+        .doc-desc { font-size: 10.5px; }
+        .doc-date { font-size: 11px; }
+        .status-pill { padding: 3px 10px; font-size: 10px; }
+        .action-btn { width: 30px; height: 30px; }
+        .action-btn svg { width: 14px; height: 14px; }
+    }
+
+    /* Планшеты (до 768px) — переход на карточки */
+    @media (max-width: 768px) {
+        .doc-page-custom .page-head-custom { margin-bottom: 18px; gap: 10px; }
+        .doc-page-custom h1 { font-size: 20px; gap: 9px; }
+        .doc-page-custom h1 .accent-bar { width: 3px; height: 20px; }
+        .doc-page-custom .btn-new { padding: 8px 14px; font-size: 11px; border-radius: 8px; gap: 6px; }
+        .doc-page-custom .btn-new i { font-size: 12px; }
+
+        /* Скрываем таблицу, показываем карточки */
+        .doc-table-wrap { display: none; }
+        .doc-cards-mobile { display: flex; }
+
+        .doc-table-wrap {
+            padding: 3px;
+            border-radius: 12px;
+        }
+
+        .doc-card-item { padding: 14px; border-radius: 10px; }
+        .doc-card-title { font-size: 13px; }
+        .doc-card-number { font-size: 9px; padding: 2px 6px; }
+        .doc-card-meta { font-size: 10px; gap: 6px; }
+        .doc-card-desc { font-size: 11px; margin-bottom: 10px; }
+        .doc-card-footer { padding-top: 9px; gap: 8px; }
+
+        .status-pill { padding: 3px 9px; font-size: 10px; gap: 5px; }
+        .status-pill::before { width: 5px; height: 5px; }
+        .action-btn { width: 30px; height: 30px; border-radius: 7px; }
+        .action-btn svg { width: 14px; height: 14px; }
+
+        .empty-state { padding: 40px 16px; }
+        .empty-icon { width: 56px; height: 56px; font-size: 20px; margin-bottom: 14px; }
+        .empty-title { font-size: 13px; }
+        .empty-sub { font-size: 11px; margin-bottom: 16px; }
+        .empty-btn { padding: 7px 14px; font-size: 11px; border-radius: 7px; }
+
+        .pagination-wrap { margin-top: 20px; }
+        .pagination-wrap nav { padding: 3px; border-radius: 9px; gap: 3px; }
+        .pagination-wrap .pagination { gap: 3px; }
+        .pagination-wrap .pagination li a,
+        .pagination-wrap .pagination li span {
+            min-width: 30px;
+            height: 30px;
+            padding: 0 8px;
+            font-size: 11px;
+            border-radius: 5px;
+        }
+    }
+
+    /* Большие телефоны (до 576px) */
+    @media (max-width: 576px) {
+        .doc-page-custom .page-head-custom { margin-bottom: 16px; gap: 8px; }
+        .doc-page-custom h1 { font-size: 18px; gap: 8px; }
+        .doc-page-custom h1 .accent-bar { width: 3px; height: 18px; }
+        .doc-page-custom .btn-new { padding: 7px 12px; font-size: 11px; border-radius: 7px; gap: 5px; }
+        .doc-page-custom .btn-new i { font-size: 11px; }
+
+        .doc-card-item { padding: 12px; border-radius: 9px; gap: 8px; }
+        .doc-card-header { gap: 8px; margin-bottom: 8px; }
+        .doc-card-title { font-size: 12px; }
+        .doc-card-number { font-size: 9px; padding: 2px 5px; border-radius: 4px; }
+        .doc-card-meta { font-size: 10px; gap: 5px; margin-bottom: 8px; }
+        .doc-card-desc { font-size: 10px; margin-bottom: 9px; line-height: 1.35; }
+        .doc-card-footer { padding-top: 8px; gap: 7px; }
+
+        .status-pill { padding: 3px 8px; font-size: 9px; gap: 4px; border-radius: 16px; }
+        .status-pill::before { width: 5px; height: 5px; }
+        .action-btn { width: 28px; height: 28px; border-radius: 6px; }
+        .action-btn svg { width: 13px; height: 13px; }
+
+        .empty-state { padding: 32px 14px; }
+        .empty-icon { width: 48px; height: 48px; font-size: 18px; margin-bottom: 12px; border-radius: 12px; }
+        .empty-title { font-size: 12px; }
+        .empty-sub { font-size: 10px; margin-bottom: 14px; }
+        .empty-btn { padding: 6px 12px; font-size: 10px; border-radius: 6px; }
+
+        .pagination-wrap { margin-top: 16px; }
+        .pagination-wrap nav { padding: 3px; border-radius: 8px; gap: 2px; }
+        .pagination-wrap .pagination { gap: 2px; }
+        .pagination-wrap .pagination li a,
+        .pagination-wrap .pagination li span {
+            min-width: 28px;
+            height: 28px;
+            padding: 0 7px;
+            font-size: 10px;
+            border-radius: 5px;
+        }
+    }
+
+    /* Телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .doc-page-custom .page-head-custom { margin-bottom: 14px; gap: 7px; }
+        .doc-page-custom h1 { font-size: 16px; gap: 7px; }
+        .doc-page-custom h1 .accent-bar { width: 3px; height: 16px; }
+        .doc-page-custom .btn-new { padding: 6px 11px; font-size: 10px; border-radius: 7px; gap: 4px; }
+        .doc-page-custom .btn-new i { font-size: 10px; }
+
+        .doc-card-item { padding: 11px; border-radius: 8px; }
+        .doc-card-header { gap: 7px; margin-bottom: 7px; }
+        .doc-card-title { font-size: 12px; }
+        .doc-card-number { font-size: 8px; padding: 2px 5px; }
+        .doc-card-meta { font-size: 9px; gap: 4px; margin-bottom: 7px; }
+        .doc-card-meta-item i { font-size: 10px; }
+        .doc-card-desc { font-size: 10px; margin-bottom: 8px; }
+        .doc-card-footer { padding-top: 7px; gap: 6px; }
+
+        .status-pill { padding: 2px 7px; font-size: 9px; gap: 4px; border-radius: 14px; }
+        .status-pill::before { width: 4px; height: 4px; }
+        .action-btn { width: 27px; height: 27px; border-radius: 6px; }
+        .action-btn svg { width: 12px; height: 12px; }
+
+        .empty-state { padding: 28px 12px; }
+        .empty-icon { width: 44px; height: 44px; font-size: 16px; margin-bottom: 10px; }
+        .empty-title { font-size: 11px; }
+        .empty-sub { font-size: 10px; margin-bottom: 12px; }
+        .empty-btn { padding: 6px 11px; font-size: 10px; }
+
+        .pagination-wrap { margin-top: 14px; }
+        .pagination-wrap nav { padding: 2px; border-radius: 7px; }
+        .pagination-wrap .pagination li a,
+        .pagination-wrap .pagination li span {
+            min-width: 26px;
+            height: 26px;
+            padding: 0 6px;
+            font-size: 10px;
+            border-radius: 4px;
+        }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .doc-page-custom .page-head-custom { margin-bottom: 12px; gap: 6px; }
+        .doc-page-custom h1 { font-size: 15px; gap: 6px; }
+        .doc-page-custom h1 .accent-bar { width: 2px; height: 15px; }
+        .doc-page-custom .btn-new { padding: 6px 10px; font-size: 10px; border-radius: 6px; gap: 4px; }
+
+        .doc-card-item { padding: 10px; border-radius: 7px; }
+        .doc-card-header { gap: 6px; margin-bottom: 6px; }
+        .doc-card-title { font-size: 11px; }
+        .doc-card-number { font-size: 8px; padding: 1px 4px; }
+        .doc-card-meta { font-size: 9px; gap: 4px; margin-bottom: 6px; }
+        .doc-card-desc { font-size: 9px; margin-bottom: 7px; }
+        .doc-card-footer { padding-top: 6px; gap: 5px; }
+
+        .status-pill { padding: 2px 6px; font-size: 8px; gap: 3px; border-radius: 12px; }
+        .status-pill::before { width: 4px; height: 4px; }
+        .action-btn { width: 26px; height: 26px; border-radius: 5px; }
+        .action-btn svg { width: 11px; height: 11px; }
+
+        .empty-state { padding: 24px 10px; }
+        .empty-icon { width: 40px; height: 40px; font-size: 15px; margin-bottom: 9px; }
+        .empty-title { font-size: 11px; }
+        .empty-sub { font-size: 9px; margin-bottom: 10px; }
+        .empty-btn { padding: 5px 10px; font-size: 9px; }
+
+        .pagination-wrap { margin-top: 12px; }
+        .pagination-wrap nav { padding: 2px; border-radius: 6px; }
+        .pagination-wrap .pagination li a,
+        .pagination-wrap .pagination li span {
+            min-width: 24px;
+            height: 24px;
+            padding: 0 5px;
+            font-size: 9px;
+            border-radius: 4px;
+        }
+    }
 </style>
 
 <div class="doc-page-custom">
@@ -306,7 +595,7 @@ body {
         </a>
     </div>
 
-    <!-- Таблица документов -->
+    <!-- Таблица документов (для десктопов и планшетов) -->
     <div class="doc-table-wrap">
         <table class="doc-table">
             <thead>
@@ -329,7 +618,6 @@ body {
             'rejected' => 'status-rejected',
             default => 'status-draft',
             };
-            // data-status-key — для JS-перевода статуса
             $statusKey = match($status) {
             'draft' => 'status_draft',
             'active', 'processing' => 'status_processing',
@@ -393,6 +681,76 @@ body {
             @endforelse
             </tbody>
         </table>
+    </div>
+
+    <!-- Мобильные карточки (для телефонов) -->
+    <div class="doc-cards-mobile">
+        @forelse($documents as $index => $doc)
+        @php
+        $status = strtolower($doc->status);
+        $statusClass = match($status) {
+        'draft' => 'status-draft',
+        'active', 'processing' => 'status-processing',
+        'approved', 'completed' => 'status-completed',
+        'rejected' => 'status-rejected',
+        default => 'status-draft',
+        };
+        $statusKey = match($status) {
+        'draft' => 'status_draft',
+        'active', 'processing' => 'status_processing',
+        'approved', 'completed' => 'status_completed',
+        'rejected' => 'status_rejected',
+        default => 'status_draft',
+        };
+        @endphp
+        <div class="doc-card-item">
+            <div class="doc-card-header">
+                <div class="doc-card-title">{{ Str::limit($doc->title, 50) }}</div>
+                <span class="doc-card-number">{{ $doc->number ?? $doc->id }}</span>
+            </div>
+            <div class="doc-card-meta">
+                <span class="doc-card-meta-item">
+                    <i class="bi bi-hash"></i>
+                    #{{ ($documents->currentPage() - 1) * $documents->perPage() + $index + 1 }}
+                </span>
+                @if(auth()->user()->is_admin)
+                <span class="doc-card-meta-item">
+                    <i class="bi bi-person"></i>
+                    {{ $doc->createdBy->name ?? 'System' }}
+                </span>
+                @endif
+                <span class="doc-card-meta-item">
+                    <i class="bi bi-calendar3"></i>
+                    {{ $doc->deadline ? $doc->deadline->format('d.m.Y') : '—' }}
+                </span>
+            </div>
+            <div class="doc-card-desc">
+                {{ Str::limit($doc->content, 60) ?: __('No description') }}
+            </div>
+            <div class="doc-card-footer">
+                <span class="status-pill {{ $statusClass }}" data-status-key="{{ $statusKey }}">
+                    {{ $doc->status_label ?? ucfirst($status) }}
+                </span>
+                <a href="{{ route('documents.show', $doc->id) }}" class="action-btn" data-i18n-title="doc_view" title="View">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.123.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        @empty
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-search"></i>
+            </div>
+            <div class="empty-title" data-i18n="docNotFound">Документ не найден</div>
+            <div class="empty-sub" data-i18n="tryDifferentSearch">Попробуйте изменить запрос</div>
+            <a href="{{ route('documents.index') }}" class="empty-btn" data-i18n="resetSearch">
+                Сбросить поиск
+            </a>
+        </div>
+        @endforelse
     </div>
 
     <!-- Пагинация -->

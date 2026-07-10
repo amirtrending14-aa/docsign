@@ -12,7 +12,6 @@
         color: var(--text);
         font-family: 'Inter', sans-serif;
         position: relative;
-
     }
 
     /* Фоновые blob-ы */
@@ -104,6 +103,8 @@
         display: flex;
         align-items: center;
         gap: 14px;
+        min-width: 0;
+        flex: 1;
     }
 
     .create-topbar-icon {
@@ -130,6 +131,7 @@
         letter-spacing: -0.3px;
         line-height: 1.2;
         margin: 0;
+        word-break: break-word;
     }
 
     .create-topbar-subtitle {
@@ -137,6 +139,7 @@
         color: var(--muted);
         font-weight: 600;
         margin-top: 3px;
+        word-break: break-word;
     }
 
     .create-topbar-subtitle strong {
@@ -159,6 +162,8 @@
         text-transform: uppercase;
         letter-spacing: 0.8px;
         transition: all 0.25s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
 
     .btn-back:hover {
@@ -226,6 +231,7 @@
         border-radius: 2px;
         background: linear-gradient(180deg, rgba(var(--glow), 1), rgba(var(--glow), 0.4));
         box-shadow: 0 0 10px rgba(var(--glow), 0.6);
+        flex-shrink: 0;
     }
 
     /* === AVATAR BLOCK === */
@@ -239,8 +245,6 @@
         border-radius: 14px;
         transition: all 0.3s ease;
         position: relative;
-
-
     }
     .avatar-block::before {
         content: "";
@@ -351,6 +355,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
+        word-break: break-word;
     }
 
     /* === FIELDS === */
@@ -366,10 +371,6 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
-    }
-
-    @media (max-width: 640px) {
-        .field-row { grid-template-columns: 1fr; }
     }
 
     .field-label {
@@ -398,6 +399,7 @@
         border-radius: 10px !important;
         transition: all 0.25s ease;
         font-family: 'Inter', sans-serif;
+        box-sizing: border-box;
     }
 
     .input-custom:focus {
@@ -511,6 +513,7 @@
         color: var(--text);
         font-weight: 500;
         line-height: 1.5;
+        word-break: break-word;
     }
 
     .info-banner-text strong {
@@ -543,6 +546,7 @@
         box-shadow: 0 8px 28px rgba(var(--glow), 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
         border: 1px solid transparent;
         cursor: pointer;
+        white-space: nowrap;
     }
 
     .btn-submit:hover {
@@ -556,14 +560,241 @@
         height: 18px;
     }
 
-    /* Responsive */
+    /* ============================================ */
+    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
+    /* ============================================ */
+
+    /* Маленькие десктопы (до 1200px) */
+    @media (max-width: 1200px) {
+        .create-user-page { padding: 36px 22px 55px; }
+        .create-topbar { margin-bottom: 22px; padding: 17px 20px; gap: 14px; }
+        .create-topbar-icon { width: 46px; height: 46px; border-radius: 12px; }
+        .create-topbar-icon svg { width: 23px; height: 23px; }
+        .create-topbar-title { font-size: 19px; }
+        .create-topbar-subtitle { font-size: 11px; }
+        .form-card { padding: 32px 28px; }
+        .form-section { margin-bottom: 26px; }
+        .section-title { font-size: 10px; margin-bottom: 15px; }
+        .avatar-block { padding: 20px; gap: 18px; }
+        .avatar-preview-box { width: 95px; height: 95px; font-size: 40px; }
+        .avatar-upload-btn { width: 32px; height: 32px; }
+        .avatar-info h3 { font-size: 14px; }
+        .input-custom { padding: 12px 15px !important; font-size: 13px !important; }
+        .info-banner { padding: 15px 17px; gap: 13px; }
+        .info-banner-text { font-size: 12px; }
+        .btn-submit { padding: 13px 34px; font-size: 12px; }
+    }
+
+    /* Планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .create-user-page { padding: 32px 20px 50px; }
+        .create-topbar { margin-bottom: 20px; padding: 16px 18px; gap: 12px; border-radius: 13px; }
+        .create-topbar-left { gap: 12px; }
+        .create-topbar-icon { width: 44px; height: 44px; border-radius: 12px; }
+        .create-topbar-icon svg { width: 22px; height: 22px; }
+        .create-topbar-title { font-size: 18px; }
+        .create-topbar-subtitle { font-size: 11px; margin-top: 2px; }
+        .btn-back { padding: 9px 16px; font-size: 11px; border-radius: 9px; gap: 7px; }
+        .btn-back svg { width: 13px; height: 13px; }
+        .form-card { padding: 28px 24px; border-radius: 13px; }
+        .form-section { margin-bottom: 24px; }
+        .section-title { font-size: 10px; letter-spacing: 1.4px; margin-bottom: 14px; gap: 9px; }
+        .section-title::before { width: 3px; height: 13px; }
+        .avatar-block { padding: 18px; gap: 16px; border-radius: 13px; }
+        .avatar-preview-box { width: 90px; height: 90px; font-size: 38px; border-radius: 15px; }
+        .avatar-upload-btn { width: 30px; height: 30px; border-radius: 9px; bottom: -5px; right: -5px; }
+        .avatar-upload-btn svg { width: 15px; height: 15px; }
+        .avatar-info h3 { font-size: 14px; margin-bottom: 3px; }
+        .avatar-info p { font-size: 11px; }
+        .avatar-file-name { font-size: 11px; margin-top: 7px; }
+        .field-group { margin-bottom: 16px; }
+        .field-row { gap: 14px; }
+        .field-label { font-size: 10px; letter-spacing: 0.9px; margin-bottom: 7px; }
+        .input-custom { padding: 12px 14px !important; font-size: 13px !important; border-radius: 9px !important; }
+        .note-text { font-size: 10px; margin-top: 7px; }
+        .password-toggle { right: 11px; padding: 5px; }
+        .password-toggle svg { width: 17px; height: 17px; }
+        .info-banner { padding: 14px 16px; gap: 12px; border-radius: 11px; }
+        .info-banner-icon { width: 34px; height: 34px; border-radius: 9px; }
+        .info-banner-icon svg { width: 17px; height: 17px; }
+        .info-banner-text { font-size: 12px; }
+        .submit-wrap { padding-top: 22px; margin-top: 26px; }
+        .btn-submit { padding: 12px 32px; font-size: 12px; border-radius: 10px; letter-spacing: 1.1px; }
+        .btn-submit svg { width: 17px; height: 17px; }
+    }
+
+    /* Большие телефоны (до 768px) */
+    @media (max-width: 768px) {
+        .create-user-page { padding: 28px 18px 45px; }
+        .create-topbar { margin-bottom: 18px; padding: 15px 16px; gap: 11px; border-radius: 12px; }
+        .create-topbar-left { gap: 11px; }
+        .create-topbar-icon { width: 42px; height: 42px; border-radius: 11px; }
+        .create-topbar-icon svg { width: 21px; height: 21px; }
+        .create-topbar-title { font-size: 17px; }
+        .create-topbar-subtitle { font-size: 11px; }
+        .btn-back { padding: 9px 15px; font-size: 11px; border-radius: 9px; gap: 6px; letter-spacing: 0.7px; }
+        .btn-back svg { width: 13px; height: 13px; }
+        .form-card { padding: 24px 20px; border-radius: 12px; }
+        .form-section { margin-bottom: 22px; }
+        .section-title { font-size: 10px; letter-spacing: 1.3px; margin-bottom: 13px; gap: 8px; }
+        .section-title::before { width: 3px; height: 12px; }
+        .avatar-block { padding: 16px; gap: 15px; border-radius: 12px; }
+        .avatar-preview-box { width: 85px; height: 85px; font-size: 36px; border-radius: 14px; }
+        .avatar-upload-btn { width: 28px; height: 28px; border-radius: 8px; bottom: -5px; right: -5px; }
+        .avatar-upload-btn svg { width: 14px; height: 14px; }
+        .avatar-info h3 { font-size: 13px; }
+        .avatar-info p { font-size: 11px; }
+        .avatar-file-name { font-size: 11px; margin-top: 6px; }
+        .field-group { margin-bottom: 15px; }
+        .field-row { gap: 13px; }
+        .field-label { font-size: 10px; letter-spacing: 0.8px; margin-bottom: 7px; }
+        .input-custom { padding: 11px 14px !important; font-size: 13px !important; border-radius: 9px !important; }
+        .note-text { font-size: 10px; margin-top: 6px; }
+        .password-toggle { right: 10px; }
+        .password-toggle svg { width: 16px; height: 16px; }
+        .info-banner { padding: 13px 15px; gap: 11px; border-radius: 10px; }
+        .info-banner-icon { width: 32px; height: 32px; border-radius: 8px; }
+        .info-banner-icon svg { width: 16px; height: 16px; }
+        .info-banner-text { font-size: 11px; line-height: 1.45; }
+        .submit-wrap { padding-top: 20px; margin-top: 24px; }
+        .btn-submit { padding: 12px 30px; font-size: 11px; border-radius: 10px; letter-spacing: 1px; }
+        .btn-submit svg { width: 16px; height: 16px; }
+    }
+
+    /* Телефоны (до 640px) */
     @media (max-width: 640px) {
         .create-user-page { padding: 24px 16px 40px; }
-        .create-topbar { flex-direction: column; align-items: flex-start; }
-        .btn-back { width: 100%; justify-content: center; }
-        .form-card { padding: 24px 18px; }
-        .avatar-block { flex-direction: column; text-align: center; padding: 20px; }
-        .create-topbar-title { font-size: 18px; }
+        .create-topbar {
+            flex-direction: column;
+            align-items: stretch;
+            margin-bottom: 16px;
+            padding: 14px;
+            gap: 12px;
+            border-radius: 11px;
+        }
+        .create-topbar-left { gap: 10px; width: 100%; }
+        .create-topbar-icon { width: 40px; height: 40px; border-radius: 10px; }
+        .create-topbar-icon svg { width: 20px; height: 20px; }
+        .create-topbar-title { font-size: 16px; }
+        .create-topbar-subtitle { font-size: 10px; }
+        .btn-back {
+            width: 100%;
+            justify-content: center;
+            padding: 10px 14px;
+            font-size: 10px;
+            border-radius: 9px;
+        }
+        .btn-back svg { width: 12px; height: 12px; }
+        .form-card { padding: 22px 18px; border-radius: 11px; }
+        .form-section { margin-bottom: 20px; }
+        .section-title { font-size: 9px; letter-spacing: 1.2px; margin-bottom: 12px; gap: 7px; }
+        .section-title::before { width: 3px; height: 11px; }
+        .avatar-block {
+            flex-direction: column;
+            text-align: center;
+            padding: 18px;
+            gap: 14px;
+            border-radius: 11px;
+        }
+        .avatar-preview-box { width: 80px; height: 80px; font-size: 34px; border-radius: 13px; }
+        .avatar-upload-btn { width: 28px; height: 28px; bottom: -4px; right: -4px; }
+        .avatar-info { text-align: center; width: 100%; }
+        .avatar-info h3 { font-size: 13px; }
+        .avatar-info p { font-size: 10px; }
+        .avatar-file-name { font-size: 10px; margin-top: 6px; justify-content: center; }
+        .field-group { margin-bottom: 14px; }
+        .field-row { grid-template-columns: 1fr; gap: 14px; }
+        .field-label { font-size: 9px; letter-spacing: 0.7px; margin-bottom: 6px; }
+        .input-custom { padding: 11px 13px !important; font-size: 12px !important; border-radius: 8px !important; }
+        .note-text { font-size: 10px; margin-top: 6px; }
+        .password-toggle { right: 10px; padding: 5px; }
+        .password-toggle svg { width: 15px; height: 15px; }
+        .info-banner { padding: 12px 14px; gap: 10px; border-radius: 9px; }
+        .info-banner-icon { width: 30px; height: 30px; border-radius: 8px; }
+        .info-banner-icon svg { width: 15px; height: 15px; }
+        .info-banner-text { font-size: 11px; }
+        .submit-wrap { padding-top: 18px; margin-top: 22px; }
+        .btn-submit {
+            padding: 12px 28px;
+            font-size: 11px;
+            border-radius: 9px;
+            letter-spacing: 1px;
+            width: 100%;
+            max-width: 320px;
+            justify-content: center;
+        }
+        .btn-submit svg { width: 15px; height: 15px; }
+    }
+
+    /* Маленькие телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .create-user-page { padding: 20px 14px 36px; }
+        .create-topbar { margin-bottom: 14px; padding: 13px 12px; gap: 10px; border-radius: 10px; }
+        .create-topbar-left { gap: 9px; }
+        .create-topbar-icon { width: 38px; height: 38px; border-radius: 10px; }
+        .create-topbar-icon svg { width: 19px; height: 19px; }
+        .create-topbar-title { font-size: 15px; }
+        .create-topbar-subtitle { font-size: 10px; }
+        .btn-back { padding: 9px 13px; font-size: 10px; border-radius: 8px; letter-spacing: 0.6px; }
+        .btn-back svg { width: 12px; height: 12px; }
+        .form-card { padding: 20px 16px; border-radius: 10px; }
+        .form-section { margin-bottom: 18px; }
+        .section-title { font-size: 9px; letter-spacing: 1.1px; margin-bottom: 11px; }
+        .avatar-block { padding: 16px; gap: 12px; border-radius: 10px; }
+        .avatar-preview-box { width: 75px; height: 75px; font-size: 32px; border-radius: 12px; }
+        .avatar-upload-btn { width: 26px; height: 26px; border-radius: 7px; }
+        .avatar-upload-btn svg { width: 13px; height: 13px; }
+        .avatar-info h3 { font-size: 12px; }
+        .avatar-info p { font-size: 10px; }
+        .avatar-file-name { font-size: 10px; }
+        .field-group { margin-bottom: 13px; }
+        .field-label { font-size: 9px; letter-spacing: 0.6px; margin-bottom: 6px; }
+        .input-custom { padding: 10px 12px !important; font-size: 12px !important; border-radius: 8px !important; }
+        .note-text { font-size: 9px; margin-top: 5px; }
+        .password-toggle { right: 9px; }
+        .password-toggle svg { width: 14px; height: 14px; }
+        .info-banner { padding: 11px 13px; gap: 9px; border-radius: 8px; }
+        .info-banner-icon { width: 28px; height: 28px; border-radius: 7px; }
+        .info-banner-icon svg { width: 14px; height: 14px; }
+        .info-banner-text { font-size: 10px; }
+        .submit-wrap { padding-top: 16px; margin-top: 20px; }
+        .btn-submit { padding: 11px 24px; font-size: 10px; border-radius: 8px; letter-spacing: 0.9px; }
+        .btn-submit svg { width: 14px; height: 14px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .create-user-page { padding: 18px 12px 32px; }
+        .create-topbar { margin-bottom: 12px; padding: 12px 10px; gap: 9px; border-radius: 9px; }
+        .create-topbar-left { gap: 8px; }
+        .create-topbar-icon { width: 36px; height: 36px; border-radius: 9px; }
+        .create-topbar-icon svg { width: 18px; height: 18px; }
+        .create-topbar-title { font-size: 14px; }
+        .create-topbar-subtitle { font-size: 9px; }
+        .btn-back { padding: 8px 12px; font-size: 9px; border-radius: 7px; }
+        .btn-back svg { width: 11px; height: 11px; }
+        .form-card { padding: 18px 14px; border-radius: 9px; }
+        .form-section { margin-bottom: 16px; }
+        .section-title { font-size: 8px; letter-spacing: 1px; margin-bottom: 10px; }
+        .avatar-block { padding: 14px; gap: 11px; border-radius: 9px; }
+        .avatar-preview-box { width: 70px; height: 70px; font-size: 30px; border-radius: 11px; }
+        .avatar-upload-btn { width: 24px; height: 24px; border-radius: 7px; }
+        .avatar-upload-btn svg { width: 12px; height: 12px; }
+        .avatar-info h3 { font-size: 12px; }
+        .avatar-info p { font-size: 9px; }
+        .avatar-file-name { font-size: 9px; }
+        .field-group { margin-bottom: 12px; }
+        .field-label { font-size: 8px; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .input-custom { padding: 10px 11px !important; font-size: 11px !important; border-radius: 7px !important; }
+        .note-text { font-size: 9px; }
+        .password-toggle svg { width: 13px; height: 13px; }
+        .info-banner { padding: 10px 12px; gap: 8px; border-radius: 7px; }
+        .info-banner-icon { width: 26px; height: 26px; border-radius: 6px; }
+        .info-banner-icon svg { width: 13px; height: 13px; }
+        .info-banner-text { font-size: 10px; }
+        .submit-wrap { padding-top: 14px; margin-top: 18px; }
+        .btn-submit { padding: 10px 22px; font-size: 10px; border-radius: 7px; }
+        .btn-submit svg { width: 13px; height: 13px; }
     }
 </style>
 
@@ -739,7 +970,6 @@
         if (input.files && input.files[0]) {
             const file = input.files[0];
 
-            // Проверка размера (2MB) — берём АКТУАЛЬНЫЙ язык
             if (file.size > 2 * 1024 * 1024) {
                 const lang = localStorage.getItem('docsign_lang') || 'ru';
                 const alerts = {
@@ -811,12 +1041,9 @@
     }
 
     // ============================================================
-    // ПЕРЕВОДЫ
+    // ПЕРЕВОДЫ И ПАРАЛЛАКС
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-        // ============================================================
-        // ЛОКАЛЬНЫЙ СЛОВАРЬ СТРАНИЦЫ СОЗДАНИЯ ПОЛЬЗОВАТЕЛЯ
-        // ============================================================
         const CREATE_USER_TRANSLATIONS = {
             ru: {
                 newUser: 'Новый пользователь',
@@ -877,34 +1104,26 @@
             }
         };
 
-        // ============================================================
-        // ФУНКЦИЯ ПРИМЕНЕНИЯ ПЕРЕВОДОВ
-        // ============================================================
         function applyCreateUserTranslations(lang) {
             const dict = CREATE_USER_TRANSLATIONS[lang] || CREATE_USER_TRANSLATIONS.ru;
 
-            // 1) Переводим все элементы с data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (dict[key] !== undefined) el.textContent = dict[key];
             });
 
-            // 2) Переводим placeholder
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
             });
 
-            // 3) Переводим title (подсказки)
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
                 const key = el.getAttribute('data-i18n-title');
                 if (dict[key] !== undefined) el.setAttribute('title', dict[key]);
             });
         }
 
-        // ============================================================
         // ПАРАЛЛАКС ДЛЯ ФОНОВЫХ ПЯТЕН
-        // ============================================================
         const blobs = document.querySelectorAll('.create-blob');
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 30;
@@ -915,23 +1134,14 @@
             });
         });
 
-        // ============================================================
-        // 1. Применяем сразу при загрузке
-        // ============================================================
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';
         applyCreateUserTranslations(initialLang);
 
-        // ============================================================
-        // 2. Слушаем событие смены языка от layouts/admin.blade.php
-        // ============================================================
         window.addEventListener('docsign:lang-changed', (e) => {
             const lang = e.detail?.lang || 'ru';
             applyCreateUserTranslations(lang);
         });
 
-        // ============================================================
-        // 3. Синхронизация между вкладками браузера
-        // ============================================================
         window.addEventListener('storage', (e) => {
             if (e.key === 'docsign_lang' && e.newValue) {
                 applyCreateUserTranslations(e.newValue);

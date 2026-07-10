@@ -15,7 +15,7 @@
             --primary: #4f46e5;
             --primary-dark: #3730a3;
             --primary-light: #818cf8;
-            --accent: #06b6d4;
+             --accent: #06b6d4;
             --bg-dark: #0f172a;
             --bg-card: rgba(15, 23, 42, 0.6);
             --text-primary: #f1f5f9;

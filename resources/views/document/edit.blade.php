@@ -624,27 +624,241 @@ $isOwner = ($currentUserId === $ownerId);
         color: #8892a6;
     }
 
+    /* ===== RESPONSIVE ===== */
+
+    /* Маленькие ноутбуки и большие планшеты (до 992px) */
+    @media (max-width: 992px) {
+        .doc-edit-page { padding: 20px 14px; }
+        .form-card { padding: 24px; border-radius: 14px; }
+        .mode-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .mode-btn { padding: 10px; }
+        .mode-btn .mode-icon { width: 26px; height: 26px; font-size: 12px; }
+        .mode-btn .mode-title { font-size: 10px; }
+        .mode-btn .mode-desc { font-size: 8px; }
+        .current-file-card { padding: 12px; gap: 12px; }
+        .current-file-icon { width: 36px; height: 36px; font-size: 16px; }
+        .current-file-name { font-size: 11px; max-width: 180px; }
+        .current-file-btn { padding: 5px 9px; font-size: 8px; }
+    }
+
+    /* Планшеты (до 768px) */
     @media (max-width: 768px) {
-        .field-row {
-            grid-template-columns: 1fr;
-        }
-        .mode-grid {
-            grid-template-columns: 1fr;
-        }
-        .form-card {
-            padding: 20px;
-        }
-        .current-file-card {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        .current-file-actions {
-            justify-content: stretch;
-        }
-        .current-file-btn {
-            flex: 1;
-            justify-content: center;
-        }
+        .doc-edit-page { padding: 18px 12px; }
+        .form-card { padding: 20px; border-radius: 14px; }
+
+        .back-btn { padding: 7px 12px; font-size: 11px; margin-bottom: 14px; }
+        .page-title { font-size: 16px; gap: 7px; }
+        .page-title::before { width: 3px; height: 16px; }
+        .page-subtitle { font-size: 10px; letter-spacing: 0.8px; margin-bottom: 16px; }
+        .readonly-badge { padding: 3px 8px; font-size: 8px; letter-spacing: 0.8px; margin-left: 6px; }
+
+        .field-row { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
+        .field-label { font-size: 9px; letter-spacing: 1px; margin-bottom: 5px; }
+        .input-field { height: 38px; font-size: 12px; padding: 0 11px; border-radius: 7px; }
+        textarea.input-field { min-height: 70px; padding: 9px 11px; }
+        select.input-field { padding-right: 30px; }
+
+        .receiver-section { margin-top: 14px; padding-top: 14px; }
+        .section-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 8px; }
+
+        .mode-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+        .mode-btn { padding: 10px; border-radius: 8px; }
+        .mode-btn .mode-icon { width: 26px; height: 26px; font-size: 12px; margin-bottom: 6px; }
+        .mode-btn .mode-title { font-size: 10px; }
+        .mode-btn .mode-desc { font-size: 8px; }
+        .mode-btn .mode-check { width: 14px; height: 14px; top: 6px; right: 6px; }
+
+        .receiver-block { padding: 12px; border-radius: 8px; margin-top: 8px; }
+        .chip { font-size: 10px; padding: 3px 8px; border-radius: 12px; }
+
+        .current-file-card { flex-direction: column; align-items: stretch; padding: 12px; border-radius: 10px; gap: 10px; margin-bottom: 10px; }
+        .current-file-info { justify-content: flex-start; }
+        .current-file-icon { width: 34px; height: 34px; font-size: 15px; border-radius: 8px; }
+        .current-file-name { font-size: 11px; max-width: 100%; }
+        .current-file-meta span { font-size: 8px; }
+        .current-file-badge { padding: 3px 7px; font-size: 7px; border-radius: 5px; align-self: flex-start; }
+        .current-file-actions { justify-content: stretch; gap: 5px; }
+        .current-file-btn { flex: 1; justify-content: center; padding: 5px 8px; font-size: 8px; border-radius: 5px; }
+
+        .new-file-section { margin-top: 10px; padding-top: 10px; }
+        .new-file-label { font-size: 8px; letter-spacing: 0.9px; margin-bottom: 5px; }
+        .file-upload { height: 38px; font-size: 11px; padding: 0 12px; border-radius: 7px; }
+
+        .btn-submit { padding: 11px 20px; font-size: 11px; border-radius: 8px; max-width: 260px; }
+
+        .receiver-readonly { padding: 9px 12px; border-radius: 7px; }
+        .receiver-readonly .avatar { width: 28px; height: 28px; font-size: 12px; border-radius: 7px; }
+        .receiver-readonly .info .name { font-size: 11px; }
+        .receiver-readonly .info .email { font-size: 9px; }
+
+        .search-dropdown { max-height: 160px; border-radius: 7px; }
+        .dropdown-item { padding: 7px 10px; }
+        .dropdown-item .name { font-size: 11px; }
+        .dropdown-item .meta { font-size: 9px; }
+    }
+
+    /* Большие телефоны (до 576px) */
+    @media (max-width: 576px) {
+        .doc-edit-page { padding: 16px 10px; }
+        .form-card { padding: 18px; border-radius: 12px; }
+
+        .back-btn { padding: 6px 11px; font-size: 10px; margin-bottom: 12px; border-radius: 7px; }
+        .page-title { font-size: 15px; gap: 6px; }
+        .page-title::before { width: 3px; height: 15px; }
+        .page-subtitle { font-size: 9px; letter-spacing: 0.7px; margin-bottom: 14px; }
+        .readonly-badge { padding: 3px 7px; font-size: 8px; letter-spacing: 0.7px; margin-left: 5px; border-radius: 10px; }
+
+        .field-row { gap: 8px; margin-bottom: 8px; }
+        .field-label { font-size: 9px; letter-spacing: 0.9px; margin-bottom: 4px; }
+        .input-field { height: 36px; font-size: 12px; padding: 0 10px; border-radius: 6px; }
+        textarea.input-field { min-height: 65px; padding: 8px 10px; }
+
+        .receiver-section { margin-top: 12px; padding-top: 12px; }
+        .section-title { font-size: 9px; letter-spacing: 0.9px; margin-bottom: 7px; }
+
+        .mode-grid { grid-template-columns: 1fr; gap: 6px; }
+        .mode-btn { padding: 10px 12px; border-radius: 8px; flex-direction: row; align-items: center; gap: 10px; }
+        .mode-btn .mode-icon { width: 28px; height: 28px; font-size: 13px; margin-bottom: 0; flex-shrink: 0; }
+        .mode-btn .mode-title { font-size: 11px; margin-bottom: 1px; }
+        .mode-btn .mode-desc { font-size: 9px; }
+        .mode-btn .mode-check { width: 15px; height: 15px; top: 50%; right: 10px; transform: translateY(-50%); }
+
+        .receiver-block { padding: 11px; border-radius: 7px; margin-top: 7px; }
+        .chip { font-size: 10px; padding: 3px 7px; border-radius: 11px; gap: 5px; }
+
+        .current-file-card { padding: 11px; border-radius: 9px; gap: 9px; margin-bottom: 9px; }
+        .current-file-icon { width: 32px; height: 32px; font-size: 14px; border-radius: 7px; }
+        .current-file-name { font-size: 10px; }
+        .current-file-meta span { font-size: 8px; }
+        .current-file-badge { padding: 2px 6px; font-size: 7px; border-radius: 5px; }
+        .current-file-actions { gap: 4px; }
+        .current-file-btn { padding: 5px 7px; font-size: 8px; border-radius: 5px; gap: 3px; }
+
+        .new-file-section { margin-top: 9px; padding-top: 9px; }
+        .new-file-label { font-size: 8px; letter-spacing: 0.8px; margin-bottom: 4px; }
+        .file-upload { height: 36px; font-size: 11px; padding: 0 11px; border-radius: 6px; }
+
+        .btn-submit { padding: 10px 18px; font-size: 10px; border-radius: 7px; max-width: 240px; letter-spacing: 0.8px; }
+
+        .receiver-readonly { padding: 8px 11px; border-radius: 6px; gap: 9px; }
+        .receiver-readonly .avatar { width: 26px; height: 26px; font-size: 11px; border-radius: 6px; }
+        .receiver-readonly .info .name { font-size: 10px; }
+        .receiver-readonly .info .email { font-size: 9px; }
+
+        .search-dropdown { max-height: 150px; border-radius: 6px; }
+        .dropdown-item { padding: 6px 9px; }
+        .dropdown-item .name { font-size: 10px; }
+        .dropdown-item .meta { font-size: 9px; }
+    }
+
+    /* Телефоны (до 480px) */
+    @media (max-width: 480px) {
+        .doc-edit-page { padding: 14px 8px; }
+        .form-card { padding: 16px; border-radius: 10px; }
+
+        .back-btn { padding: 5px 10px; font-size: 10px; margin-bottom: 10px; border-radius: 6px; gap: 6px; }
+        .page-title { font-size: 14px; gap: 5px; }
+        .page-title::before { width: 3px; height: 14px; }
+        .page-subtitle { font-size: 9px; letter-spacing: 0.6px; margin-bottom: 12px; }
+        .readonly-badge { padding: 2px 6px; font-size: 7px; letter-spacing: 0.6px; margin-left: 4px; border-radius: 9px; }
+
+        .field-row { gap: 7px; margin-bottom: 7px; }
+        .field-label { font-size: 8px; letter-spacing: 0.8px; margin-bottom: 4px; }
+        .input-field { height: 34px; font-size: 11px; padding: 0 9px; border-radius: 6px; }
+        textarea.input-field { min-height: 60px; padding: 7px 9px; font-size: 11px; }
+
+        .receiver-section { margin-top: 10px; padding-top: 10px; }
+        .section-title { font-size: 9px; letter-spacing: 0.8px; margin-bottom: 6px; }
+
+        .mode-grid { gap: 5px; margin-bottom: 10px; }
+        .mode-btn { padding: 9px 11px; border-radius: 7px; gap: 9px; }
+        .mode-btn .mode-icon { width: 26px; height: 26px; font-size: 12px; border-radius: 6px; }
+        .mode-btn .mode-title { font-size: 10px; }
+        .mode-btn .mode-desc { font-size: 8px; }
+        .mode-btn .mode-check { width: 14px; height: 14px; right: 9px; }
+
+        .receiver-block { padding: 10px; border-radius: 6px; margin-top: 6px; }
+        .chip { font-size: 9px; padding: 2px 6px; border-radius: 10px; gap: 4px; }
+        .chip button { font-size: 9px; }
+
+        .current-file-card { padding: 10px; border-radius: 8px; gap: 8px; margin-bottom: 8px; }
+        .current-file-icon { width: 30px; height: 30px; font-size: 13px; border-radius: 6px; }
+        .current-file-name { font-size: 10px; }
+        .current-file-meta span { font-size: 7px; }
+        .current-file-badge { padding: 2px 5px; font-size: 7px; border-radius: 4px; }
+        .current-file-actions { gap: 4px; }
+        .current-file-btn { padding: 4px 6px; font-size: 7px; border-radius: 4px; gap: 3px; }
+
+        .new-file-section { margin-top: 8px; padding-top: 8px; }
+        .new-file-label { font-size: 8px; letter-spacing: 0.7px; margin-bottom: 4px; }
+        .file-upload { height: 34px; font-size: 10px; padding: 0 10px; border-radius: 6px; }
+
+        .btn-submit { padding: 9px 16px; font-size: 10px; border-radius: 6px; max-width: 220px; letter-spacing: 0.7px; gap: 6px; }
+        .btn-submit i { font-size: 12px; }
+
+        .receiver-readonly { padding: 7px 10px; border-radius: 5px; gap: 8px; }
+        .receiver-readonly .avatar { width: 24px; height: 24px; font-size: 10px; border-radius: 5px; }
+        .receiver-readonly .info .name { font-size: 10px; }
+        .receiver-readonly .info .email { font-size: 8px; }
+
+        .search-dropdown { max-height: 140px; border-radius: 5px; margin-top: 5px; }
+        .dropdown-item { padding: 6px 8px; }
+        .dropdown-item .name { font-size: 10px; }
+        .dropdown-item .meta { font-size: 8px; }
+    }
+
+    /* Очень маленькие телефоны (до 380px) */
+    @media (max-width: 380px) {
+        .doc-edit-page { padding: 12px 6px; }
+        .form-card { padding: 14px; border-radius: 9px; }
+
+        .back-btn { padding: 4px 9px; font-size: 9px; margin-bottom: 9px; border-radius: 5px; gap: 5px; }
+        .page-title { font-size: 13px; gap: 4px; }
+        .page-title::before { width: 2px; height: 13px; }
+        .page-subtitle { font-size: 8px; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .readonly-badge { padding: 2px 5px; font-size: 7px; letter-spacing: 0.5px; margin-left: 3px; border-radius: 8px; }
+
+        .field-row { gap: 6px; margin-bottom: 6px; }
+        .field-label { font-size: 8px; letter-spacing: 0.7px; margin-bottom: 3px; }
+        .input-field { height: 32px; font-size: 10px; padding: 0 8px; border-radius: 5px; }
+        textarea.input-field { min-height: 55px; padding: 6px 8px; font-size: 10px; }
+
+        .receiver-section { margin-top: 9px; padding-top: 9px; }
+        .section-title { font-size: 8px; letter-spacing: 0.7px; margin-bottom: 5px; }
+
+        .mode-grid { gap: 4px; margin-bottom: 8px; }
+        .mode-btn { padding: 8px 10px; border-radius: 6px; gap: 8px; }
+        .mode-btn .mode-icon { width: 24px; height: 24px; font-size: 11px; border-radius: 5px; }
+        .mode-btn .mode-title { font-size: 9px; }
+        .mode-btn .mode-desc { font-size: 7px; }
+        .mode-btn .mode-check { width: 13px; height: 13px; right: 8px; }
+
+        .receiver-block { padding: 9px; border-radius: 5px; margin-top: 5px; }
+        .chip { font-size: 8px; padding: 2px 5px; border-radius: 9px; gap: 3px; }
+
+        .current-file-card { padding: 9px; border-radius: 7px; gap: 7px; margin-bottom: 7px; }
+        .current-file-icon { width: 28px; height: 28px; font-size: 12px; border-radius: 5px; }
+        .current-file-name { font-size: 9px; }
+        .current-file-meta span { font-size: 7px; }
+        .current-file-badge { padding: 2px 4px; font-size: 6px; border-radius: 4px; }
+        .current-file-actions { gap: 3px; }
+        .current-file-btn { padding: 4px 5px; font-size: 7px; border-radius: 4px; gap: 2px; }
+
+        .new-file-section { margin-top: 7px; padding-top: 7px; }
+        .new-file-label { font-size: 7px; letter-spacing: 0.6px; margin-bottom: 3px; }
+        .file-upload { height: 32px; font-size: 9px; padding: 0 9px; border-radius: 5px; }
+
+        .btn-submit { padding: 8px 14px; font-size: 9px; border-radius: 5px; max-width: 200px; letter-spacing: 0.6px; gap: 5px; }
+
+        .receiver-readonly { padding: 6px 9px; border-radius: 4px; gap: 7px; }
+        .receiver-readonly .avatar { width: 22px; height: 22px; font-size: 9px; border-radius: 4px; }
+        .receiver-readonly .info .name { font-size: 9px; }
+        .receiver-readonly .info .email { font-size: 8px; }
+
+        .search-dropdown { max-height: 130px; border-radius: 4px; }
+        .dropdown-item { padding: 5px 7px; }
+        .dropdown-item .name { font-size: 9px; }
+        .dropdown-item .meta { font-size: 8px; }
     }
 </style>
 
