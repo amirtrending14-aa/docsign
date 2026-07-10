@@ -23,7 +23,7 @@ class DocumentWorkflowController extends Controller
 
     public function create($documentId)
     {
-        Document::findOrFail($documentId);
+        Document::findOrFail($documentId)  ;
 
         $users = User::all();
 

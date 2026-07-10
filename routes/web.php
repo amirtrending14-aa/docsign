@@ -254,4 +254,4 @@ if (app()->environment('local')) {
 }
 
 Route::get('/dashboard-update', fn() => 'Данные обновлены успешно!')
-    ->name('dashboard.update')   ;
+    ->name('dashboard.update') ;

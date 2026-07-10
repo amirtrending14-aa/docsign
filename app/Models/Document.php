@@ -18,7 +18,7 @@ class Document extends Model
     const STATUS_ACTIVE = 'active';
     const STATUS_REJECTED = 'rejected';
 
-    protected $fillable = [
+    protected $fillable =[
         'number',
         'title',
         'content',

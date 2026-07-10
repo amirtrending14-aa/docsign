@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('blocked_user_id')->constrained('users')->onDelete('cascade');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('created_at')->useCurrent()  ;
         });
     }
 

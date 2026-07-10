@@ -16,7 +16,7 @@ class ActivityController extends Controller
 
         // Фильтры
         if ($request->filled('action')) {
-            $query->where('action', $request->action);
+            $query->where('action', $request->action)  ;
         }
 
         if ($request->filled('user_id')) {
