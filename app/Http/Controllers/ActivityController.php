@@ -12,7 +12,7 @@ class ActivityController extends Controller
     public function index(Request $request)
     {
         // Используем DocumentLog вместо Activity
-        $query = DocumentLog::with(['user', 'document']);
+        $query = DocumentLog::with(['user', 'document'])  ;
 
         // Фильтры
         if ($request->filled('action')) {

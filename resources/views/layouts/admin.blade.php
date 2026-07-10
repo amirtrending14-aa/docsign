@@ -2731,7 +2731,7 @@
         }
     }
 
-    updateData();
+    updateData()   ;
 </script>
 @endif
 </body>
