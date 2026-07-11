@@ -85,11 +85,16 @@ class UserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'phone'    => 'nullable|string',
+            'phone'    => 'nullable|string|unique:users,phone', // 🔒 ДОБАВЛЕНО: уникальность телефона
             'role'     => 'required|string|max:50',
             'level'    => 'required|integer|min:2|max:20',
             'avatar'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        // 🔒 Нормализуем телефон (убираем пробелы, скобки и т.д.)
+        if (!empty($data['phone'])) {
+            $data['phone'] = preg_replace('/[^0-9+]/', '', $data['phone']);
+        }
 
         $companyId = $authUser->company_id;
         $companyName = $authUser->company;
@@ -123,8 +128,9 @@ class UserController extends Controller
     {
         $authUser = auth()->user();
 
-        if (!$authUser->isSuperAdmin() && $authUser->company_id && $user->company_id !== $authUser->company_id) {
-            abort(403, 'Нет доступа');
+        // 🔒 БЕЗОПАСНОСТЬ: Усиленная проверка доступа
+        if (!$this->canAccessUser($authUser, $user)) {
+            abort(403, 'Нет доступа к этому пользователю');
         }
 
         $year = now()->year;
@@ -146,25 +152,29 @@ class UserController extends Controller
     {
         $authUser = auth()->user();
 
-        if (!$authUser->isSuperAdmin() && $authUser->company_id && $user->company_id !== $authUser->company_id) {
-            return redirect()->route('users.index')->with('error', 'Нет доступа');
+        // 🔒 БЕЗОПАСНОСТЬ: Усиленная проверка доступа
+        if (!$this->canAccessUser($authUser, $user)) {
+            return redirect()->route('users.index')->with('error', 'Нет доступа к этому пользователю');
         }
 
-        if ($authUser->isAdmin() || $user->id === $authUser->id) {
-            return view('users.edit', compact('user'));
+        // Проверка прав на редактирование
+        if (!$authUser->isAdmin() && $user->id !== $authUser->id) {
+            return redirect()->route('users.index')->with('error', 'Нет прав для редактирования');
         }
 
-        return redirect()->route('users.index')->with('error', 'Нет прав для редактирования');
+        return view('users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
         $authUser = auth()->user();
 
-        if (!$authUser->isSuperAdmin() && $authUser->company_id && $user->company_id !== $authUser->company_id) {
-            return redirect()->route('users.index')->with('error', 'Нет доступа');
+        // 🔒 БЕЗОПАСНОСТЬ: Усиленная проверка доступа
+        if (!$this->canAccessUser($authUser, $user)) {
+            return redirect()->route('users.index')->with('error', 'Нет доступа к этому пользователю');
         }
 
+        // Проверка прав на редактирование
         if (!$authUser->isAdmin() && $user->id !== $authUser->id) {
             return redirect()->route('users.index')->with('error', 'Нет прав для редактирования');
         }
@@ -172,7 +182,7 @@ class UserController extends Controller
         $rules = [
             'name'          => 'required|string|max:255',
             'email'         => 'required|email|unique:users,email,' . $user->id,
-            'phone'         => 'nullable|string',
+            'phone'         => 'nullable|string|unique:users,phone,' . $user->id, // 🔒 Уникальность с исключением себя
             'avatar'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'remove_avatar' => 'nullable|string|in:0,1',
         ];
@@ -208,8 +218,9 @@ class UserController extends Controller
     {
         $authUser = auth()->user();
 
-        if (!$authUser->isSuperAdmin() && $authUser->company_id && $user->company_id !== $authUser->company_id) {
-            return back()->with('error', 'Нет доступа');
+        // 🔒 БЕЗОПАСНОСТЬ: Усиленная проверка доступа
+        if (!$this->canAccessUser($authUser, $user)) {
+            return back()->with('error', 'Нет доступа к этому пользователю');
         }
 
         if ($user->id === $authUser->id) {
@@ -224,5 +235,22 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'Пользователь удалён');
+    }
+
+    // 🔒 БЕЗОПАСНОСТЬ: Универсальный метод проверки доступа к пользователю
+    private function canAccessUser($authUser, $targetUser)
+    {
+        // Супер-админ имеет доступ ко всем
+        if ($authUser->isSuperAdmin()) {
+            return true;
+        }
+
+        // Админ имеет доступ только к пользователям своей компании
+        if ($authUser->isAdmin()) {
+            return $authUser->company_id && $targetUser->company_id === $authUser->company_id;
+        }
+
+        // Обычный пользователь имеет доступ только к себе
+        return $targetUser->id === $authUser->id;
     }
 }

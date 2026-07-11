@@ -4,22 +4,38 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User; // Убедись, что путь к твоей модели User правильный
+use App\Models\User;
+use Illuminate\Support\Str;
 
 class SuperAdminSeeder extends Seeder
 {
     public function run()
     {
-        // Метод updateOrCreate найдет пользователя по email.
-        // Если его нет — создаст, если есть — обновит данные.
+        // 🔒 Создаём супер-админа БЕЗ полей 2FA
         User::updateOrCreate(
-            ['email' => 'amirtrending14@gmail.com'], // Условие поиска
+            ['email' => 'amirtrending14@gmail.com'],
             [
-                'name' => 'Amir SuperAdmin', // Твое имя
-                'password' => Hash::make('1404trend'), // Придумай надежный пароль
-                'role' => 'super_admin', // Или как у тебя называется роль в базе (is_admin = 1, и т.д.)
-                'email_verified_at' => now(), // Чтобы почта считалась подтвержденной
+                'name' => 'Amir SuperAdmin',
+                'password' => Hash::make('1404trend'),
+                'role' => 'super_admin',
+                'is_admin' => true,
+                'is_super_admin' => true,
+                'email_verified_at' => now(),
+                'level' => 100,
+                'company_id' => null,
+                'company' => null,
+                'remember_token' => Str::random(60),
             ]
         );
+
+        $this->command->info('');
+        $this->command->info('╔════════════════════════════════════════════════╗');
+        $this->command->info('║   ✅ СУПЕР-АДМИН СОЗДАН УСПЕШНО!              ║');
+        $this->command->info('╠════════════════════════════════════════════════╣');
+        $this->command->info('║ 📧 Email:    amirtrending14@gmail.com         ║');
+        $this->command->info('║ 🔑 Пароль:   1404trend                        ║');
+        $this->command->info('║ 🆔 Уровень:  100 (максимальный)               ║');
+        $this->command->info('╚════════════════════════════════════════════════╝');
+        $this->command->info('');
     }
 }

@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // ✅ РЕГИСТРИРУЕМ АЛИАС 'superadmin'
         $middleware->alias([
             'superadmin' => \App\Http\Middleware\CheckSuperAdmin::class,
+            'superadmin.protection' => \App\Http\Middleware\SuperAdminProtection::class,
             'last.seen' => \App\Http\Middleware\UpdateUserOnlineStatus::class,
         ]);
 

@@ -29,6 +29,7 @@ class User extends Authenticatable implements CanResetPassword
         'is_super_admin',
         'last_seen_at',
         'email_verified_at',
+
     ];
 
     protected $hidden = [

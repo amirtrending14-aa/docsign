@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    // В NotificationController.php
-
+    /**
+     * Проверка новых уведомлений (для AJAX polling)
+     */
     public function checkNew()
     {
         $user = auth()->user();
@@ -47,6 +48,10 @@ class NotificationController extends Controller
             'notifications' => $notifications,
         ]);
     }
+
+    /**
+     * Отметить все уведомления как прочитанные
+     */
     public function readAll()
     {
         Notification::where('user_id', auth()->id())
@@ -59,6 +64,9 @@ class NotificationController extends Controller
         return back()->with('success', 'Все уведомления прочитаны');
     }
 
+    /**
+     * Список всех уведомлений
+     */
     public function index()
     {
         $notifications = Notification::where('user_id', auth()->id())
@@ -72,9 +80,14 @@ class NotificationController extends Controller
         return view('notifications.index', compact('notifications', 'unreadCount'));
     }
 
+    /**
+     * 🔒 Отметить одно уведомление как прочитанное (AJAX - возвращает JSON)
+     */
     public function markAsRead($id)
     {
+        // 🔒 Проверка что уведомление принадлежит текущему юзеру
         $notification = Notification::where('user_id', Auth::id())->findOrFail($id);
+
         $notification->update([
             'is_read' => true,
             'read_at' => now()
@@ -83,14 +96,38 @@ class NotificationController extends Controller
         return response()->json(['success' => true]);
     }
 
+    /**
+     * ✅ Отметить одно уведомление как прочитанное (FORM - возвращает редирект)
+     */
+    public function read($id)
+    {
+        // 🔒 Проверка что уведомление принадлежит текущему юзеру
+        $notification = Notification::where('user_id', Auth::id())->findOrFail($id);
+
+        $notification->update([
+            'is_read' => true,
+            'read_at' => now()
+        ]);
+
+        // ✅ Возвращаем редирект назад на страницу уведомлений
+        return back()->with('success', 'Уведомление отмечено как прочитанное');
+    }
+
+    /**
+     * Удалить уведомление
+     */
     public function destroy($id)
     {
+        // 🔒 Проверка что уведомление принадлежит текущему юзеру
         $notification = Notification::where('user_id', Auth::id())->findOrFail($id);
         $notification->delete();
 
         return back()->with('success', 'Удалено');
     }
 
+    /**
+     * Создать уведомление о комментарии
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -135,10 +172,5 @@ class NotificationController extends Controller
         }
 
         return back()->with('success', 'Комментарий добавлен, участники уведомлены!');
-    }
-
-    public function read($id)
-    {
-        return $this->markAsRead($id);
     }
 }

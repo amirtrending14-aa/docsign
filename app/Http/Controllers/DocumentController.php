@@ -43,6 +43,9 @@ class DocumentController extends Controller
     {
         $document = Document::with(['createdBy', 'receiver', 'signatures.users'])->findOrFail($id);
 
+        // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
+        $this->checkDocumentAccess($document);
+
         // 📝 ИСТОРИЯ: Экспорт в Word
         DocumentLog::create([
             'document_id' => $document->id,
@@ -128,6 +131,9 @@ class DocumentController extends Controller
     public function downloadPdf($id)
     {
         $document = Document::with(['createdBy', 'receiver', 'signatures'])->findOrFail($id);
+
+        // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
+        $this->checkDocumentAccess($document);
 
         // 📝 ИСТОРИЯ: Экспорт в PDF
         DocumentLog::create([
@@ -224,6 +230,10 @@ class DocumentController extends Controller
     public function sign(Request $request, $id)
     {
         $document = Document::with('createdBy')->findOrFail($id);
+
+        // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
+        $this->checkDocumentAccess($document);
+
         $signatureData = $request->input('signature');
         $fullPathToFile = storage_path('app/public/' . $document->file_path);
         $extension = strtolower(pathinfo($fullPathToFile, PATHINFO_EXTENSION));
@@ -419,8 +429,14 @@ class DocumentController extends Controller
 
     public function getStats()
     {
-        $totalDocs = Document::count();
-        $previousDocsCount = Document::where('created_at', '<', now()->startOfMonth())->count();
+        // 🔒 БЕЗОПАСНОСТЬ: Считаем статистику только по документам текущего юзера
+        $user = Auth::user();
+        $userFilter = function($q) use ($user) {
+            $q->where('created_by', $user->id)->orWhere('receiver_id', $user->id);
+        };
+
+        $totalDocs = Document::where($userFilter)->count();
+        $previousDocsCount = Document::where($userFilter)->where('created_at', '<', now()->startOfMonth())->count();
 
         $docsGrowth = $previousDocsCount > 0
             ? round((($totalDocs - $previousDocsCount) / $previousDocsCount) * 100, 1)
@@ -438,14 +454,17 @@ class DocumentController extends Controller
                 ->orWhere('receiver_id', $user->id);
         };
 
+        // 🔒 БЕЗОПАСНОСТЬ: Считаем юзеров только из своей компании
+        $companyFilter = $user->company_id ? ['company_id' => $user->company_id] : [];
+
         $stats = [
             'total'     => Document::where($userFilter)->count(),
             'active'    => Document::where($userFilter)->where('status', 'active')->count(),
             'draft'     => Document::where($userFilter)->where('status', 'draft')->count(),
             'pending'   => Document::where($userFilter)->where('status', 'pending')->count(),
             'signed'    => Document::where($userFilter)->where('status', 'completed')->count(),
-            'users'     => \App\Models\User::count(),
-            'new_users' => \App\Models\User::whereMonth('created_at', now()->month)->count(),
+            'users'     => \App\Models\User::where($companyFilter)->count(),
+            'new_users' => \App\Models\User::where($companyFilter)->whereMonth('created_at', now()->month)->count(),
             'pending_change' => 3,
         ];
 
@@ -744,6 +763,9 @@ class DocumentController extends Controller
     {
         $document = Document::findOrFail($id);
 
+        // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
+        $this->checkDocumentAccess($document);
+
         if ($document->file_path && Storage::disk('public')->exists($document->file_path)) {
             $extension = pathinfo($document->file_path, PATHINFO_EXTENSION);
 
@@ -773,6 +795,10 @@ class DocumentController extends Controller
     public function show($id)
     {
         $document = Document::with(['createdBy', 'receiver', 'logs', 'signatures.user'])->findOrFail($id);
+
+        // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
+        $this->checkDocumentAccess($document);
+
         $comments = DocumentComment::with('user')->where('document_id', $id)->latest()->get();
 
         $verifyUrl = route('documents.show', $document->id);
@@ -788,6 +814,10 @@ class DocumentController extends Controller
     public function edit($id)
     {
         $document = Document::findOrFail($id);
+
+        // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
+        $this->checkDocumentAccess($document);
+
         $authUser = auth()->user();
 
         $teamUsers = User::where('company_id', $authUser->company_id)
@@ -1101,5 +1131,27 @@ class DocumentController extends Controller
         );
 
         return redirect()->route('documents.show', $id)->with('success', 'Документ успешно отклонён');
+    }
+
+    // 🔒 БЕЗОПАСНОСТЬ: Метод проверки прав доступа к документу
+    private function checkDocumentAccess($document)
+    {
+        $user = Auth::user();
+
+        // Админы имеют доступ ко всему
+        if ($user->isAdmin()) {
+            return;
+        }
+
+        // Проверяем, что пользователь является создателем, отправителем или получателем
+        $hasAccess = (
+            $document->created_by == $user->id ||
+            $document->sender_id == $user->id ||
+            $document->receiver_id == $user->id
+        );
+
+        if (!$hasAccess) {
+            abort(403, 'У вас нет прав доступа к этому документу');
+        }
     }
 }

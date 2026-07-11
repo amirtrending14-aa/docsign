@@ -39,7 +39,12 @@ class DocumentSignatureController extends Controller
             });
 
         if (!$user->isAdmin()) {
-            $overdueQuery->where('created_by', $user->id);
+            // 🔒 БЕЗОПАСНОСТЬ: Показываем только документы, связанные с текущим юзером
+            $overdueQuery->where(function($q) use ($user) {
+                $q->where('created_by', $user->id)
+                    ->orWhere('receiver_id', $user->id)
+                    ->orWhere('sender_id', $user->id);
+            });
         }
 
         $overdueCount = $overdueQuery->count();
@@ -59,8 +64,21 @@ class DocumentSignatureController extends Controller
     public function create(Request $request)
     {
         $documentId = $request->query('document_id');
-        $document = $documentId ? Document::find($documentId) : null;
-        $documents = Document::latest()->get();
+        $user = Auth::user();
+
+        // 🔒 БЕЗОПАСНОСТЬ: Загружаем только документы, доступные текущему юзеру
+        $documentsQuery = Document::latest();
+
+        if (!$user->isAdmin()) {
+            $documentsQuery->where(function($q) use ($user) {
+                $q->where('created_by', $user->id)
+                    ->orWhere('receiver_id', $user->id)
+                    ->orWhere('sender_id', $user->id);
+            });
+        }
+
+        $documents = $documentsQuery->get();
+        $document = $documentId ? $documents->find($documentId) : null;
 
         return view('signatures.create', compact('document', 'documents'));
     }
@@ -76,6 +94,10 @@ class DocumentSignatureController extends Controller
 
         $document = Document::findOrFail($request->document_id);
         $signer = Auth::user();
+
+        // 🔒 БЕЗОПАСНОСТЬ: Проверяем право на подписание документа
+        $this->checkDocumentSigningAccess($document, $signer);
+
         $creator = $document->createdBy ?? $document->user;
 
         $currentWorkflow = DocumentWorkflow::where('document_id', $document->id)
@@ -230,6 +252,9 @@ class DocumentSignatureController extends Controller
     }
 
     public function show(DocumentSignature $signature) {
+        // 🔒 БЕЗОПАСНОСТЬ: Проверяем право на просмотр подписи
+        $this->checkSignatureAccess($signature);
+
         return view('signatures.show', compact('signature'));
     }
 
@@ -840,6 +865,49 @@ class DocumentSignatureController extends Controller
             if ($next) {
                 $next->update(['status' => 'pending']);
             }
+        }
+    }
+
+    // 🔒 БЕЗОПАСНОСТЬ: Проверка права на просмотр подписи
+    private function checkSignatureAccess($signature)
+    {
+        $user = Auth::user();
+
+        // Админы имеют доступ ко всему
+        if ($user->isAdmin()) {
+            return;
+        }
+
+        // Проверяем, что подпись принадлежит текущему юзеру ИЛИ юзер имеет доступ к документу
+        $hasAccess = (
+            $signature->user_id == $user->id ||
+            $signature->document->created_by == $user->id ||
+            $signature->document->sender_id == $user->id ||
+            $signature->document->receiver_id == $user->id
+        );
+
+        if (!$hasAccess) {
+            abort(403, 'У вас нет прав доступа к этой подписи');
+        }
+    }
+
+    // 🔒 БЕЗОПАСНОСТЬ: Проверка права на подписание документа
+    private function checkDocumentSigningAccess($document, $user)
+    {
+        // Админы могут подписывать всё
+        if ($user->isAdmin()) {
+            return;
+        }
+
+        // Проверка: юзер должен быть получателем документа или его создателем
+        $hasAccess = (
+            $document->receiver_id == $user->id ||
+            $document->created_by == $user->id ||
+            $document->sender_id == $user->id
+        );
+
+        if (!$hasAccess) {
+            abort(403, 'У вас нет прав на подписание этого документа');
         }
     }
 }

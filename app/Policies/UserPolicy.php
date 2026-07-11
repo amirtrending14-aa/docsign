@@ -8,33 +8,31 @@ use Illuminate\Auth\Access\Response;
 class UserPolicy
 {
 
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): bool|null
     {
-        return false;
+        if ($user->is_super_admin ?? false) return true;
+        return null;
     }
-
+    public function viewAny(User $user): bool { return false; }
     /**
      * Determine whether the users can view the model.
      */
     public function view(User $user, User $model): bool
     {
-        return false;
+        return $user->id === $model->id;
     }
 
     /**
      * Determine whether the users can create models.
      */
-    public function create(User $user): bool
-    {
-        return false;
-    }
+    public function create(User $user): bool { return false; }
 
     /**
      * Determine whether the users can update the model.
      */
     public function update(User $user, User $model): bool
     {
-        return false;
+        return $user->id === $model->id;
     }
 
     /**

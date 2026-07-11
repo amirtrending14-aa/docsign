@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Models\Document;
+use App\Models\Notification;
 use App\Observers\DocumentObserver;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,27 +26,41 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot()
-    { Carbon::setLocale('ru');
-        \Illuminate\Support\Facades\View::composer('*', function ($view) {
-            if (\Illuminate\Support\Facades\Auth::check()) {
-                $userId = \Illuminate\Support\Facades\Auth::id();
+    {
+        Carbon::setLocale('ru');
 
-                // Переименовываем в headerNotifications, чтобы не мешать основной пагинации
-                $headerNotifications = \App\Models\Notification::where('user_id', $userId)
+        // 🔒 БЕЗОПАСНОСТЬ: View composer только для авторизованных пользователей
+        View::composer('*', function ($view) {
+            if (!Auth::check()) {
+                return; // 🔒 Выходим сразу, если пользователь не авторизован
+            }
+
+            $userId = Auth::id();
+
+            // 🔒 КЭШИРОВАНИЕ: Кэшируем на 30 секунд для уменьшения нагрузки на БД
+            $cacheKey = "header_notifications_{$userId}";
+
+            $notificationData = Cache::remember($cacheKey, 30, function () use ($userId) {
+                $headerNotifications = Notification::where('user_id', $userId)
                     ->latest()
                     ->take(10)
-                    ->get();
+                    ->get(['id', 'type', 'messages', 'is_read', 'created_at']); // 🔒 Загружаем только нужные поля
 
-                $unreadCount = \App\Models\Notification::where('user_id', $userId)
+                $unreadCount = Notification::where('user_id', $userId)
                     ->where('is_read', false)
                     ->count();
 
-                $view->with([
-                    'headerNotifications' => $headerNotifications, // Новое имя
+                return [
+                    'headerNotifications' => $headerNotifications,
                     'unreadCount' => $unreadCount
-                ]);
-            }
+                ];
+            });
+
+            $view->with($notificationData);
         });
 
+        // 🔒 БЕЗОПАСНОСТЬ: Ограничиваем view composer только для нужных view
+        // Вместо '*' можно указать конкретные view:
+        // View::composer(['layouts.admin', 'layouts.app', 'dashboard.*'], function ($view) { ... });
     }
 }
