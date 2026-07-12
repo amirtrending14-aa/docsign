@@ -353,15 +353,82 @@
         font-family: 'JetBrains Mono', monospace;
     }
 
-    .gh-wrapper { overflow-x: auto; scrollbar-width: none; position: relative; }
+    .gh-wrapper {
+        overflow-x: auto;
+        scrollbar-width: none;
+        position: relative;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 8px;
+    }
     .gh-wrapper::-webkit-scrollbar { display: none; }
-    .gh-grid { display: inline-grid; grid-template-areas: ". months" "days squares"; grid-template-columns: 45px 1fr; gap: 4px 8px; }
-    .gh-months { grid-area: months; display: grid; grid-template-columns: repeat({{ $weeksCount }}, 11px); gap: 3px; font-size: 9px; color: var(--muted); font-weight: 600; height: 16px; position: relative; }
-    .gh-days { grid-area: days; display: grid; grid-template-rows: repeat(7, 11px); gap: 3px; font-size: 9px; color: var(--muted); font-weight: 600; user-select: none; }
-    .gh-day-label { display: flex; align-items: center; height: 11px; line-height: 1; }
-    .gh-squares { grid-area: squares; display: grid; grid-template-rows: repeat(7, 11px); grid-auto-flow: column; grid-auto-columns: 11px; gap: 3px; }
-    .sq { width: 11px; height: 11px; border-radius: 2px; background-color: rgba(255,255,255,0.04); border: 1px solid var(--line); box-sizing: border-box; cursor: pointer; transition: all 0.1s ease; }
-    .sq:hover { transform: scale(1.3); z-index: 5; border-color: rgba(var(--glow), 0.6); }
+
+    /* Индикатор скролла для мобильных */
+    .scroll-indicator {
+        display: none;
+        text-align: center;
+        font-size: 9px;
+        color: var(--muted);
+        margin-top: 8px;
+        opacity: 0.7;
+    }
+
+    .gh-grid {
+        display: inline-grid;
+        grid-template-areas: ". months" "days squares";
+        grid-template-columns: 45px 1fr;
+        gap: 4px 8px;
+        min-width: fit-content;
+    }
+    .gh-months {
+        grid-area: months;
+        display: grid;
+        grid-template-columns: repeat({{ $weeksCount }}, 11px);
+        gap: 3px;
+        font-size: 9px;
+        color: var(--muted);
+        font-weight: 600;
+        height: 16px;
+        position: relative;
+    }
+    .gh-days {
+        grid-area: days;
+        display: grid;
+        grid-template-rows: repeat(7, 11px);
+        gap: 3px;
+        font-size: 9px;
+        color: var(--muted);
+        font-weight: 600;
+        user-select: none;
+    }
+    .gh-day-label {
+        display: flex;
+        align-items: center;
+        height: 11px;
+        line-height: 1;
+    }
+    .gh-squares {
+        grid-area: squares;
+        display: grid;
+        grid-template-rows: repeat(7, 11px);
+        grid-auto-flow: column;
+        grid-auto-columns: 11px;
+        gap: 3px;
+    }
+    .sq {
+        width: 11px;
+        height: 11px;
+        border-radius: 2px;
+        background-color: rgba(255,255,255,0.04);
+        border: 1px solid var(--line);
+        box-sizing: border-box;
+        cursor: pointer;
+        transition: all 0.1s ease;
+    }
+    .sq:hover {
+        transform: scale(1.3);
+        z-index: 5;
+        border-color: rgba(var(--glow), 0.6);
+    }
     .l1 { background-color: #9be9a8 !important; border: none; box-shadow: 0 0 8px rgba(155, 233, 168, 0.4); }
     .l2 { background-color: #40c463 !important; border: none; box-shadow: 0 0 8px rgba(64, 196, 99, 0.4); }
     .l3 { background-color: #30a14e !important; border: none; box-shadow: 0 0 8px rgba(48, 161, 78, 0.4); }
@@ -479,7 +546,13 @@
         .access-section { margin-top: 18px; padding-top: 15px; }
         .access-text { font-size: 11px; }
         .details-footer { padding: 0 18px 18px; }
-        .btn-edit { padding: 9px 16px; font-size: 9px; border-radius: 9px; gap: 7px; }
+        .btn-edit {
+            padding: 10px 18px;
+            font-size: 10px;
+            border-radius: 9px;
+            gap: 7px;
+            min-height: 44px; /* Touch-friendly */
+        }
         .btn-edit svg { width: 11px; height: 11px; }
         .activity-card { padding: 15px 18px; margin-top: 16px; }
         .activity-title { font-size: 12px; margin-bottom: 12px; }
@@ -492,6 +565,7 @@
         .activity-footer { margin-top: 10px; font-size: 9px; }
         .activity-legend { gap: 4px; }
         .activity-legend .sq { width: 9px; height: 9px; }
+        .scroll-indicator { display: block; }
     }
 
     /* Телефоны (до 640px) */
@@ -517,8 +591,19 @@
         .info-value { font-size: 12px; }
         .access-section { margin-top: 16px; padding-top: 14px; }
         .access-text { font-size: 10px; }
-        .details-footer { padding: 0 16px 16px; }
-        .btn-edit { padding: 8px 15px; font-size: 9px; border-radius: 8px; gap: 6px; }
+        .details-footer {
+            padding: 0 16px 16px;
+            justify-content: stretch; /* Кнопка на всю ширину */
+        }
+        .btn-edit {
+            padding: 10px 16px;
+            font-size: 10px;
+            border-radius: 8px;
+            gap: 6px;
+            width: 100%;
+            justify-content: center;
+            min-height: 44px;
+        }
         .btn-edit svg { width: 10px; height: 10px; }
         .activity-card { padding: 14px 16px; margin-top: 15px; }
         .activity-title { font-size: 12px; margin-bottom: 11px; }
@@ -528,7 +613,13 @@
         .gh-day-label { height: 9px; }
         .gh-squares { grid-template-rows: repeat(7, 9px); grid-auto-columns: 9px; }
         .sq { width: 9px; height: 9px; }
-        .activity-footer { margin-top: 9px; font-size: 9px; gap: 8px; }
+        .activity-footer {
+            margin-top: 9px;
+            font-size: 9px;
+            gap: 8px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
         .activity-legend { gap: 4px; }
         .activity-legend .sq { width: 8px; height: 8px; }
     }
@@ -556,7 +647,12 @@
         .access-section { margin-top: 14px; padding-top: 12px; }
         .access-text { font-size: 10px; }
         .details-footer { padding: 0 14px 14px; }
-        .btn-edit { padding: 8px 14px; font-size: 8px; border-radius: 8px; }
+        .btn-edit {
+            padding: 10px 14px;
+            font-size: 9px;
+            border-radius: 8px;
+            min-height: 44px;
+        }
         .activity-card { padding: 13px 14px; margin-top: 14px; }
         .activity-title { font-size: 11px; margin-bottom: 10px; }
         .gh-grid { grid-template-columns: 32px 1fr; gap: 2px 5px; }
@@ -593,7 +689,11 @@
         .access-section { margin-top: 12px; padding-top: 10px; }
         .access-text { font-size: 9px; }
         .details-footer { padding: 0 12px 12px; }
-        .btn-edit { padding: 7px 13px; font-size: 8px; }
+        .btn-edit {
+            padding: 10px 13px;
+            font-size: 9px;
+            min-height: 44px;
+        }
         .activity-card { padding: 12px; margin-top: 13px; }
         .activity-title { font-size: 11px; margin-bottom: 9px; }
         .gh-grid { grid-template-columns: 30px 1fr; }
@@ -715,16 +815,6 @@
                     @endfor
                 </div>
 
-                <div class="gh-days select-none">
-                    <div class="gh-day-label" data-i18n="dayMon">Пн</div>
-                    <div class="gh-day-label"></div>
-                    <div class="gh-day-label" data-i18n="dayWed">Ср</div>
-                    <div class="gh-day-label"></div>
-                    <div class="gh-day-label" data-i18n="dayFri">Пт</div>
-                    <div class="gh-day-label"></div>
-                    <div class="gh-day-label" data-i18n="daySun">Вс</div>
-                </div>
-
                 <div class="gh-squares">
                     @for($i = 0; $i < ($weeksCount * 7); $i++)
                     @php
@@ -750,6 +840,8 @@
                 </div>
             </div>
         </div>
+
+        <div class="scroll-indicator" data-i18n="scrollHint">← Прокрутите для просмотра →</div>
 
         <div class="activity-footer">
             <span data-i18n="activityLegend">Как мы считаем вклады</span>
@@ -789,6 +881,7 @@
                 activityLegend: 'Как мы считаем вклады',
                 legendLess: 'Меньше',
                 legendMore: 'Больше',
+                scrollHint: '← Прокрутите для просмотра →',
                 dayMon: 'Пн', dayTue: 'Вт', dayWed: 'Ср', dayThu: 'Чт', dayFri: 'Пт', daySat: 'Сб', daySun: 'Вс'
             },
             tj: {
@@ -807,6 +900,7 @@
                 activityLegend: 'Чӣ тавр мо саҳмҳоро ҳисоб мекунем',
                 legendLess: 'Камтар',
                 legendMore: 'Бештар',
+                scrollHint: '← Барои дидан скрол кунед →',
                 dayMon: 'Дш', dayTue: 'Сш', dayWed: 'Чш', dayThu: 'Пш', dayFri: 'Ҷм', daySat: 'Шн', daySun: 'Як'
             },
             en: {
@@ -825,6 +919,7 @@
                 activityLegend: 'Learn how we count contributions',
                 legendLess: 'Less',
                 legendMore: 'More',
+                scrollHint: '← Scroll to view →',
                 dayMon: 'Mon', dayTue: 'Tue', dayWed: 'Wed', dayThu: 'Thu', dayFri: 'Fri', daySat: 'Sat', daySun: 'Sun'
             }
         };
@@ -853,6 +948,7 @@
             animation: 'fade',
             duration: [200, 50],
             offset: [0, 10],
+            touch: ['hold', 500], // Улучшенная поддержка touch
         });
 
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';

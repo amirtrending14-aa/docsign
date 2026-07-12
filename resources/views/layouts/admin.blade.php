@@ -6,7 +6,9 @@
     <title>DocSign — Электронный документооборот</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
-    {{-- КРИТИЧНО: применяем цвет ДО рендера, чтобы не было мигания --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <script>
         (function(){
             try {
@@ -24,7 +26,7 @@
             } catch(e) {}
         })();
     </script>
-    @push('styles')
+
     <style>
         :root{
           --bg-0:#06070b;
@@ -163,19 +165,24 @@
         }
 
         /* ===== OVERLAY (затемнение при открытом меню) ===== */
+        /* ВАЖНО: оверлей затемняет ТОЛЬКО область справа от сайдбара (left = ширина сайдбара),
+           поэтому он физически не может перекрывать кнопки в меню и блокировать клики */
         .sidebar-overlay{
           display:none;
           position:fixed;
-          inset:0;
+          top:0; right:0; bottom:0;
+          left:280px;
           background:rgba(0,0,0,0.6);
           backdrop-filter:blur(4px);
-          z-index:35;
+          z-index:999;
           opacity:0;
           transition:opacity .3s ease;
+          pointer-events:none;
         }
         .sidebar-overlay.active{
           display:block;
           opacity:1;
+          pointer-events:auto;
         }
 
         .brand{
@@ -301,7 +308,7 @@
           visibility:hidden;
           transform: translateY(-8px);
           transition: all .25s cubic-bezier(.2,.9,.3,1.2);
-          z-index:100;
+          z-index:1000;
         }
         .lang-menu.open{
           opacity:1;
@@ -404,7 +411,7 @@
           transform: translateY(-10px) scale(0.96);
           transform-origin: top right;
           transition: all .3s cubic-bezier(.2,.9,.3,1.2);
-          z-index:120;
+          z-index:1000;
         }
         .amb-panel::before{
           content:"";
@@ -826,7 +833,7 @@
             border: 1px solid var(--line);
             border-radius: 16px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(var(--glow),0.15);
-            z-index: 9999;
+            z-index: 1000;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -995,8 +1002,6 @@
 
         /* ===== ПОЛНАЯ АДАПТИВНОСТЬ ===== */
 
-        /* Большие десктопы (от 1400px) — по умолчанию */
-
         /* Маленькие десктопы (до 1200px) */
         @media (max-width: 1200px) {
             .topbar { padding: 12px 18px; gap: 12px; }
@@ -1027,35 +1032,38 @@
                 width: 280px;
                 height: 100vh;
                 max-height: 100vh;
-                z-index: 36;
+                z-index: 1000;
                 border-radius: 0;
                 transform: translateX(-100%);
                 padding-top: 80px;
-                background: linear-gradient(180deg, rgba(10,12,18,0.98), rgba(10,12,18,0.95));
-                backdrop-filter: blur(20px);
+                background: #0a0c12;
             }
             .sidebar.active {
                 transform: translateX(0);
             }
 
-            /* На мобильных верхнее меню дублируется в сайдбаре,
-               чтобы ни один пункт не потерялся */
+            /* На мобильных верхнее меню дублируется в сайдбаре */
             .mobile-nav-group{ display:flex; }
 
             /* На мобильных строка поиска тоже переезжает в сайдбар */
             .mobile-search{ display:flex; }
 
-            /* Повышаем контраст пунктов меню в открытом мобильном сайдбаре —
-               серый текст на почти чёрном фоне читался плохо */
+            .sidebar{
+                background: #0a0c12;
+            }
             .sidebar .side-item{
-                color: rgba(231,236,243,0.85);
+                color: #e7ecf3;
             }
             .sidebar .side-item:hover,
             .sidebar .side-item.active{
                 color:#fff;
             }
             .sidebar .side-title{
-                color: rgba(136,146,166,0.9);
+                color: rgba(180,188,204,0.95);
+            }
+            /* Пока мобильное меню открыто, полоса подсветки не должна просвечивать поверх сайдбара */
+            body.menu-open .ambient{
+                display:none;
             }
 
             .stats { grid-template-columns: repeat(2, 1fr); }
@@ -1084,93 +1092,6 @@
             .profile-menu .menu-item { padding: 9px 12px; font-size: 13px; }
         }
 
-        /* Планшеты (до 992px) */
-        @media (max-width: 992px) {
-            .topbar { padding: 10px 14px; gap: 10px; }
-            .brand { font-size: 13px; gap: 7px; }
-            .brand-dot { width: 28px; height: 28px; border-radius: 8px; }
-            .brand-dot svg { width: 15px; height: 15px; }
-            .brand small { font-size: 8px; letter-spacing: 2px; }
-            .nav { margin-left: 12px; padding: 3px; }
-            .nav button { padding: 6px 10px; font-size: 11px; gap: 6px; }
-            .nav button svg { width: 13px; height: 13px; }
-            .layout { padding: 14px; gap: 14px; }
-            .sidebar { width: 260px; padding: 12px; border-radius: 0; }
-            .side-title { font-size: 9px; letter-spacing: 1.5px; margin: 10px 6px 6px; }
-            .side-item { padding: 8px 10px; font-size: 12px; gap: 8px; border-radius: 8px; }
-            .side-item svg { width: 13px; height: 13px; }
-            .side-badge { font-size: 9px; padding: 2px 5px; border-radius: 8px; }
-            .storage { padding: 12px; border-radius: 8px; margin-top: 12px; }
-            .storage-head { font-size: 10px; }
-            .storage-bar { height: 5px; }
-            .storage small { font-size: 9px; margin-top: 6px; }
-            .main { gap: 16px; }
-            .page-head h1 { font-size: 22px; }
-            .page-head p { font-size: 12px; }
-            .stats { gap: 14px; }
-            .card { padding: 14px; border-radius: 12px; }
-            .stat-label { font-size: 11px; }
-            .stat-icon { width: 32px; height: 32px; border-radius: 8px; }
-            .stat-icon svg { width: 15px; height: 15px; }
-            .stat-value { font-size: 22px; margin-top: 10px; }
-            .stat-delta { font-size: 10px; padding: 2px 6px; margin-top: 6px; }
-            .stat-spark { height: 36px; margin-top: 12px; }
-            .row { gap: 14px; }
-            .panel { padding: 16px; border-radius: 12px; }
-            .panel-head h3 { font-size: 14px; }
-            .panel-head .sub { font-size: 10px; }
-            .tabs button { font-size: 10px; padding: 4px 8px; }
-            .chart { height: 240px; }
-            th, td { padding: 8px 6px; font-size: 11.5px; }
-            th { font-size: 10px; }
-            .doc-icon { width: 28px; height: 34px; font-size: 8px; }
-            .doc-meta small { font-size: 10px; }
-            .pill { font-size: 10px; padding: 2px 7px; }
-            .activity { gap: 12px; }
-            .act { gap: 10px; }
-            .act-dot { width: 9px; height: 9px; margin-top: 5px; }
-            .act-body p { font-size: 12px; }
-            .act-body small { font-size: 10px; }
-            .signers { gap: 8px; }
-            .signer { padding: 8px; border-radius: 8px; gap: 10px; }
-            .signer-avatar { width: 32px; height: 32px; font-size: 11px; }
-            .signer-info b { font-size: 12px; }
-            .signer-info small { font-size: 10px; }
-            .signer-status { font-size: 9px; padding: 2px 7px; }
-            .notif-dropdown { width: 300px; }
-            .notif-header { padding: 12px 16px; }
-            .notif-header strong { font-size: 0.9rem; }
-            .notif-list { max-height: 280px; }
-            .notif-item { padding: 10px 14px; gap: 8px; }
-            .notif-icon { width: 34px; height: 34px; font-size: 1rem; }
-            .notif-text { font-size: 0.78rem; }
-            .notif-dot { width: 7px; height: 7px; }
-            .notif-empty { padding: 32px 16px; }
-            .notif-footer a { font-size: 0.8rem; }
-            .amb-panel { width: 300px; padding: 16px; border-radius: 16px; }
-            .amb-panel h4 { font-size: 14px; }
-            .amb-panel p { font-size: 10px; margin-bottom: 14px; }
-            .amb-preview { height: 60px; border-radius: 10px; margin-bottom: 14px; }
-            .amb-preview-label { font-size: 9px; }
-            .colors { gap: 6px; margin-bottom: 14px; }
-            .color { border-radius: 8px; }
-            .intensity label { font-size: 10px; }
-            .intensity input[type=range] { height: 5px; }
-            .intensity input[type=range]::-webkit-slider-thumb { width: 16px; height: 16px; }
-            .modes { gap: 5px; margin-top: 12px; }
-            .mode { padding: 8px 6px; font-size: 10px; border-radius: 8px; }
-            .mode svg { width: 11px; height: 11px; }
-            .amb-footer { font-size: 9px; margin-top: 12px; padding-top: 10px; }
-            .lang-menu { min-width: 170px; padding: 5px; }
-            .lang-menu-title { font-size: 9px; padding: 6px 8px 4px; }
-            .lang-option { padding: 8px 9px; font-size: 12px; gap: 8px; }
-            .lang-option .flag { font-size: 16px; }
-            .lang-option .check { width: 12px; height: 12px; }
-            .profile-menu { min-width: 170px; padding: 6px; }
-            .profile-menu .menu-item { padding: 8px 12px; font-size: 12px; gap: 8px; }
-            .profile-menu .menu-divider { margin: 5px 0; }
-        }
-
         /* Большие телефоны (до 768px) */
         @media (max-width: 768px) {
             .topbar { padding: 10px 12px; gap: 8px; }
@@ -1181,6 +1102,7 @@
             .nav { display: none; }
             .layout { padding: 12px; gap: 12px; }
             .sidebar { width: 260px; padding: 10px; border-radius: 0; }
+            .sidebar-overlay { left: 260px; }
             .side-title { font-size: 9px; letter-spacing: 1.2px; margin: 8px 5px 5px; }
             .side-item { padding: 9px 10px; font-size: 12px; gap: 7px; border-radius: 7px; }
             .side-item svg { width: 14px; height: 14px; }
@@ -1231,7 +1153,7 @@
             .signer-info b { font-size: 11px; }
             .signer-info small { font-size: 9px; }
             .signer-status { font-size: 9px; padding: 2px 6px; border-radius: 8px; }
-            .notif-dropdown { width: 280px; right: -10px; }
+            .notif-dropdown { width: calc(100vw - 20px); right: -10px; max-width: 300px; }
             .notif-header { padding: 10px 14px; }
             .notif-header strong { font-size: 0.85rem; }
             .notif-list { max-height: 260px; }
@@ -1240,10 +1162,9 @@
             .notif-text { font-size: 0.75rem; }
             .notif-dot { width: 6px; height: 6px; }
             .notif-empty { padding: 28px 14px; }
-            .notif-empty i { font-size: 1.5rem; }
             .notif-footer { padding: 8px; }
             .notif-footer a { font-size: 0.78rem; }
-            .amb-panel { width: 280px; padding: 14px; border-radius: 14px; right: 0; }
+            .amb-panel { width: calc(100vw - 20px); max-width: 300px; right: 0; padding: 14px; border-radius: 14px; }
             .amb-panel::before { display: none; }
             .amb-panel h4 { font-size: 13px; gap: 6px; }
             .amb-panel h4 .live-dot { width: 7px; height: 7px; }
@@ -1281,104 +1202,6 @@
             .profile-btn { width: 34px; height: 34px; font-size: 12px; border-radius: 10px; }
         }
 
-        /* Телефоны (до 640px) */
-        @media (max-width: 640px) {
-            .topbar { padding: 8px 10px; gap: 6px; }
-            .brand { font-size: 11px; gap: 5px; }
-            .brand-dot { width: 24px; height: 24px; border-radius: 6px; }
-            .brand-dot svg { width: 13px; height: 13px; }
-            .brand small { display: none; }
-            .layout { padding: 10px; gap: 10px; }
-            .sidebar { width: 240px; padding: 8px; border-radius: 0; }
-            .side-title { font-size: 8px; letter-spacing: 1px; margin: 6px 4px 4px; }
-            .side-item { padding: 8px 9px; font-size: 11px; gap: 6px; border-radius: 6px; }
-            .side-item svg { width: 13px; height: 13px; }
-            .side-badge { font-size: 8px; padding: 1px 4px; }
-            .storage { padding: 8px; margin-top: 8px; border-radius: 7px; }
-            .storage-head { font-size: 8px; margin-bottom: 5px; }
-            .storage-bar { height: 4px; border-radius: 2px; }
-            .storage small { font-size: 8px; margin-top: 4px; }
-            .main { gap: 12px; }
-            .page-head { gap: 10px; }
-            .page-head h1 { font-size: 18px; }
-            .page-head p { font-size: 10px; }
-            .actions { gap: 6px; }
-            .btn { padding: 7px 10px; font-size: 11px; border-radius: 7px; gap: 5px; }
-            .btn svg { width: 11px; height: 11px; }
-            .stats { grid-template-columns: 1fr; gap: 10px; }
-            .card { padding: 12px; border-radius: 10px; }
-            .stat-top { gap: 8px; }
-            .stat-label { font-size: 10px; }
-            .stat-icon { width: 28px; height: 28px; border-radius: 7px; }
-            .stat-icon svg { width: 13px; height: 13px; }
-            .stat-value { font-size: 20px; margin-top: 8px; }
-            .stat-delta { font-size: 9px; padding: 2px 5px; margin-top: 5px; }
-            .stat-spark { height: 30px; margin-top: 10px; }
-            .row { gap: 10px; }
-            .panel { padding: 12px; border-radius: 10px; }
-            .panel-head { margin-bottom: 12px; gap: 6px; }
-            .panel-head h3 { font-size: 13px; }
-            .panel-head .sub { font-size: 9px; }
-            .tabs { padding: 2px; border-radius: 6px; gap: 3px; }
-            .tabs button { font-size: 9px; padding: 4px 7px; border-radius: 5px; }
-            .chart { height: 200px; }
-            th, td { padding: 6px 5px; font-size: 10px; }
-            th { font-size: 9px; }
-            .doc-cell { gap: 6px; }
-            .doc-icon { width: 24px; height: 30px; font-size: 7px; }
-            .doc-meta small { font-size: 9px; }
-            .pill { font-size: 9px; padding: 2px 5px; gap: 3px; }
-            .pill::before { width: 4px; height: 4px; }
-            .activity { gap: 8px; }
-            .act { gap: 7px; }
-            .act-dot { width: 7px; height: 7px; margin-top: 4px; }
-            .act-body p { font-size: 11px; }
-            .act-body small { font-size: 9px; }
-            .signers { gap: 6px; }
-            .signer { padding: 6px; border-radius: 6px; gap: 7px; }
-            .signer-avatar { width: 28px; height: 28px; font-size: 10px; }
-            .signer-info b { font-size: 11px; }
-            .signer-info small { font-size: 9px; }
-            .signer-status { font-size: 8px; padding: 2px 5px; }
-            .notif-dropdown { width: calc(100vw - 20px); right: -5px; max-width: 300px; }
-            .notif-header { padding: 9px 12px; }
-            .notif-header strong { font-size: 0.82rem; }
-            .notif-list { max-height: 240px; }
-            .notif-item { padding: 8px 10px; gap: 6px; }
-            .notif-icon { width: 30px; height: 30px; font-size: 0.9rem; border-radius: 7px; }
-            .notif-text { font-size: 0.72rem; }
-            .notif-dot { width: 6px; height: 6px; }
-            .notif-empty { padding: 24px 12px; }
-            .notif-empty i { font-size: 1.3rem; }
-            .notif-footer { padding: 7px; }
-            .notif-footer a { font-size: 0.75rem; }
-            .amb-panel { width: calc(100vw - 20px); max-width: 300px; right: 0; padding: 12px; border-radius: 12px; }
-            .amb-panel h4 { font-size: 12px; }
-            .amb-panel p { font-size: 9px; margin-bottom: 10px; }
-            .amb-preview { height: 50px; margin-bottom: 10px; }
-            .colors { grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 10px; }
-            .color { border-radius: 6px; }
-            .color.active::after { font-size: 11px; }
-            .intensity label { font-size: 9px; }
-            .intensity input[type=range]::-webkit-slider-thumb { width: 14px; height: 14px; }
-            .modes { gap: 3px; margin-top: 8px; }
-            .mode { padding: 6px 4px; font-size: 9px; border-radius: 6px; }
-            .amb-footer { font-size: 8px; margin-top: 8px; padding-top: 7px; }
-            .lang-menu { min-width: 150px; padding: 4px; }
-            .lang-menu-title { font-size: 8px; padding: 4px 6px 3px; }
-            .lang-option { padding: 6px 7px; font-size: 10px; gap: 6px; }
-            .lang-option .flag { font-size: 14px; }
-            .lang-option .check { width: 10px; height: 10px; }
-            .profile-menu { min-width: 150px; padding: 4px; }
-            .profile-menu .menu-item { padding: 6px 9px; font-size: 10px; gap: 6px; }
-            .lang-btn { min-width: auto; padding: 6px 8px; border-radius: 7px; }
-            .lang-btn .lang-name { display: none; }
-            .lang-btn .flag { font-size: 14px; }
-            .icon-btn { width: 32px; height: 32px; border-radius: 7px; }
-            .icon-btn svg { width: 13px; height: 13px; }
-            .profile-btn { width: 32px; height: 32px; font-size: 11px; border-radius: 8px; }
-        }
-
         /* Маленькие телефоны (до 480px) */
         @media (max-width: 480px) {
             .topbar { padding: 7px 8px; gap: 5px; }
@@ -1387,6 +1210,7 @@
             .brand-dot svg { width: 12px; height: 12px; }
             .layout { padding: 8px; gap: 8px; }
             .sidebar { width: 220px; padding: 7px; border-radius: 0; }
+            .sidebar-overlay { left: 220px; }
             .side-title { font-size: 8px; letter-spacing: 0.8px; margin: 5px 3px 3px; }
             .side-item { padding: 7px 8px; font-size: 10px; gap: 5px; border-radius: 5px; }
             .side-item svg { width: 12px; height: 12px; }
@@ -1439,54 +1263,14 @@
             .icon-btn svg { width: 12px; height: 12px; }
             .profile-btn { width: 30px; height: 30px; font-size: 10px; }
         }
-
-        /* Очень маленькие телефоны (до 380px) */
-        @media (max-width: 380px) {
-            .topbar { padding: 6px 7px; gap: 4px; }
-            .brand { font-size: 9px; gap: 3px; }
-            .brand-dot { width: 20px; height: 20px; border-radius: 4px; }
-            .brand-dot svg { width: 11px; height: 11px; }
-            .layout { padding: 6px; gap: 6px; }
-            .sidebar { width: 200px; padding: 6px; border-radius: 0; }
-            .side-title { font-size: 7px; letter-spacing: 0.6px; margin: 4px 2px 2px; }
-            .side-item { padding: 6px 7px; font-size: 9px; gap: 4px; border-radius: 4px; }
-            .side-item svg { width: 11px; height: 11px; }
-            .storage { padding: 6px; margin-top: 6px; }
-            .storage-head { font-size: 7px; }
-            .storage-bar { height: 3px; }
-            .storage small { font-size: 7px; }
-            .main { gap: 8px; }
-            .page-head h1 { font-size: 15px; }
-            .page-head p { font-size: 9px; }
-            .btn { padding: 5px 8px; font-size: 9px; border-radius: 5px; }
-            .card { padding: 9px; border-radius: 7px; }
-            .stat-value { font-size: 17px; }
-            .stat-icon { width: 24px; height: 24px; }
-            .stat-spark { height: 26px; }
-            .panel { padding: 9px; border-radius: 7px; }
-            .panel-head h3 { font-size: 11px; }
-            .chart { height: 160px; }
-            th, td { padding: 4px 3px; font-size: 9px; }
-            .notif-dropdown { width: calc(100vw - 12px); }
-            .amb-panel { width: calc(100vw - 12px); padding: 9px; }
-            .colors { grid-template-columns: repeat(4, 1fr); }
-            .mode { font-size: 8px; padding: 4px 3px; }
-            .lang-menu { min-width: 130px; }
-            .lang-option { padding: 5px 5px; font-size: 9px; }
-            .profile-menu { min-width: 130px; }
-            .profile-menu .menu-item { padding: 5px 7px; font-size: 9px; }
-            .icon-btn { width: 28px; height: 28px; }
-            .profile-btn { width: 28px; height: 28px; font-size: 9px; }
-        }
-    </style>@endpush
-    @stack('styles')
+    </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
 <header class="topbar">
     <!-- БУРГЕР-КНОПКА (для мобильных) -->
-    <button class="burger-btn" id="burgerBtn">
+    <button type="button" class="burger-btn" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -1508,12 +1292,12 @@
 
     <nav class="nav" id="nav">
         <a href="/dashboard" class="button-link" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center;">
-            <button class="active" data-tab="dashboard">
+            <button type="button" class="active" data-tab="dashboard">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
                 <span data-i18n="dashboard">Обзор</span>
             </button>
         </a>
-        <button data-tab="docs" onclick="window.location.href='/documents'">
+        <button type="button" data-tab="docs" onclick="window.location.href='/documents'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                 <polyline points="14 2 14 8 20 8"/>
@@ -1521,7 +1305,7 @@
             <span data-i18n="documents">Документы</span>
         </button>
         <a href="/signatures" class="button-link" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center;">
-            <button data-tab="sign" type="button" style="pointer-events: none;">
+            <button type="button" data-tab="sign" style="pointer-events: none;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
                 <span data-i18n="signatures">Подписание</span>
             </button>
@@ -1564,7 +1348,7 @@
 
     {{-- ===== AMBIENT BUTTON В TOPBAR ===== --}}
     <div class="lang-switcher" id="ambWrapper" style="position:relative;">
-        <button class="amb-btn" id="ambBtn" data-i18n-title="color_title" title="Цвет подсветки">
+        <button type="button" class="amb-btn" id="ambBtn" data-i18n-title="color_title" title="Цвет подсветки">
             <div class="amb-swatch"></div>
             <span class="amb-label" data-i18n="color_title">Цвет</span>
             <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;">
@@ -1632,7 +1416,7 @@
 
     <!-- LANGUAGE SWITCHER -->
     <div class="lang-switcher" id="langSwitcher">
-        <button class="lang-btn" id="langBtn" title="Язык / Language / Забон">
+        <button type="button" class="lang-btn" id="langBtn" title="Язык / Language / Забон">
             <span class="flag" id="langFlag">🇷🇺</span>
             <span class="lang-name" id="langName">Русский</span>
             <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1666,7 +1450,7 @@
     </div>
 
     <div id="notifWrapper" class="position-relative d-inline-block" style="position:relative;">
-        <button id="notifBtn" class="icon-btn position-relative {{ $unreadCount > 0 ? 'bell-shaking' : '' }}"
+        <button type="button" id="notifBtn" class="icon-btn position-relative {{ $unreadCount > 0 ? 'bell-shaking' : '' }}"
                 data-i18n-title="notifications"
                 title="Уведомления"
                 style="background: none; border: none; padding: 8px; cursor: pointer; color: inherit;">
@@ -1934,7 +1718,7 @@
     </script>
 
     <div class="profile-dropdown" id="profileWrapper">
-        <button class="profile-btn" id="profileBtn">
+        <button type="button" class="profile-btn" id="profileBtn">
             @if(auth()->user()->avatar)
             <img src="{{ asset('storage/' . auth()->user()->avatar) }}"
                  alt="{{ auth()->user()->name }}"
@@ -2090,17 +1874,16 @@
         <a href="/analysis"
            class="side-item"
            data-page="analysis"
-           onclick="showPage('analysis', this)"
            style="text-decoration: none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="side-icon">
                 <path d="M18 20V10M12 20V4M6 20v-6"/>
             </svg>
             <span data-i18n="analysis">Анализ</span>
         </a>
+
         <a href="{{ route('notifications.index') }}"
            class="side-item"
            data-page="notifications"
-           onclick="showPage('notifications', this)"
            style="text-decoration: none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="side-icon">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -2124,7 +1907,6 @@
         <a href="/strel"
            class="side-item"
            data-page="strel"
-           onclick="showPage('strel', this)"
            style="text-decoration: none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="side-icon">
                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
@@ -2159,7 +1941,6 @@
     @yield('content')
 </div>
 
-@verbatim
 <script>
     // ============================================================
     // ===== БУРГЕР-МЕНЮ (МОБИЛЬНОЕ) =====
@@ -2171,19 +1952,24 @@
 
         function openMenu() {
             burgerBtn.classList.add('active');
+            burgerBtn.setAttribute('aria-expanded', 'true');
             sidebar.classList.add('active');
             overlay.classList.add('active');
+            document.body.classList.add('menu-open');
             document.body.style.overflow = 'hidden';
         }
 
         function closeMenu() {
             burgerBtn.classList.remove('active');
+            burgerBtn.setAttribute('aria-expanded', 'false');
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
+            document.body.classList.remove('menu-open');
             document.body.style.overflow = '';
         }
 
-        burgerBtn.addEventListener('click', function() {
+        burgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             if (sidebar.classList.contains('active')) {
                 closeMenu();
             } else {
@@ -2193,7 +1979,15 @@
 
         overlay.addEventListener('click', closeMenu);
 
-        // Закрытие при клике на пункт меню (на мобильных)
+        // Закрытие по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+
+        // Закрытие при клике на пункт меню (на мобильных),
+        // но НЕ мешаем полю поиска и его кнопке отправки
         sidebar.querySelectorAll('.side-item').forEach(item => {
             item.addEventListener('click', function() {
                 if (window.innerWidth <= 1100) {
@@ -2201,6 +1995,16 @@
                 }
             });
         });
+
+        // Мобильная форма поиска в сайдбаре — тоже должна закрывать меню при отправке
+        const mobileSearchForm = sidebar.querySelector('.mobile-search');
+        if (mobileSearchForm) {
+            mobileSearchForm.addEventListener('submit', function() {
+                if (window.innerWidth <= 1100) {
+                    closeMenu();
+                }
+            });
+        }
 
         // Закрытие при изменении размера окна
         window.addEventListener('resize', function() {
@@ -2675,63 +2479,43 @@
         });
     });
 </script>
-@endverbatim
-@stack('scripts')
 
-{{-- ✅ ВСТАВЬ ЭТОТ КОД СЮДА (перед </body>) --}}
 @if(auth()->check())
 <script>
-    (function() {
-        function heartbeat() {
-            fetch('{{ url("/heartbeat") }}', {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('💚 Heartbeat:', data);
-            })
-            .catch(error => {
-                console.warn('❌ Heartbeat failed:', error);
-            });
+    setInterval(function() {
+        const currentUrl = window.location.href;
+
+        // 1. Стоп на страницах создания и редактирования (чтобы не мешать заполнению форм)
+        if (currentUrl.includes('/create') || currentUrl.includes('/edit')) {
+            return;
         }
 
-        heartbeat();
-        setInterval(heartbeat, 60000);
+        // 2. Бесшумная проверка ТОЛЬКО колокольчика уведомлений
+        fetch(window.location.href)
+            .then(response => {
+                if (!response.ok) throw new Error('Сеть не отвечает');
+                return response.text();
+            })
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
 
-        window.addEventListener('beforeunload', function() {
-            fetch('{{ url("/heartbeat") }}?offline=1', {
-                method: 'GET',
-                keepalive: true,
-                credentials: 'same-origin'
-            }).catch(() => {});
-        });
-    })();
-    async function updateData() {
-        try {
-            const response = await fetch('/ваш-url-для-обновления');
+                const newBell = doc.getElementById('pjax-bell');
+                const oldBell = document.getElementById('pjax-bell');
 
-            if (!response.ok) {
-                throw new Error(`Ошибка HTTP: ${response.status}`);
-            }
+                // Если нашли колокольчик на текущей странице и в скачанном ответе
+                if (newBell && oldBell) {
+                    // Проверяем, изменилось ли количество уведомлений
+                    if (oldBell.innerHTML.trim() !== newBell.innerHTML.trim()) {
+                        // Точечно меняем только колокольчик и цифру (включаются новые анимации!)
+                        oldBell.innerHTML = newBell.innerHTML;
+                        console.log('Колокольчик уведомлений обновлен! Пришли новые данные 🔔');
+                    }
+                }
+            })
+            .catch(error => console.error('Ошибка проверки уведомлений:', error));
 
-            const data = await response.text();
-            document.getElementById('container').innerHTML = data;
-            console.log('Данные успешно обновлены:', new Date().toLocaleTimeString());
-
-        } catch (error) {
-            console.error('Ошибка при обновлении данных:', error);
-        } finally {
-            setTimeout(updateData, 6000);
-        }
-    }
-
-    updateData();
+    }, 5000); // Строго каждые 5 секунд
 </script>
 @endif
 </body>

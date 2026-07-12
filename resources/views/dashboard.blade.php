@@ -2228,30 +2228,7 @@
 
 
 
-        async function updateData() {
-    try {
-        // Проверка: выведите в консоль, какой URL формируется
-        const url = "{{ route('dashboard.update') }}";
-        console.log("Пытаюсь получить данные по адресу: " + url);
 
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-
-        const data = await response.text();
-        document.getElementById('container').innerHTML = data;
-
-        console.log('Данные обновлены');
-        setTimeout(updateData, 60000);
-    } catch (error) {
-        console.error('Ошибка при обновлении данных:', error);
-        setTimeout(updateData, 10000);
-    }
-}
-
-updateData();
     </script>
 </div>
 @endsection

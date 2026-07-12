@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>DocSign — Вход в систему ЭДО</title>
+    <title>DocSign — Вход в систему</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet">
 
@@ -102,8 +102,21 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             padding: 20px;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .container::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
         }
 
         .lang-switcher {
@@ -120,29 +133,38 @@
             gap: 2px;
         }
 
-        .lang-btn {
+        .lang-select {
             padding: 8px 14px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
+            background: linear-gradient(145deg, #1a2a6c, #101a44);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
             font-family: 'Figtree', sans-serif;
             font-size: 13px;
             font-weight: 600;
-            border-radius: 8px;
             cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
             transition: all 0.3s ease;
             letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .lang-btn:hover {
-            color: var(--text-primary);
-            background: rgba(79, 70, 229, 0.15);
+        .lang-select:hover {
+            background: #1e3a8a;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .lang-btn.active {
-            background: var(--primary);
+        .lang-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+        }
+
+        .lang-select option {
+            background-color: #101a44;
             color: white;
-            box-shadow: 0 2px 10px var(--glow);
         }
 
         .login-card {
@@ -150,7 +172,7 @@
             backdrop-filter: blur(40px);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 48px 40px;
+            padding: 44px 40px;
             position: relative;
             overflow: hidden;
             animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -178,7 +200,7 @@
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary-light));
+            background: linear-gradient(90deg, var(--accent), var(--primary-light), var(--primary));
             background-size: 200% 100%;
             animation: shimmer 3s ease-in-out infinite;
         }
@@ -193,14 +215,14 @@
             position: absolute;
             top: -1px; left: -1px; right: -1px; bottom: -1px;
             border-radius: 24px;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), transparent 40%, transparent 60%, rgba(6, 182, 212, 0.1));
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), transparent 40%, transparent 60%, rgba(79, 70, 229, 0.1));
             z-index: -1;
             pointer-events: none;
         }
 
         .logo-section {
             text-align: center;
-            margin-bottom: 36px;
+            margin-bottom: 32px;
             animation: logoAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
         }
 
@@ -210,21 +232,21 @@
         }
 
         .logo-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            margin: 0 auto 16px;
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            margin: 0 auto 14px;
             display: block;
-            box-shadow: 0 8px 30px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.25);
             transition: transform 0.3s ease;
         }
 
         .logo-img:hover {
-            transform: scale(1.05) rotate(-2deg);
+            transform: scale(1.05) rotate(2deg);
         }
 
         .logo-title {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             color: var(--text-primary);
             letter-spacing: -0.5px;
@@ -232,7 +254,7 @@
         }
 
         .logo-title span {
-            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            background: linear-gradient(135deg, var(--accent), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -246,9 +268,24 @@
             letter-spacing: 2px;
         }
 
-        /* Laravel form styles */
-        .form-group {
+        .session-status {
+            padding: 12px 16px;
+            border-radius: 12px;
             margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            animation: formAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+        }
+
+        .session-status.success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #34d399;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
             animation: formAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
@@ -288,13 +325,13 @@
 
         .form-input {
             width: 100%;
-            padding: 14px 16px 14px 48px;
+            padding: 13px 16px 13px 48px;
             background: rgba(30, 41, 59, 0.5);
             border: 1px solid var(--border);
             border-radius: 14px;
             color: var(--text-primary);
             font-family: 'Figtree', sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
             transition: all 0.3s ease;
             outline: none;
@@ -305,17 +342,16 @@
         }
 
         .form-input:focus {
-            border-color: var(--primary);
+            border-color: var(--accent);
             background: rgba(30, 41, 59, 0.8);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15), 0 0 20px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15), 0 0 20px rgba(6, 182, 212, 0.1);
         }
 
         .form-input:focus ~ .input-icon,
         .form-input:focus + .input-icon {
-            color: var(--primary-light);
+            color: var(--accent);
         }
 
-        /* Override Laravel default input styles */
         .form-input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 30px rgba(30, 41, 59, 0.9) inset !important;
             -webkit-text-fill-color: var(--text-primary) !important;
@@ -366,7 +402,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             animation: formAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
         }
 
@@ -447,8 +483,8 @@
 
         .submit-btn {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 15px;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
             border: none;
             border-radius: 14px;
             color: white;
@@ -474,7 +510,7 @@
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px var(--glow), 0 0 40px rgba(6, 182, 212, 0.15);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.3), 0 0 40px rgba(79, 70, 229, 0.15);
         }
 
         .submit-btn:hover::before {
@@ -527,7 +563,7 @@
         .divider {
             display: flex;
             align-items: center;
-            margin: 28px 0;
+            margin: 24px 0;
             gap: 16px;
             animation: formAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
         }
@@ -556,23 +592,23 @@
         }
 
         .register-link {
-            color: var(--primary-light);
+            color: var(--accent);
             text-decoration: none;
             font-weight: 700;
             transition: all 0.2s ease;
         }
 
         .register-link:hover {
-            color: var(--accent);
-            text-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+            color: var(--primary-light);
+            text-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
         }
 
         .footer-badges {
             display: flex;
             justify-content: center;
             gap: 24px;
-            margin-top: 32px;
-            animation: footerAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+            margin-top: 28px;
+            animation: footerAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
         }
 
         @keyframes footerAppear {
@@ -593,36 +629,18 @@
         .badge svg {
             width: 14px;
             height: 14px;
-            color: var(--primary-light);
+            color: var(--accent);
         }
 
         .copyright {
             text-align: center;
-            margin-top: 24px;
+            margin-top: 20px;
             font-size: 12px;
             color: rgba(148, 163, 184, 0.4);
             font-weight: 500;
-            animation: footerAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1s both;
+            animation: footerAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
         }
 
-        /* Session status banner */
-        .session-status {
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
-            animation: formAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-        }
-
-        .session-status.success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            color: #34d399;
-        }
-
-        /* Notification toast */
         .notification {
             position: fixed;
             top: 20px;
@@ -653,136 +671,13 @@
             color: #f87171;
         }
 
-        /* ===== RESPONSIVE ===== */
-
-        /* Планшеты и маленькие ноутбуки (до 768px) */
-        @media (max-width: 768px) {
-            .container { padding: 16px; }
-            .lang-switcher { top: 16px; right: 16px; }
-            .lang-btn { padding: 7px 12px; font-size: 12px; }
-            .login-card { padding: 40px 32px; border-radius: 22px; }
-            .logo-section { margin-bottom: 32px; }
-            .logo-img { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 14px; }
-            .logo-title { font-size: 26px; }
-            .logo-subtitle { font-size: 11px; letter-spacing: 1.8px; }
-            .form-group { margin-bottom: 18px; }
-            .form-label { font-size: 12px; margin-bottom: 7px; }
-            .form-input { padding: 13px 15px 13px 44px; font-size: 14px; border-radius: 12px; }
-            .input-icon { left: 15px; width: 18px; height: 18px; }
-            .toggle-password { right: 12px; }
-            .toggle-password svg { width: 16px; height: 16px; }
-            .form-options { margin-bottom: 24px; }
-            .remember-me { font-size: 12px; gap: 8px; }
-            .custom-checkbox { width: 18px; height: 18px; }
-            .forgot-link { font-size: 12px; }
-            .submit-btn { padding: 15px; font-size: 14px; border-radius: 12px; }
-            .submit-btn .btn-text { gap: 7px; }
-            .submit-btn .btn-arrow { width: 16px; height: 16px; }
-            .submit-btn.loading::after { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
-            .divider { margin: 24px 0; gap: 14px; }
-            .divider-text { font-size: 11px; }
-            .register-text { font-size: 13px; }
-            .session-status { padding: 11px 14px; font-size: 12px; border-radius: 10px; }
-            .notification { padding: 12px 20px; font-size: 13px; border-radius: 10px; top: 16px; }
-        }
-
-        /* Большие телефоны (до 520px) */
         @media (max-width: 520px) {
             .container { padding: 16px; }
-            .lang-switcher { top: 12px; right: 12px; padding: 3px; gap: 1px; border-radius: 10px; }
-            .lang-btn { padding: 6px 10px; font-size: 11px; border-radius: 7px; }
-            .login-card { padding: 36px 24px; border-radius: 20px; }
-            .logo-section { margin-bottom: 28px; }
-            .logo-img { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 12px; }
-            .logo-title { font-size: 24px; }
-            .logo-subtitle { font-size: 10px; letter-spacing: 1.6px; }
-            .form-group { margin-bottom: 16px; }
-            .form-label { font-size: 12px; margin-bottom: 6px; }
-            .form-input { padding: 12px 14px 12px 42px; font-size: 14px; border-radius: 11px; }
-            .input-icon { left: 14px; width: 18px; height: 18px; }
-            .toggle-password { right: 10px; padding: 3px; }
-            .toggle-password svg { width: 16px; height: 16px; }
-            .error-message { font-size: 11px; margin-top: 5px; }
-            .form-options { flex-direction: column; gap: 12px; align-items: flex-start; margin-bottom: 22px; }
-            .remember-me { font-size: 12px; gap: 8px; }
-            .custom-checkbox { width: 18px; height: 18px; border-radius: 5px; }
-            .custom-checkbox svg { width: 10px; height: 10px; }
-            .forgot-link { font-size: 12px; }
-            .submit-btn { padding: 14px; font-size: 14px; border-radius: 11px; }
-            .submit-btn .btn-text { gap: 6px; }
-            .submit-btn .btn-arrow { width: 16px; height: 16px; }
-            .submit-btn.loading::after { width: 20px; height: 20px; margin: -10px 0 0 -10px; border-width: 2px; }
-            .divider { margin: 22px 0; gap: 12px; }
-            .divider-text { font-size: 11px; }
-            .register-text { font-size: 13px; }
-            .session-status { padding: 10px 13px; font-size: 12px; border-radius: 10px; margin-bottom: 18px; }
-            .notification { padding: 11px 18px; font-size: 12px; border-radius: 9px; top: 12px; max-width: 92%; }
-        }
-
-        /* Телефоны (до 480px) */
-        @media (max-width: 480px) {
-            .container { padding: 12px; }
-            .lang-switcher { top: 10px; right: 10px; padding: 3px; gap: 1px; border-radius: 9px; }
-            .lang-btn { padding: 5px 9px; font-size: 10px; border-radius: 6px; letter-spacing: 0.3px; }
-            .login-card { padding: 32px 20px; border-radius: 18px; }
-            .logo-section { margin-bottom: 24px; }
-            .logo-img { width: 60px; height: 60px; border-radius: 15px; margin-bottom: 10px; }
+            .login-card { padding: 32px 20px; border-radius: 20px; }
             .logo-title { font-size: 22px; }
-            .logo-subtitle { font-size: 10px; letter-spacing: 1.4px; }
-            .form-group { margin-bottom: 14px; }
-            .form-label { font-size: 11px; margin-bottom: 5px; }
-            .form-input { padding: 11px 13px 11px 40px; font-size: 13px; border-radius: 10px; }
-            .input-icon { left: 13px; width: 16px; height: 16px; }
-            .toggle-password { right: 9px; padding: 3px; }
-            .toggle-password svg { width: 15px; height: 15px; }
-            .error-message { font-size: 10px; margin-top: 4px; }
-            .form-options { flex-direction: column; gap: 10px; align-items: flex-start; margin-bottom: 20px; }
-            .remember-me { font-size: 11px; gap: 7px; }
-            .custom-checkbox { width: 17px; height: 17px; border-radius: 5px; }
-            .custom-checkbox svg { width: 9px; height: 9px; }
-            .forgot-link { font-size: 11px; }
-            .submit-btn { padding: 13px; font-size: 13px; border-radius: 10px; letter-spacing: 0.2px; }
-            .submit-btn .btn-text { gap: 5px; }
-            .submit-btn .btn-arrow { width: 15px; height: 15px; }
-            .submit-btn.loading::after { width: 18px; height: 18px; margin: -9px 0 0 -9px; border-width: 2px; }
-            .divider { margin: 20px 0; gap: 10px; }
-            .divider-text { font-size: 10px; }
-            .register-text { font-size: 12px; }
-            .session-status { padding: 9px 12px; font-size: 11px; border-radius: 9px; margin-bottom: 16px; }
-            .notification { padding: 10px 16px; font-size: 11px; border-radius: 8px; top: 10px; max-width: 94%; }
-        }
-
-        /* Очень маленькие телефоны (до 380px) */
-        @media (max-width: 380px) {
-            .container { padding: 10px; }
-            .lang-switcher { top: 8px; right: 8px; padding: 2px; gap: 1px; border-radius: 8px; }
-            .lang-btn { padding: 4px 8px; font-size: 9px; border-radius: 5px; }
-            .login-card { padding: 28px 16px; border-radius: 16px; }
-            .logo-section { margin-bottom: 20px; }
-            .logo-img { width: 56px; height: 56px; border-radius: 14px; margin-bottom: 9px; }
-            .logo-title { font-size: 20px; }
-            .logo-subtitle { font-size: 9px; letter-spacing: 1.2px; }
-            .form-group { margin-bottom: 12px; }
-            .form-label { font-size: 10px; margin-bottom: 4px; }
-            .form-input { padding: 10px 12px 10px 38px; font-size: 12px; border-radius: 9px; }
-            .input-icon { left: 12px; width: 15px; height: 15px; }
-            .toggle-password { right: 8px; padding: 2px; }
-            .toggle-password svg { width: 14px; height: 14px; }
-            .error-message { font-size: 9px; margin-top: 3px; }
-            .form-options { flex-direction: column; gap: 8px; align-items: flex-start; margin-bottom: 18px; }
-            .remember-me { font-size: 10px; gap: 6px; }
-            .custom-checkbox { width: 16px; height: 16px; border-radius: 4px; }
-            .custom-checkbox svg { width: 8px; height: 8px; }
-            .forgot-link { font-size: 10px; }
-            .submit-btn { padding: 12px; font-size: 12px; border-radius: 9px; }
-            .submit-btn .btn-text { gap: 4px; }
-            .submit-btn .btn-arrow { width: 14px; height: 14px; }
-            .submit-btn.loading::after { width: 16px; height: 16px; margin: -8px 0 0 -8px; }
-            .divider { margin: 18px 0; gap: 8px; }
-            .divider-text { font-size: 9px; }
-            .register-text { font-size: 11px; }
-            .session-status { padding: 8px 11px; font-size: 10px; border-radius: 8px; margin-bottom: 14px; }
-            .notification { padding: 9px 14px; font-size: 10px; border-radius: 7px; top: 8px; }
+            .lang-switcher { top: 12px; right: 12px; }
+            .lang-select { padding: 6px 10px; font-size: 12px; }
+            .form-options { flex-direction: column; gap: 12px; align-items: flex-start; }
         }
     </style>
 </head>
@@ -803,52 +698,6 @@
         <option value="en">🇬🇧 EN</option>
     </select>
 </div>
-
-
-<style>
-    .lang-switcher {
-        display: inline-block;
-        margin: 10px;
-        font-family: 'Segoe UI', Roboto, sans-serif;
-    }
-
-    .lang-select {
-        /* Основной стиль: темно-синий градиент */
-        background: linear-gradient(145deg, #1a2a6c, #101a44);
-        color: #ffffff;
-        padding: 10px 15px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        outline: none;
-        appearance: none; /* Убираем стандартную стрелку браузера */
-        -webkit-appearance: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Эффект при наведении */
-    .lang-select:hover {
-        background: #1e3a8a;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        transform: translateY(-1px);
-    }
-
-    /* Фокус (когда нажали) */
-    .lang-select:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
-    }
-
-    /* Стили для выпадающего списка (в некоторых браузерах) */
-    .lang-select option {
-        background-color: #101a44;
-        color: white;
-        padding: 10px;
-    }
-</style>
 
 <div class="container">
     <div class="login-card">
@@ -971,16 +820,33 @@
     </div>
 
     <!-- Footer badges -->
+    <div class="footer-badges">
+        <div class="badge">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+            <span>SSL</span>
+        </div>
+        <div class="badge">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            <span data-i18n="badgeSecurity">Защита</span>
+        </div>
+        <div class="badge">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+            <span data-i18n="badgeSign">ЭЦП</span>
+        </div>
+    </div>
 
+    <p class="copyright">
+        © {{ date('Y') }} DocSign Ecosystem. <span data-i18n="rights">Все права защищены.</span>
+    </p>
 </div>
 
 <script>
     // Generate particles
     function createParticles() {
-        const container = document.getElementById('particles');
-        const count = 30;
-        for (let i = 0; i < count; i++) {
-            const particle = document.createElement('div');
+        var container = document.getElementById('particles');
+        var count = 30;
+        for (var i = 0; i < count; i++) {
+            var particle = document.createElement('div');
             particle.className = 'particle';
             particle.style.left = Math.random() * 100 + '%';
             particle.style.animationDuration = (Math.random() * 10 + 8) + 's';
@@ -994,7 +860,7 @@
     createParticles();
 
     // Translations
-    const translations = {
+    var translations = {
         ru: {
             subtitle: 'Система электронного документооборота',
             emailLabel: 'Электронная почта',
@@ -1023,7 +889,7 @@
             forgot: 'Рамзро фаромӯш кардед?',
             loginBtn: 'Ворид шудан',
             divider: 'ё',
-            noAccount: 'исоб надоред?',
+            noAccount: 'Ҳисоб надоред?',
             register: 'Бақайдгирӣ',
             badgeSecurity: 'Ҳифз',
             badgeSign: 'ЭИИ',
@@ -1051,13 +917,10 @@
         }
     };
 
-    let currentLang = 'ru';
+    var currentLang = 'ru';
 
     function switchLang(lang) {
         currentLang = lang;
-        document.querySelectorAll('.lang-btn').forEach(function(btn) {
-            btn.classList.toggle('active', btn.dataset.lang === lang);
-        });
         document.documentElement.lang = lang;
 
         var t = translations[lang];
@@ -1128,7 +991,6 @@
 
         var btn = document.getElementById('submitBtn');
         btn.classList.add('loading');
-        btn.disabled = true;
         return true;
     }
 
@@ -1137,6 +999,17 @@
     var passInput = document.getElementById('password');
     if (emailInput) emailInput.addEventListener('input', function() { this.classList.remove('error'); });
     if (passInput) passInput.addEventListener('input', function() { this.classList.remove('error'); });
+
+    // Handle Laravel validation errors on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        var errorMessages = document.querySelectorAll('.error-message');
+        if (errorMessages.length > 0) {
+            var firstError = errorMessages[0].textContent;
+            if (firstError) {
+                showNotification(firstError, 'error');
+            }
+        }
+    });
 </script>
 </body>
 </html>
