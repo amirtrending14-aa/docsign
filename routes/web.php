@@ -157,7 +157,7 @@ Route::middleware(['auth', 'last.seen', 'verified'])->group(function () {
         ->name('documents.downloadWord');
 
     Route::post('/documents/ai-process', [DocumentController::class, 'storeFromPdf'])
-        ->middleware('throttle:forms')
+        ->middleware('throttle:10,1')
         ->name('documents.ai-process');
 
     Route::post('/documents/{document}/sign', [DocumentController::class, 'sign'])
@@ -215,7 +215,7 @@ Route::middleware(['auth', 'last.seen', 'verified'])->group(function () {
     // COMMENTS (🔒 IDOR Protection)
     // ============================================
     Route::post('/comments', [DocumentCommentController::class, 'store'])
-        ->middleware('throttle:forms')
+        ->middleware('throttle:10,1')
         ->name('comments.store');
     Route::get('/documents/{document}/comments', [DocumentCommentController::class, 'index'])
         ->name('comments.index');

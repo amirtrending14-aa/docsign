@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth; // <-- ДОБАВЛЕНО: для получения ID пользователя
+use App\Services\RateLimitService;   // <-- ДОБАВЛЕНО: Сервис лимитов
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -13,6 +15,18 @@ class AIController extends Controller
 {
     public function generateDocument(Request $request)
     {
+        // 🛡️ ЛИМИТ: ИИ-генерация документов (3 раза, 6 раз -> 30 мин, 9 раз -> 2 часа)
+        // Используем ID пользователя, а если он не авторизован (гость) — его IP-адрес
+        $userId = Auth::id() ?: $request->ip();
+        $check = RateLimitService::check('ai_generate_doc:' . $userId, 3, [6 => 30, 9 => 120]);
+
+        if ($check['blocked']) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $check['message']
+            ], 429); // 429 Too Many Requests
+        }
+
         try {
             $prompt = $request->input('prompt', 'Документ');
             $format = $request->input('format', 'pdf');
@@ -644,7 +658,7 @@ class AIController extends Controller
 
     Гарантирую, что обладаю всеми необходимыми квалификацией и опытом для выполнения обязанностей на указанной должности. Обязуюсь добросовестно исполнять свои трудовые обязанности, соблюдать правила внутреннего трудового распорядка и выполнять все указания руководства.
 
-   CharacterSet myself: ответственный, дисциплинированный, исполнительный.";
+    Характеризую себя: ответственный, дисциплинированный, исполнительный.";
         }
 
         if (mb_strpos($promptLower, 'увол') !== false) {

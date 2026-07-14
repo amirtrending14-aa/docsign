@@ -592,7 +592,14 @@
                 $typeClass = 'user';
                 $typeKey = 'typeUser';
                 $title = $item->name ?? 'User #' . $item->id;
-                $subtitle = $item->email ?? '';
+
+                // ✅ ДОБАВЛЕНО: Красивое отображение Email и Телефона через разделитель " • "
+                $phoneDisplay = $item->phone ? ' • ' . $item->phone : '';
+                $subtitle = trim(($item->email ?? '') . $phoneDisplay);
+                if (empty($subtitle)) {
+                $subtitle = 'Нет контактных данных';
+                }
+
                 $details = $item->role ?? 'User';
                 $date = $item->created_at?->format('d.m.Y') ?? '—';
                 $statusKey = 'statusActive';
@@ -613,7 +620,7 @@
                 $typeKey = 'typeDoc';
                 $title = $item->title ?? 'Document #' . $item->id;
                 $subtitle = \Illuminate\Support\Str::limit($item->content ?? '', 60);
-                $details = 'standard';
+                $details = $item->number ?? 'Стандартный';
                 $date = $item->created_at?->format('d.m.Y') ?? '—';
                 $statusKey = 'statusActive';
                 $statusClass = 'active';

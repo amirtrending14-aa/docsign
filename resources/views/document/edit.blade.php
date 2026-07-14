@@ -7,6 +7,8 @@ $currentUserId = (int) auth()->id();
 $isOwner = ($currentUserId === $ownerId);
 @endphp
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <style>
     .doc-edit-page {
         color: #e7ecf3;
@@ -323,7 +325,10 @@ $isOwner = ($currentUserId === $ownerId);
         overflow-y: auto;
         box-shadow: 0 8px 24px rgba(0,0,0,0.5);
         z-index: 10;
-        position: relative;
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
     }
     .search-dropdown.hidden {
         display: none;
@@ -351,6 +356,16 @@ $isOwner = ($currentUserId === $ownerId);
     .dropdown-item .meta {
         font-size: 10px;
         color: #8892a6;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .dropdown-item .meta span {
+        display: block;
+    }
+    .dropdown-item .meta .company {
+        color: #4f8cff;
+        font-weight: 500;
     }
 
     /* === БЛОК ТЕКУЩЕГО ФАЙЛА === */
@@ -625,8 +640,6 @@ $isOwner = ($currentUserId === $ownerId);
     }
 
     /* ===== RESPONSIVE ===== */
-
-    /* Маленькие ноутбуки и большие планшеты (до 992px) */
     @media (max-width: 992px) {
         .doc-edit-page { padding: 20px 14px; }
         .form-card { padding: 24px; border-radius: 14px; }
@@ -641,36 +654,29 @@ $isOwner = ($currentUserId === $ownerId);
         .current-file-btn { padding: 5px 9px; font-size: 8px; }
     }
 
-    /* Планшеты (до 768px) */
     @media (max-width: 768px) {
         .doc-edit-page { padding: 18px 12px; }
         .form-card { padding: 20px; border-radius: 14px; }
-
         .back-btn { padding: 7px 12px; font-size: 11px; margin-bottom: 14px; }
         .page-title { font-size: 16px; gap: 7px; }
         .page-title::before { width: 3px; height: 16px; }
         .page-subtitle { font-size: 10px; letter-spacing: 0.8px; margin-bottom: 16px; }
         .readonly-badge { padding: 3px 8px; font-size: 8px; letter-spacing: 0.8px; margin-left: 6px; }
-
         .field-row { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
         .field-label { font-size: 9px; letter-spacing: 1px; margin-bottom: 5px; }
         .input-field { height: 38px; font-size: 12px; padding: 0 11px; border-radius: 7px; }
         textarea.input-field { min-height: 70px; padding: 9px 11px; }
         select.input-field { padding-right: 30px; }
-
         .receiver-section { margin-top: 14px; padding-top: 14px; }
         .section-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 8px; }
-
         .mode-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
         .mode-btn { padding: 10px; border-radius: 8px; }
         .mode-btn .mode-icon { width: 26px; height: 26px; font-size: 12px; margin-bottom: 6px; }
         .mode-btn .mode-title { font-size: 10px; }
         .mode-btn .mode-desc { font-size: 8px; }
         .mode-btn .mode-check { width: 14px; height: 14px; top: 6px; right: 6px; }
-
         .receiver-block { padding: 12px; border-radius: 8px; margin-top: 8px; }
         .chip { font-size: 10px; padding: 3px 8px; border-radius: 12px; }
-
         .current-file-card { flex-direction: column; align-items: stretch; padding: 12px; border-radius: 10px; gap: 10px; margin-bottom: 10px; }
         .current-file-info { justify-content: flex-start; }
         .current-file-icon { width: 34px; height: 34px; font-size: 15px; border-radius: 8px; }
@@ -679,53 +685,42 @@ $isOwner = ($currentUserId === $ownerId);
         .current-file-badge { padding: 3px 7px; font-size: 7px; border-radius: 5px; align-self: flex-start; }
         .current-file-actions { justify-content: stretch; gap: 5px; }
         .current-file-btn { flex: 1; justify-content: center; padding: 5px 8px; font-size: 8px; border-radius: 5px; }
-
         .new-file-section { margin-top: 10px; padding-top: 10px; }
         .new-file-label { font-size: 8px; letter-spacing: 0.9px; margin-bottom: 5px; }
         .file-upload { height: 38px; font-size: 11px; padding: 0 12px; border-radius: 7px; }
-
         .btn-submit { padding: 11px 20px; font-size: 11px; border-radius: 8px; max-width: 260px; }
-
         .receiver-readonly { padding: 9px 12px; border-radius: 7px; }
         .receiver-readonly .avatar { width: 28px; height: 28px; font-size: 12px; border-radius: 7px; }
         .receiver-readonly .info .name { font-size: 11px; }
         .receiver-readonly .info .email { font-size: 9px; }
-
         .search-dropdown { max-height: 160px; border-radius: 7px; }
         .dropdown-item { padding: 7px 10px; }
         .dropdown-item .name { font-size: 11px; }
         .dropdown-item .meta { font-size: 9px; }
     }
 
-    /* Большие телефоны (до 576px) */
     @media (max-width: 576px) {
         .doc-edit-page { padding: 16px 10px; }
         .form-card { padding: 18px; border-radius: 12px; }
-
         .back-btn { padding: 6px 11px; font-size: 10px; margin-bottom: 12px; border-radius: 7px; }
         .page-title { font-size: 15px; gap: 6px; }
         .page-title::before { width: 3px; height: 15px; }
         .page-subtitle { font-size: 9px; letter-spacing: 0.7px; margin-bottom: 14px; }
         .readonly-badge { padding: 3px 7px; font-size: 8px; letter-spacing: 0.7px; margin-left: 5px; border-radius: 10px; }
-
         .field-row { gap: 8px; margin-bottom: 8px; }
         .field-label { font-size: 9px; letter-spacing: 0.9px; margin-bottom: 4px; }
         .input-field { height: 36px; font-size: 12px; padding: 0 10px; border-radius: 6px; }
         textarea.input-field { min-height: 65px; padding: 8px 10px; }
-
         .receiver-section { margin-top: 12px; padding-top: 12px; }
         .section-title { font-size: 9px; letter-spacing: 0.9px; margin-bottom: 7px; }
-
         .mode-grid { grid-template-columns: 1fr; gap: 6px; }
         .mode-btn { padding: 10px 12px; border-radius: 8px; flex-direction: row; align-items: center; gap: 10px; }
         .mode-btn .mode-icon { width: 28px; height: 28px; font-size: 13px; margin-bottom: 0; flex-shrink: 0; }
         .mode-btn .mode-title { font-size: 11px; margin-bottom: 1px; }
         .mode-btn .mode-desc { font-size: 9px; }
         .mode-btn .mode-check { width: 15px; height: 15px; top: 50%; right: 10px; transform: translateY(-50%); }
-
         .receiver-block { padding: 11px; border-radius: 7px; margin-top: 7px; }
         .chip { font-size: 10px; padding: 3px 7px; border-radius: 11px; gap: 5px; }
-
         .current-file-card { padding: 11px; border-radius: 9px; gap: 9px; margin-bottom: 9px; }
         .current-file-icon { width: 32px; height: 32px; font-size: 14px; border-radius: 7px; }
         .current-file-name { font-size: 10px; }
@@ -733,54 +728,43 @@ $isOwner = ($currentUserId === $ownerId);
         .current-file-badge { padding: 2px 6px; font-size: 7px; border-radius: 5px; }
         .current-file-actions { gap: 4px; }
         .current-file-btn { padding: 5px 7px; font-size: 8px; border-radius: 5px; gap: 3px; }
-
         .new-file-section { margin-top: 9px; padding-top: 9px; }
         .new-file-label { font-size: 8px; letter-spacing: 0.8px; margin-bottom: 4px; }
         .file-upload { height: 36px; font-size: 11px; padding: 0 11px; border-radius: 6px; }
-
         .btn-submit { padding: 10px 18px; font-size: 10px; border-radius: 7px; max-width: 240px; letter-spacing: 0.8px; }
-
         .receiver-readonly { padding: 8px 11px; border-radius: 6px; gap: 9px; }
         .receiver-readonly .avatar { width: 26px; height: 26px; font-size: 11px; border-radius: 6px; }
         .receiver-readonly .info .name { font-size: 10px; }
         .receiver-readonly .info .email { font-size: 9px; }
-
         .search-dropdown { max-height: 150px; border-radius: 6px; }
         .dropdown-item { padding: 6px 9px; }
         .dropdown-item .name { font-size: 10px; }
         .dropdown-item .meta { font-size: 9px; }
     }
 
-    /* Телефоны (до 480px) */
     @media (max-width: 480px) {
         .doc-edit-page { padding: 14px 8px; }
         .form-card { padding: 16px; border-radius: 10px; }
-
         .back-btn { padding: 5px 10px; font-size: 10px; margin-bottom: 10px; border-radius: 6px; gap: 6px; }
         .page-title { font-size: 14px; gap: 5px; }
         .page-title::before { width: 3px; height: 14px; }
         .page-subtitle { font-size: 9px; letter-spacing: 0.6px; margin-bottom: 12px; }
         .readonly-badge { padding: 2px 6px; font-size: 7px; letter-spacing: 0.6px; margin-left: 4px; border-radius: 9px; }
-
         .field-row { gap: 7px; margin-bottom: 7px; }
         .field-label { font-size: 8px; letter-spacing: 0.8px; margin-bottom: 4px; }
         .input-field { height: 34px; font-size: 11px; padding: 0 9px; border-radius: 6px; }
         textarea.input-field { min-height: 60px; padding: 7px 9px; font-size: 11px; }
-
         .receiver-section { margin-top: 10px; padding-top: 10px; }
         .section-title { font-size: 9px; letter-spacing: 0.8px; margin-bottom: 6px; }
-
         .mode-grid { gap: 5px; margin-bottom: 10px; }
         .mode-btn { padding: 9px 11px; border-radius: 7px; gap: 9px; }
         .mode-btn .mode-icon { width: 26px; height: 26px; font-size: 12px; border-radius: 6px; }
         .mode-btn .mode-title { font-size: 10px; }
         .mode-btn .mode-desc { font-size: 8px; }
         .mode-btn .mode-check { width: 14px; height: 14px; right: 9px; }
-
         .receiver-block { padding: 10px; border-radius: 6px; margin-top: 6px; }
         .chip { font-size: 9px; padding: 2px 6px; border-radius: 10px; gap: 4px; }
         .chip button { font-size: 9px; }
-
         .current-file-card { padding: 10px; border-radius: 8px; gap: 8px; margin-bottom: 8px; }
         .current-file-icon { width: 30px; height: 30px; font-size: 13px; border-radius: 6px; }
         .current-file-name { font-size: 10px; }
@@ -788,54 +772,43 @@ $isOwner = ($currentUserId === $ownerId);
         .current-file-badge { padding: 2px 5px; font-size: 7px; border-radius: 4px; }
         .current-file-actions { gap: 4px; }
         .current-file-btn { padding: 4px 6px; font-size: 7px; border-radius: 4px; gap: 3px; }
-
         .new-file-section { margin-top: 8px; padding-top: 8px; }
         .new-file-label { font-size: 8px; letter-spacing: 0.7px; margin-bottom: 4px; }
         .file-upload { height: 34px; font-size: 10px; padding: 0 10px; border-radius: 6px; }
-
         .btn-submit { padding: 9px 16px; font-size: 10px; border-radius: 6px; max-width: 220px; letter-spacing: 0.7px; gap: 6px; }
         .btn-submit i { font-size: 12px; }
-
         .receiver-readonly { padding: 7px 10px; border-radius: 5px; gap: 8px; }
         .receiver-readonly .avatar { width: 24px; height: 24px; font-size: 10px; border-radius: 5px; }
         .receiver-readonly .info .name { font-size: 10px; }
         .receiver-readonly .info .email { font-size: 8px; }
-
         .search-dropdown { max-height: 140px; border-radius: 5px; margin-top: 5px; }
         .dropdown-item { padding: 6px 8px; }
         .dropdown-item .name { font-size: 10px; }
         .dropdown-item .meta { font-size: 8px; }
     }
 
-    /* Очень маленькие телефоны (до 380px) */
     @media (max-width: 380px) {
         .doc-edit-page { padding: 12px 6px; }
         .form-card { padding: 14px; border-radius: 9px; }
-
         .back-btn { padding: 4px 9px; font-size: 9px; margin-bottom: 9px; border-radius: 5px; gap: 5px; }
         .page-title { font-size: 13px; gap: 4px; }
         .page-title::before { width: 2px; height: 13px; }
         .page-subtitle { font-size: 8px; letter-spacing: 0.5px; margin-bottom: 10px; }
         .readonly-badge { padding: 2px 5px; font-size: 7px; letter-spacing: 0.5px; margin-left: 3px; border-radius: 8px; }
-
         .field-row { gap: 6px; margin-bottom: 6px; }
         .field-label { font-size: 8px; letter-spacing: 0.7px; margin-bottom: 3px; }
         .input-field { height: 32px; font-size: 10px; padding: 0 8px; border-radius: 5px; }
         textarea.input-field { min-height: 55px; padding: 6px 8px; font-size: 10px; }
-
         .receiver-section { margin-top: 9px; padding-top: 9px; }
         .section-title { font-size: 8px; letter-spacing: 0.7px; margin-bottom: 5px; }
-
         .mode-grid { gap: 4px; margin-bottom: 8px; }
         .mode-btn { padding: 8px 10px; border-radius: 6px; gap: 8px; }
         .mode-btn .mode-icon { width: 24px; height: 24px; font-size: 11px; border-radius: 5px; }
         .mode-btn .mode-title { font-size: 9px; }
         .mode-btn .mode-desc { font-size: 7px; }
         .mode-btn .mode-check { width: 13px; height: 13px; right: 8px; }
-
         .receiver-block { padding: 9px; border-radius: 5px; margin-top: 5px; }
         .chip { font-size: 8px; padding: 2px 5px; border-radius: 9px; gap: 3px; }
-
         .current-file-card { padding: 9px; border-radius: 7px; gap: 7px; margin-bottom: 7px; }
         .current-file-icon { width: 28px; height: 28px; font-size: 12px; border-radius: 5px; }
         .current-file-name { font-size: 9px; }
@@ -843,18 +816,14 @@ $isOwner = ($currentUserId === $ownerId);
         .current-file-badge { padding: 2px 4px; font-size: 6px; border-radius: 4px; }
         .current-file-actions { gap: 3px; }
         .current-file-btn { padding: 4px 5px; font-size: 7px; border-radius: 4px; gap: 2px; }
-
         .new-file-section { margin-top: 7px; padding-top: 7px; }
         .new-file-label { font-size: 7px; letter-spacing: 0.6px; margin-bottom: 3px; }
         .file-upload { height: 32px; font-size: 9px; padding: 0 9px; border-radius: 5px; }
-
         .btn-submit { padding: 8px 14px; font-size: 9px; border-radius: 5px; max-width: 200px; letter-spacing: 0.6px; gap: 5px; }
-
         .receiver-readonly { padding: 6px 9px; border-radius: 4px; gap: 7px; }
         .receiver-readonly .avatar { width: 22px; height: 22px; font-size: 9px; border-radius: 4px; }
         .receiver-readonly .info .name { font-size: 9px; }
         .receiver-readonly .info .email { font-size: 8px; }
-
         .search-dropdown { max-height: 130px; border-radius: 4px; }
         .dropdown-item { padding: 5px 7px; }
         .dropdown-item .name { font-size: 9px; }
@@ -972,7 +941,8 @@ $isOwner = ($currentUserId === $ownerId);
                         </button>
                     </div>
 
-                    <input type="hidden" name="receiver_mode" id="receiver_mode" value="">
+                    <!-- ИЗМЕНЕНИЕ: Добавлен old() для сохранения режима при ошибке валидации -->
+                    <input type="hidden" name="receiver_mode" id="receiver_mode" value="{{ old('receiver_mode', '') }}">
 
                     {{-- Блок 1: Всей команде --}}
                     <div id="mode-all_team" class="receiver-block hidden">
@@ -992,7 +962,7 @@ $isOwner = ($currentUserId === $ownerId);
                         <label class="field-label" data-i18n="selectReceiversLabel">Выберите получателей (до 5)</label>
                         <input type="text" id="team-search" class="input-field"
                                data-i18n-placeholder="teamSearchPlaceholder"
-                               placeholder="Поиск по имени или email..." autocomplete="off">
+                               placeholder="Поиск по имени, email или телефону..." autocomplete="off">
 
                         <div id="team-selected" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:28px;">
                             <span style="font-size:10px;color:#8892a6;" id="team-placeholder" data-i18n="selectedPlaceholder">Выбранные пользователи...</span>
@@ -1000,7 +970,8 @@ $isOwner = ($currentUserId === $ownerId);
 
                         <div id="team-list" class="search-dropdown hidden"></div>
 
-                        <input type="hidden" name="team_receivers" id="team_receivers" value="">
+                        <!-- ИЗМЕНЕНИЕ: Добавлен old() для сохранения выбранных ID при ошибке -->
+                        <input type="hidden" name="team_receivers" id="team_receivers" value="{{ old('team_receivers', '') }}">
                     </div>
 
                     {{-- Блок 3: Другая команда --}}
@@ -1008,9 +979,10 @@ $isOwner = ($currentUserId === $ownerId);
                         <label class="field-label" data-i18n="searchReceiverLabel">Поиск получателя</label>
                         <input type="text" id="other-search" class="input-field"
                                data-i18n-placeholder="otherSearchPlaceholder"
-                               placeholder="Название компании или email..." autocomplete="off">
+                               placeholder="Название компании, email или телефон..." autocomplete="off">
 
-                        <div id="other-selected" class="hidden" style="margin-top:10px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(79,140,255,0.08);border:1px solid rgba(79,140,255,0.3);border-radius:8px;">
+                        <!-- ИЗМЕНЕНИЕ: Улучшена логика отображения для корректной работы JS -->
+                        <div id="other-selected" class="hidden" style="margin-top:10px; display:none; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(79,140,255,0.08); border:1px solid rgba(79,140,255,0.3); border-radius:8px;">
                             <div style="display:flex;align-items:center;gap:10px;">
                                 <div style="width:32px;height:32px;border-radius:8px;background:rgba(79,140,255,0.2);display:flex;align-items:center;justify-content:center;color:#4f8cff;">
                                     <i class="bi bi-person-fill"></i>
@@ -1026,7 +998,9 @@ $isOwner = ($currentUserId === $ownerId);
                         </div>
 
                         <div id="other-list" class="search-dropdown hidden"></div>
-                        <input type="hidden" name="other_receiver_id" id="other_receiver_id" value="">
+
+                        <!-- ИЗМЕНЕНИЕ: Добавлен old() с фоллбеком на receiver_id документа -->
+                        <input type="hidden" name="other_receiver_id" id="other_receiver_id" value="{{ old('other_receiver_id', $document->receiver_id ?? '') }}">
                     </div>
                 </div>
                 @else
@@ -1061,7 +1035,6 @@ $isOwner = ($currentUserId === $ownerId);
                 </div>
 
                 <style>
-                    /* === SELECT СТАТУСА РЕДАКТИРОВАНИЯ === */
                     #edit-status {
                         width: 100%;
                         background: rgba(255, 255, 255, 0.03);
@@ -1083,18 +1056,15 @@ $isOwner = ($currentUserId === $ownerId);
                         background-position: right 12px center;
                         padding-right: 32px;
                     }
-
                     #edit-status:focus {
                         border-color: rgba(var(--glow), 0.6);
                         box-shadow: 0 0 0 3px rgba(var(--glow), 0.15), 0 0 12px rgba(var(--glow), 0.1);
                         background-color: rgba(255, 255, 255, 0.05);
                     }
-
                     #edit-status:disabled {
                         opacity: 0.5;
                         cursor: not-allowed;
                     }
-
                     #edit-status option {
                         background: #161a26;
                         color: var(--text);
@@ -1102,7 +1072,6 @@ $isOwner = ($currentUserId === $ownerId);
                         font-size: 13px;
                         font-weight: 600;
                     }
-
                     #edit-status option:hover,
                     #edit-status option:checked {
                         background: rgba(var(--glow), 0.2) !important;
@@ -1192,7 +1161,7 @@ $isOwner = ($currentUserId === $ownerId);
                     <div class="field-group">
                         <label class="field-label" data-i18n="labelNewFile">Файл документа</label>
                         <label class="file-upload" id="file-upload-label">
-                            <span id="file-name" data-i18n="filePlaceholder">Выберите файл...</span>
+                            <span id="file-name" data-i18n="filePlaceholderEmpty">Выберите файл...</span>
                             <i class="bi bi-paperclip"></i>
                             <input type="file" name="file_path" id="file" accept=".pdf,.docx,.xlsx,.rtf">
                         </label>
@@ -1217,7 +1186,7 @@ $isOwner = ($currentUserId === $ownerId);
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // ===== ПЕРЕВОДЫ / TRANSLATIONS / ТАРҶУМАҲО =====
+        // ===== ПЕРЕВОДЫ =====
         const translations = {
             ru: {
                 back: "Назад",
@@ -1243,10 +1212,10 @@ $isOwner = ($currentUserId === $ownerId);
                 allTeamInfo: "Отправка всем участникам",
                 allTeamDesc: "Документ будет отправлен всей команде",
                 selectReceiversLabel: "Выберите получателей (до 5)",
-                teamSearchPlaceholder: "Поиск по имени или email...",
+                teamSearchPlaceholder: "Поиск по имени, email или телефону...",
                 selectedPlaceholder: "Выбранные пользователи...",
                 searchReceiverLabel: "Поиск получателя",
-                otherSearchPlaceholder: "Название компании или email...",
+                otherSearchPlaceholder: "Название компании, email или телефон...",
                 receiverLabel: "Получатель",
                 statusDraft: "Черновик",
                 statusActive: "Активен",
@@ -1292,10 +1261,10 @@ $isOwner = ($currentUserId === $ownerId);
                 allTeamInfo: "Фиристодан ба ҳамаи иштирокчиён",
                 allTeamDesc: "Ҳуҷҷат ба ҳамаи даста фиристода мешавад",
                 selectReceiversLabel: "Гирандаҳоро интихоб кунед (то 5)",
-                teamSearchPlaceholder: "Ҷустуҷӯ аз рӯи ном ё email...",
+                teamSearchPlaceholder: "Ҷустуҷӯ аз рӯи ном, email ё телефон...",
                 selectedPlaceholder: "Корбарони интихобшуда...",
                 searchReceiverLabel: "Ҷустуҷӯи гиранда",
-                otherSearchPlaceholder: "Номи ширкат ё email...",
+                otherSearchPlaceholder: "Номи ширкат, email ё телефон...",
                 receiverLabel: "Гиранда",
                 statusDraft: "Пешнавис",
                 statusActive: "Фаъол",
@@ -1341,10 +1310,10 @@ $isOwner = ($currentUserId === $ownerId);
                 allTeamInfo: "Sending to all members",
                 allTeamDesc: "Document will be sent to the entire team",
                 selectReceiversLabel: "Select recipients (up to 5)",
-                teamSearchPlaceholder: "Search by name or email...",
+                teamSearchPlaceholder: "Search by name, email or phone...",
                 selectedPlaceholder: "Selected users...",
                 searchReceiverLabel: "Search recipient",
-                otherSearchPlaceholder: "Company name or email...",
+                otherSearchPlaceholder: "Company name, email or phone...",
                 receiverLabel: "Recipient",
                 statusDraft: "Draft",
                 statusActive: "Active",
@@ -1368,32 +1337,22 @@ $isOwner = ($currentUserId === $ownerId);
             }
         };
 
-        // ===== Получение текущего языка =====
         function getCurrentLang() {
-            return localStorage.getItem('docsign_lang')
-                || localStorage.getItem('app-lang')
-                || 'ru';
+            return localStorage.getItem('docsign_lang') || localStorage.getItem('app-lang') || 'ru';
         }
 
-        // ===== Применение переводов =====
         function applyTranslations() {
             const lang = getCurrentLang();
             const t = translations[lang] || translations['ru'];
 
-            // Обновляем все элементы с data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (t[key] !== undefined) {
-                    el.textContent = t[key];
-                }
+                if (t[key] !== undefined) el.textContent = t[key];
             });
 
-            // Обновляем placeholder-ы
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
-                if (t[key] !== undefined) {
-                    el.setAttribute('placeholder', t[key]);
-                }
+                if (t[key] !== undefined) el.setAttribute('placeholder', t[key]);
             });
 
             return t;
@@ -1401,7 +1360,6 @@ $isOwner = ($currentUserId === $ownerId);
 
         let currentT = applyTranslations();
 
-        // ===== Слушатель смены языка =====
         window.addEventListener('docsign:lang-changed', function(e) {
             if (e.detail && e.detail.lang) {
                 localStorage.setItem('docsign_lang', e.detail.lang);
@@ -1413,32 +1371,64 @@ $isOwner = ($currentUserId === $ownerId);
         const form = document.getElementById('documentForm');
         const modeInput = document.getElementById('receiver_mode');
         const modeButtons = document.querySelectorAll('.mode-btn');
-        let currentMode = null;
+        let currentMode = modeInput ? modeInput.value : null;
         let selectedTeamUsers = [];
 
         const teamUsers = @json($teamUsersArray ?? []);
         const otherUsers = @json($otherUsersArray ?? []);
 
-        // === Переключение режимов отправки ===
+        // === 1. ВОССТАНОВЛЕНИЕ СОСТОЯНИЯ ПРИ ЗАГРУЗКЕ (ИСПРАВЛЕНИЕ ИСЧЕЗНОВЕНИЯ ДАННЫХ) ===
+        if (modeInput && currentMode) {
+            const activeBtn = document.querySelector(`.mode-btn[data-mode="${currentMode}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                const block = document.getElementById('mode-' + currentMode);
+                if (block) block.classList.remove('hidden');
+            }
+        }
+
+        // Восстановление выбранных пользователей команды
+        const teamReceiversInput = document.getElementById('team_receivers');
+        if (teamReceiversInput && teamReceiversInput.value && currentMode === 'select_team') {
+            const ids = teamReceiversInput.value.split(',').map(id => parseInt(id.trim()));
+            selectedTeamUsers = teamUsers.filter(u => ids.includes(u.id));
+            updateTeamSelected();
+        }
+
+        // Восстановление выбранного внешнего получателя
+        const otherReceiverInput = document.getElementById('other_receiver_id');
+        if (otherReceiverInput && otherReceiverInput.value && currentMode === 'other_company') {
+            const user = otherUsers.find(u => u.id == otherReceiverInput.value);
+            if (user) {
+                document.getElementById('other-name').textContent = user.name;
+                const phoneDisplay = user.phone ? ` | ${user.phone}` : '';
+                document.getElementById('other-email').textContent = (user.email || '') + phoneDisplay;
+
+                const otherSelectedDiv = document.getElementById('other-selected');
+                otherSelectedDiv.classList.remove('hidden');
+                otherSelectedDiv.style.display = 'flex'; // Принудительно показываем
+            }
+        }
+
+        // === 2. ПЕРЕКЛЮЧЕНИЕ РЕЖИМОВ ===
         if (modeButtons.length > 0) {
             modeButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const mode = this.dataset.mode;
                     currentMode = mode;
-                    modeInput.value = mode;
+                    if (modeInput) modeInput.value = mode;
 
                     modeButtons.forEach(b => b.classList.remove('active'));
                     document.querySelectorAll('.receiver-block').forEach(b => b.classList.add('hidden'));
 
                     this.classList.add('active');
-
                     const block = document.getElementById('mode-' + mode);
                     if (block) block.classList.remove('hidden');
                 });
             });
         }
 
-        // === Загрузка файла — с визуальной индикацией замены ===
+        // === 3. ЗАГРУЗКА ФАЙЛА ===
         const fileInput = document.getElementById('file');
         const fileName = document.getElementById('file-name');
         const fileUploadLabel = document.getElementById('file-upload-label');
@@ -1450,11 +1440,9 @@ $isOwner = ($currentUserId === $ownerId);
                 const t = translations[getCurrentLang()] || translations['ru'];
 
                 if (this.files.length > 0) {
-                    // Выбран новый файл
                     fileName.textContent = this.files[0].name;
                     if (fileUploadLabel) fileUploadLabel.classList.add('has-file');
 
-                    // Если есть карточка текущего файла — показываем что он будет заменён
                     if (currentFileCard) {
                         currentFileCard.classList.add('replaced');
                         if (currentFileBadge) {
@@ -1462,13 +1450,10 @@ $isOwner = ($currentUserId === $ownerId);
                             const badgeSpan = currentFileBadge.querySelector('span');
                             if (badgeSpan) badgeSpan.textContent = t.replacedFile;
                             const badgeIcon = currentFileBadge.querySelector('i');
-                            if (badgeIcon) {
-                                badgeIcon.className = 'bi bi-arrow-repeat';
-                            }
+                            if (badgeIcon) badgeIcon.className = 'bi bi-arrow-repeat';
                         }
                     }
                 } else {
-                    // Файл не выбран — возвращаем как было
                     fileName.textContent = currentFileCard ? t.filePlaceholder : t.filePlaceholderEmpty;
                     if (fileUploadLabel) fileUploadLabel.classList.remove('has-file');
 
@@ -1479,16 +1464,14 @@ $isOwner = ($currentUserId === $ownerId);
                             const badgeSpan = currentFileBadge.querySelector('span');
                             if (badgeSpan) badgeSpan.textContent = t.activeFile;
                             const badgeIcon = currentFileBadge.querySelector('i');
-                            if (badgeIcon) {
-                                badgeIcon.className = 'bi bi-check-circle-fill';
-                            }
+                            if (badgeIcon) badgeIcon.className = 'bi bi-check-circle-fill';
                         }
                     }
                 }
             });
         }
 
-        // === Поиск пользователей команды ===
+        // === 4. ПОИСК ПОЛЬЗОВАТЕЛЕЙ КОМАНДЫ (С ПОИСКОМ ПО ТЕЛЕФОНУ) ===
         const teamSearch = document.getElementById('team-search');
         const teamList = document.getElementById('team-list');
         const teamSelected = document.getElementById('team-selected');
@@ -1503,9 +1486,14 @@ $isOwner = ($currentUserId === $ownerId);
                 }
 
                 const t = translations[getCurrentLang()] || translations['ru'];
-                const filtered = teamUsers.filter(u =>
-                    u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query)
-                ).filter(u => !selectedTeamUsers.find(s => s.id === u.id));
+                // ИЗМЕНЕНИЕ: Добавлен поиск по телефону (u.phone)
+                const filtered = teamUsers.filter(u => {
+                    const name = (u.name || '').toLowerCase();
+                    const email = (u.email || '').toLowerCase();
+                    const phone = (u.phone || '').toLowerCase();
+                    return (name.includes(query) || email.includes(query) || phone.includes(query)) &&
+                           !selectedTeamUsers.find(s => s.id === u.id);
+                });
 
                 teamList.innerHTML = '';
                 if (filtered.length === 0) {
@@ -1514,9 +1502,17 @@ $isOwner = ($currentUserId === $ownerId);
                     filtered.forEach(u => {
                         const item = document.createElement('div');
                         item.className = 'dropdown-item';
+                        const phoneDisplay = u.phone ? `<span style="color:#8892a6; display:flex; align-items:center; gap:4px;"><i class="bi bi-telephone" style="font-size:10px"></i> ${u.phone}</span>` : '';
+
                         item.innerHTML = `
-                            <span class="name">${u.name}</span>
-                            <span class="meta">${u.email}</span>
+                            <div>
+                                <span class="name">${u.name}</span>
+                                <div class="meta">
+                                    <span>${u.email || ''}</span>
+                                    ${phoneDisplay}
+                                </div>
+                            </div>
+                            <i class="bi bi-plus-circle-fill add-icon" style="color:#4f8cff;font-size:14px;opacity:0.7;"></i>
                         `;
                         item.addEventListener('click', () => {
                             const t2 = translations[getCurrentLang()] || translations['ru'];
@@ -1563,7 +1559,7 @@ $isOwner = ($currentUserId === $ownerId);
             }
         }
 
-        // === Поиск по другой команде ===
+        // === 5. ПОИСК ПО ДРУГОЙ КОМАНДЕ (С ПОИСКОМ ПО ТЕЛЕФОНУ) ===
         const otherSearch = document.getElementById('other-search');
         const otherList = document.getElementById('other-list');
         const otherSelected = document.getElementById('other-selected');
@@ -1577,9 +1573,13 @@ $isOwner = ($currentUserId === $ownerId);
                 }
 
                 const t = translations[getCurrentLang()] || translations['ru'];
-                const filtered = otherUsers.filter(u =>
-                    u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query)
-                );
+                // ИЗМЕНЕНИЕ: Добавлен поиск по телефону (u.phone)
+                const filtered = otherUsers.filter(u => {
+                    const name = (u.name || '').toLowerCase();
+                    const email = (u.email || '').toLowerCase();
+                    const phone = (u.phone || '').toLowerCase();
+                    return name.includes(query) || email.includes(query) || phone.includes(query);
+                });
 
                 otherList.innerHTML = '';
                 if (filtered.length === 0) {
@@ -1588,15 +1588,26 @@ $isOwner = ($currentUserId === $ownerId);
                     filtered.forEach(u => {
                         const item = document.createElement('div');
                         item.className = 'dropdown-item';
+                        const phoneDisplay = u.phone ? `<span style="color:#8892a6; display:flex; align-items:center; gap:4px;"><i class="bi bi-telephone" style="font-size:10px"></i> ${u.phone}</span>` : '';
+
                         item.innerHTML = `
-                            <span class="name">${u.name}</span>
-                            <span class="meta">${u.email}</span>
+                            <div>
+                                <span class="name">${u.name}</span>
+                                <div class="meta">
+                                    <span>${u.email || ''}</span>
+                                    ${phoneDisplay}
+                                </div>
+                            </div>
+                            <i class="bi bi-check-circle-fill add-icon" style="color:#4f8cff;font-size:14px;opacity:0.7;"></i>
                         `;
                         item.addEventListener('click', () => {
                             document.getElementById('other_receiver_id').value = u.id;
                             document.getElementById('other-name').textContent = u.name;
-                            document.getElementById('other-email').textContent = u.email;
+                            const phoneTxt = u.phone ? ` | ${u.phone}` : '';
+                            document.getElementById('other-email').textContent = (u.email || '') + phoneTxt;
+
                             otherSelected.classList.remove('hidden');
+                            otherSelected.style.display = 'flex';
                             otherList.classList.add('hidden');
                             otherSearch.value = '';
                         });
@@ -1614,9 +1625,10 @@ $isOwner = ($currentUserId === $ownerId);
         window.clearOtherReceiver = function() {
             document.getElementById('other_receiver_id').value = '';
             otherSelected.classList.add('hidden');
+            otherSelected.style.display = 'none';
         };
 
-        // === Валидация при отправке ===
+        // === 6. ВАЛИДАЦИЯ ПРИ ОТПРАВКЕ ===
         if (form) {
             form.addEventListener('submit', function(e) {
                 if (!modeInput) return;
@@ -1636,46 +1648,4 @@ $isOwner = ($currentUserId === $ownerId);
         }
     });
 </script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<style>
-    .mode-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(79, 140, 255, 0.1);
-    border-radius: 8px;
-    margin-bottom: 8px;
-}
-
-.mode-icon i {
-    font-size: 20px;
-    color: #4f8cff;
-}
-
-.mode-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.mode-btn:hover {
-    background: rgba(79, 140, 255, 0.1);
-    border-color: #4f8cff;
-    transform: translateY(-2px);
-}
-
-.mode-btn.active {
-    background: rgba(79, 140, 255, 0.15);
-    border-color: #4f8cff;
-    box-shadow: 0 0 20px rgba(79, 140, 255, 0.3);
-}
-</style>
 @endsection

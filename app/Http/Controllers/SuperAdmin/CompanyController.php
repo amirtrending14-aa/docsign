@@ -12,20 +12,11 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        try {
-            $companies = Company::withCount('users')
-                ->with('owner')
-                ->latest()
-                ->paginate(20);
-        } catch (\Exception $e) {
-            $companies = Company::with('owner')
-                ->latest()
-                ->paginate(20);
-
-            foreach ($companies as $company) {
-                $company->users_count = $company->users()->count();
-            }
-        }
+        // Используем withCount для безопасного подсчета пользователей
+        $companies = Company::withCount('users')
+            ->with('owner') // Теперь эта связь будет работать, так как мы добавили её в модель
+            ->latest()
+            ->paginate(20);
 
         return view('superadmin.companies.index', compact('companies'));
     }
@@ -60,11 +51,12 @@ class CompanyController extends Controller
             $q->where('company_id', $company->id);
         })->latest()->take(20)->get();
 
+        // ✅ ИСПРАВЛЕНО: Используем прямые проверки полей вместо несуществующих методов isOnline/isAdmin
         $stats = [
             'total_users' => $users->count(),
-            'online_users' => $users->filter(fn($u) => $u->isOnline())->count(),
+            'online_users' => $users->filter(fn($u) => $u->last_seen_at && $u->last_seen_at->gte(now()->subMinutes(5)))->count(),
             'total_documents' => $documents->count(),
-            'admins' => $users->filter(fn($u) => $u->isAdmin())->count(),
+            'admins' => $users->filter(fn($u) => in_array($u->role, ['admin', 'super_admin']))->count(),
         ];
 
         return view('superadmin.companies.show', compact('company', 'users', 'documents', 'stats'));
@@ -88,17 +80,17 @@ class CompanyController extends Controller
         $company->update($data);
 
         return redirect()->route('superadmin.companies.index')
-            ->with('success', 'Компания обновлена');
+            ->with('success', '✅ Компания обновлена');
     }
 
     public function destroy(Company $company)
     {
         if ($company->users()->count() > 0) {
-            return back()->with('error', 'Нельзя удалить компанию с пользователями');
+            return back()->with('error', '❌ Нельзя удалить компанию, в которой есть пользователи');
         }
 
         $company->delete();
 
-        return back()->with('success', 'Компания удалена');
+        return back()->with('success', '✅ Компания удалена');
     }
 }

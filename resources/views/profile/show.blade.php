@@ -7,25 +7,39 @@
     .font-inter { font-family: 'Inter', sans-serif; }
 
     /* === DOC SIGN PROFILE STYLE === */
+
+    /* Глобальная защита от горизонтального скролла на мобильных.
+       Именно это было главной причиной "некрасиво": элементы вылезали
+       за пределы экрана и страницу можно было скроллить вбок. */
+    .profile-page,
+    .profile-page *,
+    .profile-page *::before,
+    .profile-page *::after {
+        box-sizing: border-box;
+    }
+
     .profile-page {
         min-height: 100vh;
-        padding: 32px 24px;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        padding: clamp(14px, 4vw, 32px) clamp(10px, 3.5vw, 24px);
         color: var(--text);
     }
 
     /* Заголовок страницы */
     .profile-header {
         max-width: 1200px;
-        margin: 0 auto 28px;
+        margin: 0 auto clamp(14px, 3vw, 28px);
     }
 
     .profile-title {
-        font-size: 22px;
+        font-size: clamp(16px, 3.2vw, 22px);
         font-weight: 700;
         color: var(--text);
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: clamp(5px, 1.2vw, 10px);
         letter-spacing: -0.3px;
         margin: 0;
     }
@@ -33,10 +47,11 @@
     .profile-title::before {
         content: "";
         width: 4px;
-        height: 22px;
+        height: clamp(16px, 2.8vw, 22px);
         background: linear-gradient(180deg, rgba(var(--glow), 1), rgba(var(--glow), 0.3));
         border-radius: 2px;
         box-shadow: 0 0 10px rgba(var(--glow), 0.6);
+        flex-shrink: 0;
     }
 
     /* Сетка карточек */
@@ -45,8 +60,9 @@
         margin: 0 auto;
         display: grid;
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: clamp(12px, 2.5vw, 20px);
         align-items: stretch;
+        width: 100%;
     }
 
     @media (min-width: 1024px) {
@@ -63,6 +79,7 @@
         border-radius: var(--radius);
         padding: 0;
         overflow: hidden;
+        min-width: 0; /* критично внутри grid, иначе контент может распирать колонку */
         transition: all 0.3s ease;
     }
 
@@ -87,7 +104,7 @@
 
     /* Левая карточка - аватар */
     .avatar-card {
-        padding: 32px 24px;
+        padding: clamp(18px, 4vw, 32px) clamp(14px, 3vw, 24px);
         text-align: center;
         display: flex;
         flex-direction: column;
@@ -98,18 +115,19 @@
     }
 
     .avatar-box {
-        width: 128px;
-        height: 128px;
-        border-radius: 20px;
+        width: clamp(70px, 18vw, 128px);
+        height: clamp(70px, 18vw, 128px);
+        border-radius: clamp(12px, 2.5vw, 20px);
         background: linear-gradient(135deg, rgba(var(--glow), 0.6), rgba(var(--glow), 0.2));
         border: 3px solid rgba(10, 13, 20, 0.8);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: clamp(12px, 2.5vw, 20px);
         box-shadow: 0 12px 28px rgba(var(--glow), 0.3), 0 0 0 1px rgba(var(--glow), 0.3);
         position: relative;
         overflow: hidden;
+        flex-shrink: 0;
         transition: all 0.3s ease;
     }
 
@@ -126,26 +144,32 @@
 
     .avatar-letter {
         color: #ffffff;
-        font-size: 56px;
+        font-size: clamp(32px, 7vw, 56px);
         font-weight: 900;
         font-style: italic;
         text-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
 
     .profile-name {
-        font-size: 22px;
+        font-size: clamp(16px, 3.2vw, 22px);
         font-weight: 800;
         color: var(--text);
         margin: 0 0 4px;
         letter-spacing: -0.3px;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
     }
 
     .profile-email {
-        font-size: 11px;
+        font-size: clamp(9px, 1.8vw, 11px);
         font-weight: 600;
         color: var(--muted);
-        margin: 0 0 20px;
-        word-break: break-all;
+        margin: 0 0 clamp(12px, 2.5vw, 20px);
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
         letter-spacing: 0.3px;
     }
 
@@ -153,9 +177,9 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 16px;
+        padding: clamp(4px, 1vw, 6px) clamp(10px, 2.5vw, 16px);
         border-radius: 20px;
-        font-size: 10px;
+        font-size: clamp(8px, 1.6vw, 10px);
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.8px;
@@ -163,7 +187,8 @@
         border: 1px solid rgba(var(--glow), 0.3);
         color: rgba(var(--glow), 1);
         font-family: 'JetBrains Mono', monospace;
-        min-width: 120px;
+        max-width: 100%;
+        white-space: nowrap;
         justify-content: center;
     }
 
@@ -174,16 +199,18 @@
         border-radius: 50%;
         background: #4cd982;
         box-shadow: 0 0 8px #4cd982;
+        flex-shrink: 0;
     }
 
     /* Правая карточка - детали */
     .details-card {
         display: flex;
         flex-direction: column;
+        min-width: 0;
     }
 
     .details-header {
-        padding: 18px 24px;
+        padding: clamp(11px, 2vw, 18px) clamp(14px, 3vw, 24px);
         border-bottom: 1px solid var(--line);
         background: rgba(255,255,255,0.02);
         display: flex;
@@ -194,7 +221,7 @@
     }
 
     .details-header-label {
-        font-size: 10px;
+        font-size: clamp(8px, 1.6vw, 10px);
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1.5px;
@@ -205,20 +232,22 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        font-size: 10px;
+        font-size: clamp(8px, 1.6vw, 10px);
         font-weight: 700;
         text-transform: uppercase;
         color: #4cd982;
         letter-spacing: 0.8px;
+        white-space: nowrap;
     }
 
     .status-dot {
-        width: 8px;
-        height: 8px;
+        width: clamp(6px, 1.2vw, 8px);
+        height: clamp(6px, 1.2vw, 8px);
         border-radius: 50%;
         background: #4cd982;
         box-shadow: 0 0 0 3px rgba(76, 217, 130, 0.2), 0 0 8px rgba(76, 217, 130, 0.6);
         animation: pulse 2s infinite;
+        flex-shrink: 0;
     }
 
     @keyframes pulse {
@@ -227,24 +256,29 @@
     }
 
     .details-body {
-        padding: 24px;
+        padding: clamp(12px, 3vw, 24px);
         flex-grow: 1;
+        min-width: 0;
     }
 
     .info-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: clamp(12px, 2.5vw, 20px);
     }
 
-    @media (min-width: 640px) {
+    @media (min-width: 480px) {
         .info-grid {
             grid-template-columns: 1fr 1fr;
         }
     }
 
+    .info-grid > div {
+        min-width: 0;
+    }
+
     .info-label {
-        font-size: 10px;
+        font-size: clamp(7px, 1.5vw, 10px);
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.8px;
@@ -254,30 +288,32 @@
     }
 
     .info-value {
-        font-size: 14px;
+        font-size: clamp(11px, 2.2vw, 14px);
         font-weight: 600;
         color: var(--text);
         letter-spacing: -0.2px;
+        overflow-wrap: anywhere;
         word-break: break-word;
     }
 
     .access-section {
-        margin-top: 24px;
-        padding-top: 20px;
+        margin-top: clamp(12px, 2.5vw, 24px);
+        padding-top: clamp(10px, 2vw, 20px);
         border-top: 1px solid var(--line);
     }
 
     .access-text {
-        font-size: 12px;
+        font-size: clamp(9px, 1.8vw, 12px);
         font-weight: 700;
         text-transform: uppercase;
         color: var(--text);
         letter-spacing: 0.3px;
         line-height: 1.4;
+        overflow-wrap: break-word;
     }
 
     .details-footer {
-        padding: 0 24px 24px;
+        padding: 0 clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px);
         display: flex;
         justify-content: flex-end;
     }
@@ -285,19 +321,22 @@
     .btn-edit {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center;
+        gap: clamp(6px, 1.3vw, 8px);
         background: linear-gradient(180deg, rgba(var(--glow), 0.95), rgba(var(--glow), 0.65));
         color: #0a0d14;
-        font-size: 10px;
+        font-size: clamp(9px, 1.8vw, 10px);
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1.2px;
-        padding: 10px 20px;
+        padding: clamp(9px, 2vw, 10px) clamp(14px, 3vw, 20px);
         border-radius: 10px;
         text-decoration: none;
         transition: all 0.25s ease;
         border: 1px solid transparent;
         box-shadow: 0 8px 24px rgba(var(--glow), 0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+        min-height: 44px; /* touch-friendly на всех размерах, не только на телефонах */
+        white-space: nowrap;
     }
 
     .btn-edit:hover {
@@ -311,19 +350,32 @@
     }
 
     .btn-edit svg {
-        width: 12px;
-        height: 12px;
+        width: clamp(10px, 2vw, 12px);
+        height: clamp(10px, 2vw, 12px);
+        flex-shrink: 0;
+    }
+
+    /* На узких экранах кнопка растягивается на всю ширину — это удобнее пальцем */
+    @media (max-width: 480px) {
+        .details-footer {
+            justify-content: stretch;
+        }
+        .btn-edit {
+            width: 100%;
+        }
     }
 
     /* === ACTIVITY GRID === */
     .activity-card {
         max-width: 1200px;
-        margin: 20px auto 0;
+        margin: clamp(14px, 3vw, 20px) auto 0;
         background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01));
         border: 1px solid var(--line);
         border-radius: var(--radius);
-        padding: 20px 24px;
+        padding: clamp(12px, 3vw, 20px) clamp(14px, 3vw, 24px);
         position: relative;
+        width: 100%;
+        min-width: 0;
     }
 
     .activity-card::before {
@@ -341,10 +393,10 @@
     }
 
     .activity-title {
-        font-size: 14px;
+        font-size: clamp(11px, 2.2vw, 14px);
         font-weight: 700;
         color: var(--text);
-        margin-bottom: 16px;
+        margin-bottom: clamp(9px, 2vw, 16px);
         letter-spacing: -0.2px;
     }
 
@@ -353,8 +405,12 @@
         font-family: 'JetBrains Mono', monospace;
     }
 
+    /* Сетка вкладов (github-style) всегда скроллится по горизонтали
+       ВНУТРИ своего блока, а не толкает всю страницу вбок */
     .gh-wrapper {
         overflow-x: auto;
+        overflow-y: hidden;
+        max-width: 100%;
         scrollbar-width: none;
         position: relative;
         -webkit-overflow-scrolling: touch;
@@ -362,7 +418,6 @@
     }
     .gh-wrapper::-webkit-scrollbar { display: none; }
 
-    /* Индикатор скролла для мобильных */
     .scroll-indicator {
         display: none;
         text-align: center;
@@ -372,17 +427,37 @@
         opacity: 0.7;
     }
 
+    @media (max-width: 768px) {
+        .scroll-indicator { display: block; }
+    }
+
+    :root {
+        --sq-size: 11px;
+    }
+    @media (max-width: 768px) {
+        :root { --sq-size: 10px; }
+    }
+    @media (max-width: 640px) {
+        :root { --sq-size: 9px; }
+    }
+    @media (max-width: 480px) {
+        :root { --sq-size: 8px; }
+    }
+    @media (max-width: 380px) {
+        :root { --sq-size: 7px; }
+    }
+
     .gh-grid {
         display: inline-grid;
         grid-template-areas: ". months" "days squares";
-        grid-template-columns: 45px 1fr;
+        grid-template-columns: clamp(28px, 8vw, 45px) 1fr;
         gap: 4px 8px;
         min-width: fit-content;
     }
     .gh-months {
         grid-area: months;
         display: grid;
-        grid-template-columns: repeat({{ $weeksCount }}, 11px);
+        grid-template-columns: repeat({{ $weeksCount }}, var(--sq-size));
         gap: 3px;
         font-size: 9px;
         color: var(--muted);
@@ -393,7 +468,7 @@
     .gh-days {
         grid-area: days;
         display: grid;
-        grid-template-rows: repeat(7, 11px);
+        grid-template-rows: repeat(7, var(--sq-size));
         gap: 3px;
         font-size: 9px;
         color: var(--muted);
@@ -403,20 +478,20 @@
     .gh-day-label {
         display: flex;
         align-items: center;
-        height: 11px;
+        height: var(--sq-size);
         line-height: 1;
     }
     .gh-squares {
         grid-area: squares;
         display: grid;
-        grid-template-rows: repeat(7, 11px);
+        grid-template-rows: repeat(7, var(--sq-size));
         grid-auto-flow: column;
-        grid-auto-columns: 11px;
+        grid-auto-columns: var(--sq-size);
         gap: 3px;
     }
     .sq {
-        width: 11px;
-        height: 11px;
+        width: var(--sq-size);
+        height: var(--sq-size);
         border-radius: 2px;
         background-color: rgba(255,255,255,0.04);
         border: 1px solid var(--line);
@@ -438,18 +513,26 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 14px;
-        font-size: 10px;
+        margin-top: clamp(8px, 2vw, 14px);
+        font-size: clamp(8px, 1.6vw, 10px);
         font-weight: 600;
         color: var(--muted);
         flex-wrap: wrap;
         gap: 10px;
     }
 
+    @media (max-width: 640px) {
+        .activity-footer {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
     .activity-legend {
         display: flex;
         align-items: center;
         gap: 6px;
+        flex-wrap: wrap;
     }
 
     .activity-legend .sq {
@@ -459,252 +542,6 @@
     }
 
     .activity-legend .sq:hover { transform: none; }
-
-    /* ============================================ */
-    /* === ПОЛНАЯ АДАПТИВНОСТЬ === */
-    /* ============================================ */
-
-    /* Маленькие десктопы (до 1200px) */
-    @media (max-width: 1200px) {
-        .profile-page { padding: 28px 20px; }
-        .profile-header { margin-bottom: 24px; }
-        .profile-title { font-size: 21px; }
-        .profile-grid { gap: 18px; }
-        .avatar-card { padding: 28px 22px; }
-        .avatar-box { width: 118px; height: 118px; border-radius: 18px; margin-bottom: 18px; }
-        .avatar-letter { font-size: 52px; }
-        .profile-name { font-size: 21px; }
-        .profile-email { font-size: 10px; margin-bottom: 18px; }
-        .role-badge { padding: 5px 14px; font-size: 9px; }
-        .details-header { padding: 16px 22px; }
-        .details-body { padding: 22px; }
-        .info-grid { gap: 18px; }
-        .info-value { font-size: 13px; }
-        .access-section { margin-top: 22px; padding-top: 18px; }
-        .access-text { font-size: 11px; }
-        .details-footer { padding: 0 22px 22px; }
-        .btn-edit { padding: 9px 18px; font-size: 9px; }
-        .activity-card { padding: 18px 22px; }
-        .activity-title { font-size: 13px; margin-bottom: 14px; }
-        .activity-footer { margin-top: 12px; }
-    }
-
-    /* Планшеты (до 992px) */
-    @media (max-width: 992px) {
-        .profile-page { padding: 24px 18px; }
-        .profile-header { margin-bottom: 22px; }
-        .profile-title { font-size: 20px; gap: 9px; }
-        .profile-title::before { width: 3px; height: 20px; }
-        .profile-grid { gap: 16px; }
-        .avatar-card { padding: 26px 20px; }
-        .avatar-box { width: 110px; height: 110px; border-radius: 17px; margin-bottom: 16px; }
-        .avatar-letter { font-size: 48px; }
-        .profile-name { font-size: 20px; margin-bottom: 3px; }
-        .profile-email { font-size: 10px; margin-bottom: 16px; }
-        .role-badge { padding: 5px 13px; font-size: 9px; min-width: 110px; }
-        .details-header { padding: 15px 20px; }
-        .details-header-label { font-size: 9px; letter-spacing: 1.3px; }
-        .status-active { font-size: 9px; }
-        .status-dot { width: 7px; height: 7px; }
-        .details-body { padding: 20px; }
-        .info-grid { gap: 16px; }
-        .info-label { font-size: 9px; margin-bottom: 5px; }
-        .info-value { font-size: 13px; }
-        .access-section { margin-top: 20px; padding-top: 16px; }
-        .access-text { font-size: 11px; }
-        .details-footer { padding: 0 20px 20px; }
-        .btn-edit { padding: 9px 17px; font-size: 9px; border-radius: 9px; }
-        .btn-edit svg { width: 11px; height: 11px; }
-        .activity-card { padding: 16px 20px; margin-top: 18px; }
-        .activity-title { font-size: 13px; margin-bottom: 13px; }
-        .activity-footer { margin-top: 11px; font-size: 9px; }
-        .activity-legend { gap: 5px; }
-        .activity-legend .sq { width: 9px; height: 9px; }
-    }
-
-    /* Большие телефоны (до 768px) */
-    @media (max-width: 768px) {
-        .profile-page { padding: 20px 16px; }
-        .profile-header { margin-bottom: 20px; }
-        .profile-title { font-size: 19px; gap: 8px; }
-        .profile-title::before { width: 3px; height: 19px; }
-        .profile-grid { gap: 15px; }
-        .avatar-card { padding: 24px 18px; }
-        .avatar-box { width: 100px; height: 100px; border-radius: 16px; margin-bottom: 15px; border-width: 2px; }
-        .avatar-letter { font-size: 44px; }
-        .profile-name { font-size: 19px; margin-bottom: 3px; }
-        .profile-email { font-size: 10px; margin-bottom: 15px; }
-        .role-badge { padding: 5px 12px; font-size: 9px; min-width: 100px; }
-        .details-header { padding: 14px 18px; }
-        .details-header-label { font-size: 9px; letter-spacing: 1.2px; }
-        .status-active { font-size: 9px; gap: 5px; }
-        .status-dot { width: 7px; height: 7px; }
-        .details-body { padding: 18px; }
-        .info-grid { gap: 15px; }
-        .info-label { font-size: 9px; margin-bottom: 5px; letter-spacing: 0.7px; }
-        .info-value { font-size: 12px; }
-        .access-section { margin-top: 18px; padding-top: 15px; }
-        .access-text { font-size: 11px; }
-        .details-footer { padding: 0 18px 18px; }
-        .btn-edit {
-            padding: 10px 18px;
-            font-size: 10px;
-            border-radius: 9px;
-            gap: 7px;
-            min-height: 44px; /* Touch-friendly */
-        }
-        .btn-edit svg { width: 11px; height: 11px; }
-        .activity-card { padding: 15px 18px; margin-top: 16px; }
-        .activity-title { font-size: 12px; margin-bottom: 12px; }
-        .gh-grid { grid-template-columns: 40px 1fr; gap: 3px 7px; }
-        .gh-months { grid-template-columns: repeat({{ $weeksCount }}, 10px); font-size: 8px; }
-        .gh-days { grid-template-rows: repeat(7, 10px); font-size: 8px; }
-        .gh-day-label { height: 10px; }
-        .gh-squares { grid-template-rows: repeat(7, 10px); grid-auto-columns: 10px; }
-        .sq { width: 10px; height: 10px; }
-        .activity-footer { margin-top: 10px; font-size: 9px; }
-        .activity-legend { gap: 4px; }
-        .activity-legend .sq { width: 9px; height: 9px; }
-        .scroll-indicator { display: block; }
-    }
-
-    /* Телефоны (до 640px) */
-    @media (max-width: 640px) {
-        .profile-page { padding: 18px 14px; }
-        .profile-header { margin-bottom: 18px; }
-        .profile-title { font-size: 18px; gap: 7px; }
-        .profile-title::before { width: 3px; height: 18px; }
-        .profile-grid { gap: 14px; }
-        .avatar-card { padding: 22px 16px; }
-        .avatar-box { width: 90px; height: 90px; border-radius: 14px; margin-bottom: 14px; }
-        .avatar-letter { font-size: 40px; }
-        .profile-name { font-size: 18px; margin-bottom: 2px; }
-        .profile-email { font-size: 9px; margin-bottom: 14px; }
-        .role-badge { padding: 4px 11px; font-size: 8px; min-width: 90px; }
-        .details-header { padding: 13px 16px; }
-        .details-header-label { font-size: 8px; letter-spacing: 1.1px; }
-        .status-active { font-size: 8px; gap: 4px; }
-        .status-dot { width: 6px; height: 6px; }
-        .details-body { padding: 16px; }
-        .info-grid { gap: 14px; }
-        .info-label { font-size: 8px; margin-bottom: 4px; }
-        .info-value { font-size: 12px; }
-        .access-section { margin-top: 16px; padding-top: 14px; }
-        .access-text { font-size: 10px; }
-        .details-footer {
-            padding: 0 16px 16px;
-            justify-content: stretch; /* Кнопка на всю ширину */
-        }
-        .btn-edit {
-            padding: 10px 16px;
-            font-size: 10px;
-            border-radius: 8px;
-            gap: 6px;
-            width: 100%;
-            justify-content: center;
-            min-height: 44px;
-        }
-        .btn-edit svg { width: 10px; height: 10px; }
-        .activity-card { padding: 14px 16px; margin-top: 15px; }
-        .activity-title { font-size: 12px; margin-bottom: 11px; }
-        .gh-grid { grid-template-columns: 35px 1fr; gap: 3px 6px; }
-        .gh-months { grid-template-columns: repeat({{ $weeksCount }}, 9px); font-size: 8px; }
-        .gh-days { grid-template-rows: repeat(7, 9px); font-size: 8px; }
-        .gh-day-label { height: 9px; }
-        .gh-squares { grid-template-rows: repeat(7, 9px); grid-auto-columns: 9px; }
-        .sq { width: 9px; height: 9px; }
-        .activity-footer {
-            margin-top: 9px;
-            font-size: 9px;
-            gap: 8px;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .activity-legend { gap: 4px; }
-        .activity-legend .sq { width: 8px; height: 8px; }
-    }
-
-    /* Маленькие телефоны (до 480px) */
-    @media (max-width: 480px) {
-        .profile-page { padding: 16px 12px; }
-        .profile-header { margin-bottom: 16px; }
-        .profile-title { font-size: 17px; gap: 6px; }
-        .profile-title::before { width: 3px; height: 17px; }
-        .profile-grid { gap: 13px; }
-        .avatar-card { padding: 20px 14px; }
-        .avatar-box { width: 80px; height: 80px; border-radius: 13px; margin-bottom: 13px; }
-        .avatar-letter { font-size: 36px; }
-        .profile-name { font-size: 17px; margin-bottom: 2px; }
-        .profile-email { font-size: 9px; margin-bottom: 13px; }
-        .role-badge { padding: 4px 10px; font-size: 8px; min-width: 85px; }
-        .details-header { padding: 12px 14px; }
-        .details-header-label { font-size: 8px; letter-spacing: 1px; }
-        .status-active { font-size: 8px; }
-        .details-body { padding: 14px; }
-        .info-grid { gap: 13px; }
-        .info-label { font-size: 8px; margin-bottom: 4px; }
-        .info-value { font-size: 11px; }
-        .access-section { margin-top: 14px; padding-top: 12px; }
-        .access-text { font-size: 10px; }
-        .details-footer { padding: 0 14px 14px; }
-        .btn-edit {
-            padding: 10px 14px;
-            font-size: 9px;
-            border-radius: 8px;
-            min-height: 44px;
-        }
-        .activity-card { padding: 13px 14px; margin-top: 14px; }
-        .activity-title { font-size: 11px; margin-bottom: 10px; }
-        .gh-grid { grid-template-columns: 32px 1fr; gap: 2px 5px; }
-        .gh-months { grid-template-columns: repeat({{ $weeksCount }}, 8px); font-size: 7px; }
-        .gh-days { grid-template-rows: repeat(7, 8px); font-size: 7px; }
-        .gh-day-label { height: 8px; }
-        .gh-squares { grid-template-rows: repeat(7, 8px); grid-auto-columns: 8px; }
-        .sq { width: 8px; height: 8px; }
-        .activity-footer { margin-top: 8px; font-size: 8px; gap: 7px; }
-        .activity-legend { gap: 3px; }
-        .activity-legend .sq { width: 7px; height: 7px; }
-    }
-
-    /* Очень маленькие телефоны (до 380px) */
-    @media (max-width: 380px) {
-        .profile-page { padding: 14px 10px; }
-        .profile-header { margin-bottom: 14px; }
-        .profile-title { font-size: 16px; gap: 5px; }
-        .profile-title::before { width: 2px; height: 16px; }
-        .profile-grid { gap: 12px; }
-        .avatar-card { padding: 18px 12px; }
-        .avatar-box { width: 70px; height: 70px; border-radius: 12px; margin-bottom: 12px; }
-        .avatar-letter { font-size: 32px; }
-        .profile-name { font-size: 16px; margin-bottom: 2px; }
-        .profile-email { font-size: 8px; margin-bottom: 12px; }
-        .role-badge { padding: 4px 9px; font-size: 8px; min-width: 80px; }
-        .details-header { padding: 11px 12px; }
-        .details-header-label { font-size: 8px; }
-        .status-active { font-size: 8px; }
-        .details-body { padding: 12px; }
-        .info-grid { gap: 12px; }
-        .info-label { font-size: 7px; margin-bottom: 3px; }
-        .info-value { font-size: 11px; }
-        .access-section { margin-top: 12px; padding-top: 10px; }
-        .access-text { font-size: 9px; }
-        .details-footer { padding: 0 12px 12px; }
-        .btn-edit {
-            padding: 10px 13px;
-            font-size: 9px;
-            min-height: 44px;
-        }
-        .activity-card { padding: 12px; margin-top: 13px; }
-        .activity-title { font-size: 11px; margin-bottom: 9px; }
-        .gh-grid { grid-template-columns: 30px 1fr; }
-        .gh-months { grid-template-columns: repeat({{ $weeksCount }}, 7px); font-size: 7px; }
-        .gh-days { grid-template-rows: repeat(7, 7px); font-size: 7px; }
-        .gh-day-label { height: 7px; }
-        .gh-squares { grid-template-rows: repeat(7, 7px); grid-auto-columns: 7px; }
-        .sq { width: 7px; height: 7px; }
-        .activity-footer { margin-top: 7px; font-size: 8px; }
-        .activity-legend .sq { width: 7px; height: 7px; }
-    }
 </style>
 
 <div class="profile-page font-inter">
@@ -948,7 +785,7 @@
             animation: 'fade',
             duration: [200, 50],
             offset: [0, 10],
-            touch: ['hold', 500], // Улучшенная поддержка touch
+            touch: ['hold', 500],
         });
 
         const initialLang = localStorage.getItem('docsign_lang') || 'ru';

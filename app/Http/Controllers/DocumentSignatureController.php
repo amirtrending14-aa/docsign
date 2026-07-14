@@ -252,6 +252,9 @@ class DocumentSignatureController extends Controller
     }
 
     public function show(DocumentSignature $signature) {
+        // Явно загружаем связь document, чтобы избежать проблемы N+1 и null
+        $signature->load('document');
+
         // 🔒 БЕЗОПАСНОСТЬ: Проверяем право на просмотр подписи
         $this->checkSignatureAccess($signature);
 
@@ -372,19 +375,32 @@ class DocumentSignatureController extends Controller
             abort(403);
         }
 
+        // Загружаем документ
+        $signature->load('document');
+
         $document = $signature->document;
         $signer = Auth::user();
 
         // 📝 ИСТОРИЯ: Удаление подписи (ДО удаления файлов)
-        $this->logAction($document->id, 'удаление подписи', "Подпись пользователя {$signer->name} удалена из документа «{$document->title}»");
+        // Проверяем, существует ли документ, прежде чем писать его название в лог
+        $docTitle = $document ? $document->title : 'Удаленный документ';
+        $this->logAction($document?->id, 'удаление подписи', "Подпись пользователя {$signer->name} удалена из документа «{$docTitle}»");
 
-        $extension = strtolower(pathinfo($signature->document->file_path, PATHINFO_EXTENSION));
-        if (in_array($extension, ['pdf', 'docx', 'doc', 'xlsx', 'xls'])) {
-            Storage::disk('public')->delete($signature->document->file_path);
+        if ($document) {
+            $extension = strtolower(pathinfo($document->file_path, PATHINFO_EXTENSION));
+            if (in_array($extension, ['pdf', 'docx', 'doc', 'xlsx', 'xls'])) {
+                // Проверяем существование файла перед удалением
+                if (Storage::disk('public')->exists($document->file_path)) {
+                    Storage::disk('public')->delete($document->file_path);
+                }
+            }
         }
 
         if ($signature->signature) {
-            Storage::disk('public')->delete($signature->signature);
+            // Проверяем существование файла подписи
+            if (Storage::disk('public')->exists($signature->signature)) {
+                Storage::disk('public')->delete($signature->signature);
+            }
         }
 
         $signature->delete();
@@ -869,6 +885,7 @@ class DocumentSignatureController extends Controller
     }
 
     // 🔒 БЕЗОПАСНОСТЬ: Проверка права на просмотр подписи
+    // 🔒 БЕЗОПАСНОСТЬ: Проверка права на просмотр подписи
     private function checkSignatureAccess($signature)
     {
         $user = Auth::user();
@@ -876,6 +893,11 @@ class DocumentSignatureController extends Controller
         // Админы имеют доступ ко всему
         if ($user->isAdmin()) {
             return;
+        }
+
+        // ВАЖНО: Проверяем, загружен ли документ
+        if (!$signature->document) {
+            abort(404, 'Документ, связанный с этой подписью, не найден.');
         }
 
         // Проверяем, что подпись принадлежит текущему юзеру ИЛИ юзер имеет доступ к документу

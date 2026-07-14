@@ -62,7 +62,7 @@ class UserController extends Controller
         }
 
         // Обычный пользователь без компании просто видит заглушку
-        return view('users.no_companies', compact('authUser'));
+        return view('users.no-companies', compact('authUser'));
     }
 
     public function create()

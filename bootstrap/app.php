@@ -16,13 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\UpdateUserOnlineStatus::class,
         ]);
 
-        // ✅ РЕГИСТРИРУЕМ АЛИАС 'superadmin'
+        // ✅ РЕГИСТРИРУЕМ АЛИАСЫ
         $middleware->alias([
             'superadmin' => \App\Http\Middleware\CheckSuperAdmin::class,
             'superadmin.protection' => \App\Http\Middleware\SuperAdminProtection::class,
             'last.seen' => \App\Http\Middleware\UpdateUserOnlineStatus::class,
         ]);
-
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

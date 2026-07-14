@@ -4,44 +4,59 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
     .mode-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(79, 140, 255, 0.1);
-    border-radius: 8px;
-    margin-bottom: 8px;
-}
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(79, 140, 255, 0.1);
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
 
-.mode-icon i {
-    font-size: 20px;
-    color: #4f8cff;
-}
+    .mode-icon i {
+        font-size: 20px;
+        color: #4f8cff;
+    }
 
-.mode-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+    .mode-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
 
-.mode-btn:hover {
-    background: rgba(79, 140, 255, 0.1);
-    border-color: #4f8cff;
-    transform: translateY(-2px);
-}
+    .mode-btn:hover {
+        background: rgba(79, 140, 255, 0.1);
+        border-color: #4f8cff;
+        transform: translateY(-2px);
+    }
 
-.mode-btn.active {
-    background: rgba(79, 140, 255, 0.15);
-    border-color: #4f8cff;
-    box-shadow: 0 0 20px rgba(79, 140, 255, 0.3);
-}
+    .mode-btn.active {
+        background: rgba(79, 140, 255, 0.15);
+        border-color: #4f8cff;
+        box-shadow: 0 0 20px rgba(79, 140, 255, 0.3);
+    }
+
+    /* ИЗМЕНЕНИЕ 1: Стили для заблокированной кнопки "Всей команде" */
+    .mode-btn[disabled] {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+        border-color: rgba(255, 107, 107, 0.3);
+    }
+    .mode-btn[disabled] .mode-icon {
+        background: rgba(255, 107, 107, 0.1);
+        border-color: rgba(255, 107, 107, 0.3);
+    }
+    .mode-btn[disabled] .mode-icon i {
+        color: #ff6b6b;
+    }
 </style>
 
 <style>
@@ -806,8 +821,6 @@
     }
 
     /* ===== RESPONSIVE ===== */
-
-    /* Маленькие ноутбуки и большие планшеты (до 992px) */
     @media (max-width: 992px) {
         .doc-create-page { padding: 20px 14px; }
         .form-card { padding: 24px; border-radius: 14px; }
@@ -821,43 +834,34 @@
         .ai-icon { width: 40px; height: 40px; font-size: 18px; border-radius: 10px; }
     }
 
-    /* Планшеты (до 768px) */
     @media (max-width: 768px) {
         .doc-create-page { padding: 18px 12px; }
         .form-card { padding: 20px; border-radius: 14px; }
         .ai-generator-card { padding: 16px; border-radius: 14px; margin-bottom: 18px; }
-
         .back-btn { padding: 7px 12px; font-size: 11px; margin-bottom: 14px; }
         .page-title { font-size: 16px; gap: 7px; }
         .page-title::before { width: 3px; height: 16px; }
         .page-subtitle { font-size: 10px; letter-spacing: 0.8px; margin-bottom: 16px; }
-
         .field-row { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
         .field-label { font-size: 9px; letter-spacing: 1px; margin-bottom: 5px; }
         .input-field { height: 38px; font-size: 12px; padding: 0 11px; border-radius: 7px; }
         textarea.input-field { min-height: 70px; padding: 9px 11px; }
         select.input-field { padding-right: 30px; }
-
         .receiver-section { margin-top: 14px; padding-top: 14px; }
         .section-title { font-size: 10px; letter-spacing: 1px; margin-bottom: 8px; }
-
         .mode-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
         .mode-btn { padding: 10px; border-radius: 8px; }
         .mode-btn .mode-icon { width: 26px; height: 26px; font-size: 12px; margin-bottom: 6px; }
         .mode-btn .mode-title { font-size: 10px; }
         .mode-btn .mode-desc { font-size: 8px; }
         .mode-btn .mode-check { width: 14px; height: 14px; top: 6px; right: 6px; }
-
         .receiver-block { padding: 12px; border-radius: 8px; margin-top: 8px; }
         .chip { font-size: 10px; padding: 3px 8px; border-radius: 12px; }
-
         .file-upload { height: 38px; font-size: 11px; padding: 0 12px; border-radius: 7px; }
         .btn-submit { padding: 11px 20px; font-size: 11px; border-radius: 8px; max-width: 260px; }
-
         .error-box { padding: 10px; border-radius: 7px; margin-bottom: 14px; }
         .error-box .title { font-size: 11px; }
         .error-box ul { font-size: 10px; }
-
         .ai-header { gap: 12px; margin-bottom: 14px; }
         .ai-icon { width: 38px; height: 38px; font-size: 17px; border-radius: 10px; }
         .ai-title { font-size: 14px; }
@@ -868,23 +872,18 @@
         .format-label i { font-size: 14px; }
         .ai-generate-btn { padding: 11px; font-size: 12px; border-radius: 8px; }
         .ai-generate-btn i { font-size: 14px; }
-
         .ai-status { padding: 12px; border-radius: 8px; gap: 10px; margin-top: 12px; }
         .ai-status-icon { width: 28px; height: 28px; font-size: 14px; border-radius: 7px; }
         .ai-status-text { font-size: 11px; }
-
         .ai-questions { padding: 12px; border-radius: 8px; margin-top: 12px; }
         .questions-title { font-size: 11px; margin-bottom: 8px; }
         .question-text { font-size: 10px; }
         .question-input { height: 34px; font-size: 11px; border-radius: 5px; }
         .ai-submit-btn { padding: 9px; font-size: 11px; border-radius: 7px; margin-top: 8px; }
-
         .ai-result { padding: 12px; border-radius: 8px; margin-top: 12px; }
         .result-header { font-size: 12px; margin-bottom: 8px; }
         .download-btn { padding: 9px; font-size: 11px; border-radius: 7px; }
-
         .ai-error { padding: 10px; font-size: 11px; border-radius: 7px; margin-top: 12px; }
-
         .search-dropdown { max-height: 180px; border-radius: 7px; }
         .dropdown-item { padding: 9px 12px; }
         .dropdown-item .name { font-size: 11px; }
@@ -893,42 +892,33 @@
         .dropdown-empty { padding: 10px 12px; font-size: 10px; }
     }
 
-    /* Большие телефоны (до 576px) */
     @media (max-width: 576px) {
         .doc-create-page { padding: 16px 10px; }
         .form-card { padding: 18px; border-radius: 12px; }
         .ai-generator-card { padding: 14px; border-radius: 12px; margin-bottom: 16px; }
-
         .back-btn { padding: 6px 11px; font-size: 10px; margin-bottom: 12px; border-radius: 7px; }
         .page-title { font-size: 15px; gap: 6px; }
         .page-title::before { width: 3px; height: 15px; }
         .page-subtitle { font-size: 9px; letter-spacing: 0.7px; margin-bottom: 14px; }
-
         .field-row { gap: 8px; margin-bottom: 8px; }
         .field-label { font-size: 9px; letter-spacing: 0.9px; margin-bottom: 4px; }
         .input-field { height: 36px; font-size: 12px; padding: 0 10px; border-radius: 6px; }
         textarea.input-field { min-height: 65px; padding: 8px 10px; }
-
         .receiver-section { margin-top: 12px; padding-top: 12px; }
         .section-title { font-size: 9px; letter-spacing: 0.9px; margin-bottom: 7px; }
-
         .mode-grid { grid-template-columns: 1fr; gap: 6px; }
         .mode-btn { padding: 10px 12px; border-radius: 8px; flex-direction: row; align-items: center; gap: 10px; }
         .mode-btn .mode-icon { width: 28px; height: 28px; font-size: 13px; margin-bottom: 0; flex-shrink: 0; }
         .mode-btn .mode-title { font-size: 11px; margin-bottom: 1px; }
         .mode-btn .mode-desc { font-size: 9px; }
         .mode-btn .mode-check { width: 15px; height: 15px; top: 50%; right: 10px; transform: translateY(-50%); }
-
         .receiver-block { padding: 11px; border-radius: 7px; margin-top: 7px; }
         .chip { font-size: 10px; padding: 3px 7px; border-radius: 11px; gap: 5px; }
-
         .file-upload { height: 36px; font-size: 11px; padding: 0 11px; border-radius: 6px; }
         .btn-submit { padding: 10px 18px; font-size: 10px; border-radius: 7px; max-width: 240px; letter-spacing: 0.8px; }
-
         .error-box { padding: 9px; border-radius: 6px; margin-bottom: 12px; }
         .error-box .title { font-size: 10px; }
         .error-box ul { font-size: 9px; }
-
         .ai-header { gap: 10px; margin-bottom: 12px; }
         .ai-icon { width: 36px; height: 36px; font-size: 16px; border-radius: 9px; }
         .ai-title { font-size: 13px; }
@@ -939,24 +929,19 @@
         .format-label i { font-size: 13px; }
         .ai-generate-btn { padding: 10px; font-size: 11px; border-radius: 7px; }
         .ai-generate-btn i { font-size: 13px; }
-
         .ai-status { padding: 10px; border-radius: 7px; gap: 9px; margin-top: 10px; }
         .ai-status-icon { width: 26px; height: 26px; font-size: 13px; border-radius: 6px; }
         .ai-status-text { font-size: 10px; }
-
         .ai-questions { padding: 10px; border-radius: 7px; margin-top: 10px; }
         .questions-title { font-size: 10px; margin-bottom: 7px; }
         .question-item { margin-bottom: 8px; }
         .question-text { font-size: 10px; margin-bottom: 5px; }
         .question-input { height: 32px; font-size: 10px; border-radius: 5px; padding: 0 9px; }
         .ai-submit-btn { padding: 8px; font-size: 10px; border-radius: 6px; margin-top: 7px; }
-
         .ai-result { padding: 10px; border-radius: 7px; margin-top: 10px; }
         .result-header { font-size: 11px; margin-bottom: 7px; }
         .download-btn { padding: 8px; font-size: 10px; border-radius: 6px; }
-
         .ai-error { padding: 9px; font-size: 10px; border-radius: 6px; margin-top: 10px; }
-
         .search-dropdown { max-height: 160px; border-radius: 6px; }
         .dropdown-item { padding: 8px 10px; }
         .dropdown-item .name { font-size: 10px; }
@@ -965,44 +950,35 @@
         .dropdown-empty { padding: 9px 10px; font-size: 9px; }
     }
 
-    /* Телефоны (до 480px) */
     @media (max-width: 480px) {
         .doc-create-page { padding: 14px 8px; }
         .form-card { padding: 16px; border-radius: 10px; }
         .ai-generator-card { padding: 12px; border-radius: 10px; margin-bottom: 14px; }
-
         .back-btn { padding: 5px 10px; font-size: 10px; margin-bottom: 10px; border-radius: 6px; gap: 6px; }
         .page-title { font-size: 14px; gap: 5px; }
         .page-title::before { width: 3px; height: 14px; }
         .page-subtitle { font-size: 9px; letter-spacing: 0.6px; margin-bottom: 12px; }
-
         .field-row { gap: 7px; margin-bottom: 7px; }
         .field-label { font-size: 8px; letter-spacing: 0.8px; margin-bottom: 4px; }
         .input-field { height: 34px; font-size: 11px; padding: 0 9px; border-radius: 6px; }
         textarea.input-field { min-height: 60px; padding: 7px 9px; font-size: 11px; }
-
         .receiver-section { margin-top: 10px; padding-top: 10px; }
         .section-title { font-size: 9px; letter-spacing: 0.8px; margin-bottom: 6px; }
-
         .mode-grid { gap: 5px; margin-bottom: 10px; }
         .mode-btn { padding: 9px 11px; border-radius: 7px; gap: 9px; }
         .mode-btn .mode-icon { width: 26px; height: 26px; font-size: 12px; border-radius: 6px; }
         .mode-btn .mode-title { font-size: 10px; }
         .mode-btn .mode-desc { font-size: 8px; }
         .mode-btn .mode-check { width: 14px; height: 14px; right: 9px; }
-
         .receiver-block { padding: 10px; border-radius: 6px; margin-top: 6px; }
         .chip { font-size: 9px; padding: 2px 6px; border-radius: 10px; gap: 4px; }
         .chip button { font-size: 9px; }
-
         .file-upload { height: 34px; font-size: 10px; padding: 0 10px; border-radius: 6px; }
         .btn-submit { padding: 9px 16px; font-size: 10px; border-radius: 6px; max-width: 220px; letter-spacing: 0.7px; gap: 6px; }
         .btn-submit i { font-size: 12px; }
-
         .error-box { padding: 8px; border-radius: 6px; margin-bottom: 10px; border-left-width: 2px; }
         .error-box .title { font-size: 10px; margin-bottom: 3px; }
         .error-box ul { font-size: 9px; padding-left: 14px; }
-
         .ai-header { gap: 9px; margin-bottom: 10px; }
         .ai-icon { width: 32px; height: 32px; font-size: 15px; border-radius: 8px; }
         .ai-title { font-size: 12px; }
@@ -1013,25 +989,20 @@
         .format-label i { font-size: 12px; }
         .ai-generate-btn { padding: 9px; font-size: 10px; border-radius: 6px; gap: 6px; }
         .ai-generate-btn i { font-size: 12px; }
-
         .ai-status { padding: 9px; border-radius: 6px; gap: 8px; margin-top: 9px; }
         .ai-status-icon { width: 24px; height: 24px; font-size: 12px; border-radius: 5px; }
         .ai-status-text { font-size: 10px; }
-
         .ai-questions { padding: 9px; border-radius: 6px; margin-top: 9px; }
         .questions-title { font-size: 10px; margin-bottom: 6px; gap: 5px; }
         .question-item { margin-bottom: 7px; }
         .question-text { font-size: 9px; margin-bottom: 4px; }
         .question-input { height: 30px; font-size: 10px; border-radius: 5px; padding: 0 8px; }
         .ai-submit-btn { padding: 7px; font-size: 10px; border-radius: 5px; margin-top: 6px; gap: 5px; }
-
         .ai-result { padding: 9px; border-radius: 6px; margin-top: 9px; }
         .result-header { font-size: 10px; margin-bottom: 6px; gap: 6px; }
         .result-actions { gap: 8px; }
         .download-btn { padding: 7px; font-size: 10px; border-radius: 5px; gap: 5px; }
-
         .ai-error { padding: 8px; font-size: 9px; border-radius: 5px; margin-top: 9px; }
-
         .search-dropdown { max-height: 150px; border-radius: 5px; margin-top: 5px; }
         .dropdown-item { padding: 7px 9px; }
         .dropdown-item .name { font-size: 10px; margin-bottom: 1px; }
@@ -1040,42 +1011,33 @@
         .dropdown-empty { padding: 8px 9px; font-size: 9px; }
     }
 
-    /* Очень маленькие телефоны (до 380px) */
     @media (max-width: 380px) {
         .doc-create-page { padding: 12px 6px; }
         .form-card { padding: 14px; border-radius: 9px; }
         .ai-generator-card { padding: 10px; border-radius: 9px; margin-bottom: 12px; }
-
         .back-btn { padding: 4px 9px; font-size: 9px; margin-bottom: 9px; border-radius: 5px; gap: 5px; }
         .page-title { font-size: 13px; gap: 4px; }
         .page-title::before { width: 2px; height: 13px; }
         .page-subtitle { font-size: 8px; letter-spacing: 0.5px; margin-bottom: 10px; }
-
         .field-row { gap: 6px; margin-bottom: 6px; }
         .field-label { font-size: 8px; letter-spacing: 0.7px; margin-bottom: 3px; }
         .input-field { height: 32px; font-size: 10px; padding: 0 8px; border-radius: 5px; }
         textarea.input-field { min-height: 55px; padding: 6px 8px; font-size: 10px; }
-
         .receiver-section { margin-top: 9px; padding-top: 9px; }
         .section-title { font-size: 8px; letter-spacing: 0.7px; margin-bottom: 5px; }
-
         .mode-grid { gap: 4px; margin-bottom: 8px; }
         .mode-btn { padding: 8px 10px; border-radius: 6px; gap: 8px; }
         .mode-btn .mode-icon { width: 24px; height: 24px; font-size: 11px; border-radius: 5px; }
         .mode-btn .mode-title { font-size: 9px; }
         .mode-btn .mode-desc { font-size: 7px; }
         .mode-btn .mode-check { width: 13px; height: 13px; right: 8px; }
-
         .receiver-block { padding: 9px; border-radius: 5px; margin-top: 5px; }
         .chip { font-size: 8px; padding: 2px 5px; border-radius: 9px; gap: 3px; }
-
         .file-upload { height: 32px; font-size: 9px; padding: 0 9px; border-radius: 5px; }
         .btn-submit { padding: 8px 14px; font-size: 9px; border-radius: 5px; max-width: 200px; letter-spacing: 0.6px; gap: 5px; }
-
         .error-box { padding: 7px; border-radius: 5px; margin-bottom: 9px; }
         .error-box .title { font-size: 9px; }
         .error-box ul { font-size: 8px; }
-
         .ai-header { gap: 8px; margin-bottom: 9px; }
         .ai-icon { width: 30px; height: 30px; font-size: 14px; border-radius: 7px; }
         .ai-title { font-size: 11px; }
@@ -1086,24 +1048,19 @@
         .format-label i { font-size: 11px; }
         .ai-generate-btn { padding: 8px; font-size: 9px; border-radius: 5px; gap: 5px; }
         .ai-generate-btn i { font-size: 11px; }
-
         .ai-status { padding: 8px; border-radius: 5px; gap: 7px; margin-top: 8px; }
         .ai-status-icon { width: 22px; height: 22px; font-size: 11px; border-radius: 5px; }
         .ai-status-text { font-size: 9px; }
-
         .ai-questions { padding: 8px; border-radius: 5px; margin-top: 8px; }
         .questions-title { font-size: 9px; margin-bottom: 5px; }
         .question-item { margin-bottom: 6px; }
         .question-text { font-size: 9px; margin-bottom: 3px; }
         .question-input { height: 28px; font-size: 9px; border-radius: 4px; padding: 0 7px; }
         .ai-submit-btn { padding: 6px; font-size: 9px; border-radius: 4px; margin-top: 5px; }
-
         .ai-result { padding: 8px; border-radius: 5px; margin-top: 8px; }
         .result-header { font-size: 9px; margin-bottom: 5px; }
         .download-btn { padding: 6px; font-size: 9px; border-radius: 4px; }
-
         .ai-error { padding: 7px; font-size: 8px; border-radius: 4px; margin-top: 8px; }
-
         .search-dropdown { max-height: 140px; border-radius: 4px; }
         .dropdown-item { padding: 6px 8px; }
         .dropdown-item .name { font-size: 9px; }
@@ -1252,7 +1209,6 @@
                     </div>
 
                     <style>
-                        /* === SELECT СТАТУСА В ТЁМНОЙ ТЕМЕ === */
                         #field-status {
                             width: 100%;
                             background: rgba(255, 255, 255, 0.03);
@@ -1281,7 +1237,6 @@
                             background-color: rgba(255, 255, 255, 0.05);
                         }
 
-                        /* === ВАЖНО: СТИЛИ ДЛЯ OPTION ТОЛЬКО В СТАТУСЕ === */
                         #field-status option {
                             background: #161a26;
                             color: var(--text);
@@ -1349,10 +1304,18 @@
                     </div>
 
                     <div class="mode-grid">
-                        <button type="button" data-mode="all_team" class="mode-btn">
+                        <!-- ИЗМЕНЕНИЕ 1: Блокировка кнопки "Всей команде" если нет компании -->
+                        <button type="button" data-mode="all_team" class="mode-btn {{ !(auth()->user()->company_id ?? false) ? 'disabled-mode' : '' }}"
+                                @if(!(auth()->user()->company_id ?? false)) disabled title="Доступно только для пользователей с компанией" @endif>
                             <div class="mode-icon"><i class="bi bi-people-fill"></i></div>
                             <div class="mode-title" data-i18n="modeAllTeam">Всей команде</div>
-                            <div class="mode-desc" data-i18n="modeAllTeamDesc">Всем участникам</div>
+                            <div class="mode-desc">
+                                @if(auth()->user()->company_id ?? false)
+                                <span data-i18n="modeAllTeamDesc">Всем участникам</span>
+                                @else
+                                <span style="color:#ff6b6b" data-i18n="modeAllTeamDescNoCompany">Требуется компания</span>
+                                @endif
+                            </div>
                             <div class="mode-check"></div>
                         </button>
 
@@ -1392,9 +1355,10 @@
                         <label class="field-label" data-i18n="selectReceiversLabel">Выберите получателей (до 5)</label>
 
                         <div class="search-wrapper">
+                            <!-- ИЗМЕНЕНИЕ 2: Обновлен placeholder, чтобы указать на возможность поиска по телефону -->
                             <input type="text" id="team-search" class="input-field"
                                    data-i18n-placeholder="searchPlaceholder"
-                                   placeholder="Введите 2+ буквы для поиска..." autocomplete="off">
+                                   placeholder="Введите имя, email или телефон..." autocomplete="off">
                             <div id="team-list" class="search-dropdown hidden"></div>
                         </div>
 
@@ -1413,9 +1377,10 @@
                         <label class="field-label" data-i18n="searchCompanyLabel">Поиск получателя из другой команды</label>
 
                         <div class="search-wrapper">
+                            <!-- ИЗМЕНЕНИЕ 2: Обновлен placeholder -->
                             <input type="text" id="company-search" class="input-field"
                                    data-i18n-placeholder="searchPlaceholder"
-                                   placeholder="Введите 2+ буквы для поиска..." autocomplete="off">
+                                   placeholder="Введите имя, email или телефон..." autocomplete="off">
                             <div id="company-list" class="search-dropdown hidden"></div>
                         </div>
 
@@ -1456,6 +1421,7 @@
                 labelReceiverMode: "Способ отправки",
                 modeAllTeam: "Всей команде",
                 modeAllTeamDesc: "Всем участникам",
+                modeAllTeamDescNoCompany: "Требуется компания", // ИЗМЕНЕНИЕ 1
                 modeSelectTeam: "Выбрать",
                 modeSelectTeamDesc: "До 5 человек",
                 modeOtherCompany: "Другая команда",
@@ -1463,7 +1429,7 @@
                 allTeamInfo: "Отправка всем участникам",
                 receiversCount: "Получателей:",
                 selectReceiversLabel: "Выберите получателей (до 5)",
-                searchPlaceholder: "Введите 2+ буквы для поиска...",
+                searchPlaceholder: "Введите имя, email или телефон...", // ИЗМЕНЕНИЕ 2
                 selectedPlaceholder: "Выбранные пользователи появятся здесь...",
                 selectError: "Выберите хотя бы одного получателя",
                 searchCompanyLabel: "Поиск получателя из другой команды",
@@ -1495,6 +1461,7 @@
                 labelReceiverMode: "Усули фиристодан",
                 modeAllTeam: "Ба ҳамаи даста",
                 modeAllTeamDesc: "Ба ҳамаи иштирокчиён",
+                modeAllTeamDescNoCompany: "Ширкат лозим аст", // ИЗМЕНЕНИЕ 1
                 modeSelectTeam: "Интихоб кардан",
                 modeSelectTeamDesc: "То 5 нафар",
                 modeOtherCompany: "Дигар даста",
@@ -1502,7 +1469,7 @@
                 allTeamInfo: "Фиристодан ба ҳамаи иштирокчиён",
                 receiversCount: "Гирандаҳо:",
                 selectReceiversLabel: "Гирандаҳоро интихоб кунед (то 5)",
-                searchPlaceholder: "2+ ҳарфро барои ҷустуҷӯ ворид кунед...",
+                searchPlaceholder: "Ном, email ё телефонро ворид кунед...", // ИЗМЕНЕНИЕ 2
                 selectedPlaceholder: "Корбарони интихобшуда дар ин ҷо пайдо мешаванд...",
                 selectError: "Ҳадди ақал як гирандаро интихоб кунед",
                 searchCompanyLabel: "Ҷустуҷӯи гиранда аз дигар даста",
@@ -1534,6 +1501,7 @@
                 labelReceiverMode: "Sending Method",
                 modeAllTeam: "All Team",
                 modeAllTeamDesc: "To all members",
+                modeAllTeamDescNoCompany: "Company required", // ИЗМЕНЕНИЕ 1
                 modeSelectTeam: "Select",
                 modeSelectTeamDesc: "Up to 5 people",
                 modeOtherCompany: "Other Team",
@@ -1541,7 +1509,7 @@
                 allTeamInfo: "Sending to all members",
                 receiversCount: "Recipients:",
                 selectReceiversLabel: "Select recipients (up to 5)",
-                searchPlaceholder: "Enter 2+ letters to search...",
+                searchPlaceholder: "Enter name, email or phone...", // ИЗМЕНЕНИЕ 2
                 selectedPlaceholder: "Selected users will appear here...",
                 selectError: "Select at least one recipient",
                 searchCompanyLabel: "Search recipient from another team",
@@ -1610,6 +1578,7 @@
 
         modeBtns.forEach(btn => {
             btn.addEventListener('click', function() {
+                if (this.disabled) return; // ИЗМЕНЕНИЕ 1: Игнорируем клики по заблокированной кнопке
                 modeBtns.forEach(b => b.classList.remove('active'));
                 modeBlocks.forEach(b => b.classList.add('hidden'));
                 this.classList.add('active');
@@ -1659,8 +1628,9 @@
                     if (selectedTeam.find(s => s.id === user.id)) return false;
                     const name = (user.name || '').toLowerCase();
                     const email = (user.email || '').toLowerCase();
+                    const phone = (user.phone || '').toLowerCase(); // ИЗМЕНЕНИЕ 2: Добавлен телефон
                     const company = (user.company || user.company_name || '').toLowerCase();
-                    return name.includes(query) || email.includes(query) || company.includes(query);
+                    return name.includes(query) || email.includes(query) || phone.includes(query) || company.includes(query); // ИЗМЕНЕНИЕ 2: Поиск по телефону
                 });
 
                 teamList.innerHTML = '';
@@ -1671,12 +1641,16 @@
                         const item = document.createElement('div');
                         item.className = 'dropdown-item';
                         const company = user.company || user.company_name || '';
+                        // ИЗМЕНЕНИЕ 2: Отображение телефона в выпадающем списке
+                        const phoneDisplay = user.phone ? `<span style="color:#8892a6; display:flex; align-items:center; gap:4px;"><i class="bi bi-telephone" style="font-size:10px"></i> ${user.phone}</span>` : '';
+
                         item.innerHTML = `
                             <div>
                                 <span class="name">${user.name}</span>
                                 <div class="meta">
                                     ${company ? `<span class="company">${company}</span>` : ''}
                                     <span>${user.email || ''}</span>
+                                    ${phoneDisplay}
                                 </div>
                             </div>
                             <i class="bi bi-plus-circle-fill add-icon"></i>
@@ -1755,8 +1729,9 @@
                 const filtered = otherUsers.filter(user => {
                     const name = (user.name || '').toLowerCase();
                     const email = (user.email || '').toLowerCase();
+                    const phone = (user.phone || '').toLowerCase(); // ИЗМЕНЕНИЕ 2: Добавлен телефон
                     const company = (user.company || user.company_name || '').toLowerCase();
-                    return name.includes(query) || email.includes(query) || company.includes(query);
+                    return name.includes(query) || email.includes(query) || phone.includes(query) || company.includes(query); // ИЗМЕНЕНИЕ 2: Поиск по телефону
                 });
 
                 companyList.innerHTML = '';
@@ -1767,12 +1742,16 @@
                         const item = document.createElement('div');
                         item.className = 'dropdown-item';
                         const company = user.company || user.company_name || '';
+                        // ИЗМЕНЕНИЕ 2: Отображение телефона в выпадающем списке
+                        const phoneDisplay = user.phone ? `<span style="color:#8892a6; display:flex; align-items:center; gap:4px;"><i class="bi bi-telephone" style="font-size:10px"></i> ${user.phone}</span>` : '';
+
                         item.innerHTML = `
                             <div>
                                 <span class="name">${user.name}</span>
                                 <div class="meta">
                                     ${company ? `<span class="company">${company}</span>` : ''}
                                     <span>${user.email || ''}</span>
+                                    ${phoneDisplay}
                                 </div>
                             </div>
                             <i class="bi bi-check-circle-fill add-icon"></i>
@@ -1846,7 +1825,6 @@
 
         let currentSessionId = null;
 
-        // Отправка запроса к ИИ
         async function sendAIRequest(payload) {
             const csrfToken = getCsrfToken();
             if (!csrfToken) {
@@ -1877,7 +1855,6 @@
             return data;
         }
 
-        // Заполнение полей формы
         function fillFormFields(data) {
             console.log('📝 Заполняем поля данными:', data);
 
@@ -1903,7 +1880,6 @@
                     field.value = value;
                     console.log(`✓ Заполнено: ${fieldId} =`, value);
 
-                    // Анимация
                     field.style.borderColor = 'rgba(34,197,94,0.5)';
                     field.style.boxShadow = '0 0 0 2px rgba(34,197,94,0.15)';
                     setTimeout(() => {
@@ -1916,7 +1892,6 @@
             console.log('✅ Все поля заполнены!');
         }
 
-        // Показ вопросов
         function showQuestions(questions) {
             questionsList.innerHTML = '';
             questions.forEach((q, index) => {
@@ -1931,7 +1906,6 @@
             aiQuestions.classList.remove('hidden');
         }
 
-        // Показ ошибки
         function showError(message) {
             if (aiError) {
                 aiError.textContent = message;
@@ -1942,7 +1916,6 @@
             }
         }
 
-        // Обработчик кнопки генерации
         if (generateBtn) {
             generateBtn.addEventListener('click', async function() {
                 const prompt = aiPrompt.value.trim();
@@ -1996,7 +1969,6 @@
             });
         }
 
-        // Обработчик отправки ответов
         if (submitAnswers) {
             submitAnswers.addEventListener('click', async function() {
                 const answers = {};

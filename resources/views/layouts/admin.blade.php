@@ -474,13 +474,16 @@
           z-index:2;
         }
         .colors{
-          display:grid;
-          grid-template-columns:repeat(6,1fr);
+          display:flex;
+          flex-wrap:wrap;
           gap:8px;
           margin-bottom:16px;
         }
         .color{
-          aspect-ratio:1; border-radius:10px; cursor:pointer;
+          width:38px;
+          height:38px;
+          flex:0 0 auto;
+          border-radius:10px; cursor:pointer;
           border:2px solid transparent;
           position:relative;
           transition: all .25s cubic-bezier(.2,.9,.3,1.2);
@@ -573,6 +576,39 @@
           transition: opacity .3s ease;
         }
         .amb-footer .saved.show{ opacity:1; }
+
+        /* ===== MOBILE SEARCH TOGGLE (topbar icon + dropdown bar) ===== */
+        .mobile-search-btn{ display:none; }
+        .mobile-search-bar{
+          display:none;
+          position:fixed;
+          top:64px; left:0; right:0;
+          z-index:38;
+          padding:10px 14px;
+          background: linear-gradient(180deg, rgba(10,12,18,0.97), rgba(10,12,18,0.9));
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border-bottom:1px solid var(--line);
+          opacity:0;
+          transform: translateY(-8px);
+          transition: opacity .2s ease, transform .2s ease;
+        }
+        .mobile-search-bar.active{
+          display:block;
+          opacity:1;
+          transform: translateY(0);
+        }
+        .mobile-search-bar-form{
+          display:flex; align-items:center; gap:8px;
+          background: rgba(255,255,255,0.05);
+          border:1px solid var(--line);
+          padding:9px 12px; border-radius:10px;
+        }
+        .mobile-search-bar-form input{
+          background:transparent; border:0; outline:0; color:var(--text);
+          font:13px 'Inter',sans-serif; width:100%;
+        }
+        .mobile-search-bar-form svg{ width:14px; height:14px; color:var(--muted); flex-shrink:0; }
 
         /* ===== LAYOUT ===== */
         .layout{
@@ -1017,6 +1053,7 @@
         /* Планшеты в ландшафте (до 1100px) - ПОКАЗЫВАЕМ БУРГЕР */
         @media (max-width: 1100px) {
             .burger-btn { display: flex; align-items: center; justify-content: center; }
+            .mobile-search-btn{ display:grid; place-items:center; }
 
             .layout {
                 grid-template-columns: 1fr;
@@ -1086,8 +1123,20 @@
             .side-item svg { width: 15px; height: 15px; }
             .side-badge { font-size: 9px; padding: 2px 6px; }
             .notif-dropdown { width: 320px; }
-            .amb-panel { width: 320px; padding: 18px; }
-            .colors { grid-template-columns: repeat(6, 1fr); }
+            .amb-panel {
+    position: fixed;
+    top: 64px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(-10px) scale(0.96);
+    width: 320px;
+    padding: 18px;
+}
+.amb-panel::before{ display:none; } /* стрелочка больше не нужна, панель не привязана к кнопке */
+.amb-panel.open{
+    transform: translateX(-50%) translateY(0) scale(1);
+}
+            .color{ width:34px; height:34px; }
             .profile-menu { min-width: 180px; }
             .profile-menu .menu-item { padding: 9px 12px; font-size: 13px; }
         }
@@ -1164,15 +1213,14 @@
             .notif-empty { padding: 28px 14px; }
             .notif-footer { padding: 8px; }
             .notif-footer a { font-size: 0.78rem; }
-            .amb-panel { width: calc(100vw - 20px); max-width: 300px; right: 0; padding: 14px; border-radius: 14px; }
-            .amb-panel::before { display: none; }
+           .amb-panel { width: calc(100vw - 20px); max-width: 300px; left: 50%; right: auto; padding: 14px; border-radius: 14px; }
             .amb-panel h4 { font-size: 13px; gap: 6px; }
             .amb-panel h4 .live-dot { width: 7px; height: 7px; }
             .amb-panel p { font-size: 9px; margin-bottom: 12px; }
             .amb-preview { height: 55px; border-radius: 8px; margin-bottom: 12px; }
             .amb-preview-label { font-size: 8px; bottom: 6px; left: 10px; }
-            .colors { grid-template-columns: repeat(6, 1fr); gap: 5px; margin-bottom: 12px; }
-            .color { border-radius: 7px; }
+            .colors { gap: 6px; margin-bottom: 12px; }
+            .color { width:32px; height:32px; border-radius: 8px; }
             .color.active::after { font-size: 12px; }
             .intensity { gap: 5px; }
             .intensity label { font-size: 9px; }
@@ -1200,6 +1248,7 @@
             .icon-btn { width: 34px; height: 34px; border-radius: 8px; }
             .icon-btn svg { width: 14px; height: 14px; }
             .profile-btn { width: 34px; height: 34px; font-size: 12px; border-radius: 10px; }
+            .mobile-search-bar{ top:57px; }
         }
 
         /* Маленькие телефоны (до 480px) */
@@ -1248,11 +1297,12 @@
             .notif-item { padding: 7px 9px; }
             .notif-icon { width: 28px; height: 28px; font-size: 0.85rem; }
             .notif-text { font-size: 0.7rem; }
-            .amb-panel { width: calc(100vw - 16px); padding: 10px; }
+         .amb-panel { width: calc(100vw - 16px); left: 50%; right: auto; padding: 10px; }
             .amb-panel h4 { font-size: 11px; }
             .amb-panel p { font-size: 8px; }
             .amb-preview { height: 45px; }
-            .colors { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+            .colors { gap: 4px; }
+            .color{ width:26px; height:26px; border-radius:7px; }
             .mode { font-size: 8px; padding: 5px 3px; }
             .lang-menu { min-width: 140px; }
             .lang-option { padding: 5px 6px; font-size: 9px; }
@@ -1262,6 +1312,7 @@
             .icon-btn { width: 30px; height: 30px; }
             .icon-btn svg { width: 12px; height: 12px; }
             .profile-btn { width: 30px; height: 30px; font-size: 10px; }
+            .mobile-search-bar{ top:50px; }
         }
     </style>
 </head>
@@ -1338,6 +1389,14 @@
         />
         <button type="submit" style="display: none;"></button>
     </form>
+
+    <!-- КНОПКА-ЛУПА ДЛЯ МОБИЛЬНЫХ (открывает выпадающую строку поиска под шапкой) -->
+    <button type="button" class="icon-btn mobile-search-btn" id="mobileSearchBtn" data-i18n-title="search_placeholder" title="Поиск" aria-label="Поиск">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+    </button>
 
     @php
     $user = auth()->user();
@@ -1795,6 +1854,25 @@
     </script>
 </header>
 
+<!-- ВЫПАДАЮЩАЯ СТРОКА ПОИСКА ДЛЯ МОБИЛЬНЫХ (открывается кнопкой-лупой) -->
+<div class="mobile-search-bar" id="mobileSearchBar">
+    <form action="{{ route('search') }}" method="GET" class="mobile-search-bar-form">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input
+                type="text"
+                name="query"
+                value="{{ request('query') }}"
+                data-i18n-placeholder="search_placeholder"
+                placeholder="Поиск..."
+                id="mobileSearchInput"
+        />
+        <button type="submit" style="display: none;"></button>
+    </form>
+</div>
+
 <!-- OVERLAY для мобильного меню -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -2010,6 +2088,51 @@
         window.addEventListener('resize', function() {
             if (window.innerWidth > 1100) {
                 closeMenu();
+            }
+        });
+    })();
+
+    // ============================================================
+    // ===== МОБИЛЬНАЯ ЛУПА В ШАПКЕ (выпадающая строка поиска) =====
+    // ============================================================
+    (function() {
+        const btn = document.getElementById('mobileSearchBtn');
+        const bar = document.getElementById('mobileSearchBar');
+        const input = document.getElementById('mobileSearchInput');
+        if (!btn || !bar) return;
+
+        function openBar() {
+            bar.classList.add('active');
+            setTimeout(() => { if (input) input.focus(); }, 60);
+        }
+        function closeBar() {
+            bar.classList.remove('active');
+        }
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (bar.classList.contains('active')) {
+                closeBar();
+            } else {
+                openBar();
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (bar.classList.contains('active') && !bar.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+                closeBar();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && bar.classList.contains('active')) {
+                closeBar();
+            }
+        });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1100) {
+                closeBar();
             }
         });
     })();
@@ -2500,8 +2623,8 @@
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
 
-                const newBell = doc.getElementById('pjax-bell');
-                const oldBell = document.getElementById('pjax-bell');
+              const newBell = doc.getElementById('notifBtn');
+const oldBell = document.getElementById('notifBtn');
 
                 // Если нашли колокольчик на текущей странице и в скачанном ответе
                 if (newBell && oldBell) {

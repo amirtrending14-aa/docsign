@@ -11,6 +11,7 @@ use App\Models\DocumentWorkflow;
 use App\Models\Notification;
 use App\Models\User;
 use App\Helpers\ActivityLogger;
+use App\Services\RateLimitService; // <-- ДОБАВЛЕНО: Сервис лимитов
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -45,6 +46,12 @@ class DocumentController extends Controller
 
         // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
         $this->checkDocumentAccess($document);
+
+        // 🛡️ ЛИМИТ: Экспорт в Word (10 раз, далее 15 мин, 20 раз -> 1 час)
+        $check = RateLimitService::check('export_word:' . Auth::id(), 10, [20 => 60]);
+        if ($check['blocked']) {
+            return back()->with('error', $check['message']);
+        }
 
         // 📝 ИСТОРИЯ: Экспорт в Word
         DocumentLog::create([
@@ -135,6 +142,12 @@ class DocumentController extends Controller
         // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
         $this->checkDocumentAccess($document);
 
+        // 🛡️ ЛИМИТ: Экспорт в PDF (10 раз, далее 15 мин, 20 раз -> 1 час)
+        $check = RateLimitService::check('export_pdf:' . Auth::id(), 10, [20 => 60]);
+        if ($check['blocked']) {
+            return back()->with('error', $check['message']);
+        }
+
         // 📝 ИСТОРИЯ: Экспорт в PDF
         DocumentLog::create([
             'document_id' => $document->id,
@@ -164,6 +177,12 @@ class DocumentController extends Controller
 
     public function storeFromPdf(Request $request)
     {
+        // 🛡️ ЛИМИТ: ИИ-анализ (3 раза, 6 раз -> 30 мин, 9 раз -> 2 часа)
+        $check = RateLimitService::check('ai_parse:' . Auth::id(), 3, [6 => 30, 9 => 120]);
+        if ($check['blocked']) {
+            return response()->json(['status' => 'error', 'message' => $check['message']], 429);
+        }
+
         $request->validate(['pdf_file' => 'required|mimes:pdf,docx,rtf|max:51200']);
 
         $file = $request->file('pdf_file');
@@ -199,12 +218,12 @@ class DocumentController extends Controller
                     'role' => 'system',
                     'content' => 'Ты помощник системы ЭДО. Твоя задача: прочитать текст документа и вернуть JSON с полями: title (название), content (основной текст в HTML), summary (краткое описание).'
                 ],
-                ['role' => 'users', 'content' => "Текст из документа:\n" . $fullText],
+                ['role' => 'user', 'content' => "Текст из документа:\n" . $fullText], // Исправлено 'users' на 'user' для корректной работы API
             ],
             'response_format' => ['type' => 'json_object'],
         ]);
 
-        $aiResult = $response->json()['choices'][0]['message']['content'];
+        $aiResult = $response->json()['choices'][0]['message']['content'] ?? '{}';
         $data = json_decode($aiResult, true);
 
         // 📝 ИСТОРИЯ: Анализ ИИ
@@ -233,6 +252,12 @@ class DocumentController extends Controller
 
         // 🔒 БЕЗОПАСНОСТЬ: Проверка прав доступа
         $this->checkDocumentAccess($document);
+
+        // 🛡️ ЛИМИТ: Подписание (5 раз, 10 раз -> 1 час, 15 раз -> 6 часов)
+        $check = RateLimitService::check('doc_sign:' . Auth::id(), 5, [10 => 60, 15 => 360]);
+        if ($check['blocked']) {
+            return back()->with('error', $check['message']);
+        }
 
         $signatureData = $request->input('signature');
         $fullPathToFile = storage_path('app/public/' . $document->file_path);
@@ -530,6 +555,7 @@ class DocumentController extends Controller
                 'name' => $u->name,
                 'email' => $u->email,
                 'role' => $u->role,
+                'phone' => $u->phone ?? null, // <-- ДОБАВЛЕНО: для поиска по телефону на фронтенде
             ];
         })->values()->toArray();
 
@@ -540,6 +566,7 @@ class DocumentController extends Controller
                 'email' => $u->email,
                 'role' => $u->role,
                 'company' => $u->company,
+                'phone' => $u->phone ?? null, // <-- ДОБАВЛЕНО: для поиска по телефону на фронтенде
             ];
         })->values()->toArray();
 
@@ -548,6 +575,12 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
+        // 🛡️ ЛИМИТ: Создание/Загрузка документа (10 раз, 20 раз -> 1 час, 30 раз -> 6 часов)
+        $check = RateLimitService::check('doc_store:' . Auth::id(), 10, [20 => 60, 30 => 360]);
+        if ($check['blocked']) {
+            return back()->withErrors(['file_path' => $check['message']]);
+        }
+
         $data = $request->validate([
             'number' => 'required|string|max:255',
             'type' => 'required|string|max:255',
@@ -835,6 +868,7 @@ class DocumentController extends Controller
                 'name' => $u->name,
                 'email' => $u->email,
                 'role' => $u->role,
+                'phone' => $u->phone ?? null, // <-- ДОБАВЛЕНО: для поиска по телефону на фронтенде
             ];
         })->values()->toArray();
 
@@ -845,6 +879,7 @@ class DocumentController extends Controller
                 'email' => $u->email,
                 'role' => $u->role,
                 'company' => $u->company,
+                'phone' => $u->phone ?? null, // <-- ДОБАВЛЕНО: для поиска по телефону на фронтенде
             ];
         })->values()->toArray();
 
@@ -1020,6 +1055,12 @@ class DocumentController extends Controller
 
     public function generateWithAI(Request $request)
     {
+        // 🛡️ ЛИМИТ: ИИ-генерация (3 раза, 6 раз -> 30 мин, 9 раз -> 2 часа)
+        $check = RateLimitService::check('ai_generate:' . Auth::id(), 3, [6 => 30, 9 => 120]);
+        if ($check['blocked']) {
+            return response()->json(['message' => $check['message']], 429);
+        }
+
         $validated = $request->validate([
             'type'      => 'required|in:contract,invoice,act,nda',
             'recipient' => 'required|string|max:255',
