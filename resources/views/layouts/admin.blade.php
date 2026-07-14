@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>DocSign — Электронный документооборот</title>
+
+    {{-- ✅ ДОБАВЛЕНО: Favicon DocSign --}}
+    <link rel="icon" type="image/png" href="{{ asset('img/dss.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('img/dss.png') }}">
+    <link rel="shortcut icon" href="{{ asset('img/dss.png') }}">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -1328,13 +1334,7 @@
     </button>
 
     <div class="brand">
-        <div class="brand-dot">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <path d="M9 15l2 2 4-4"/>
-            </svg>
-        </div>
+
         <div>
             DocSign
             <small data-i18n="brand_sub">ЭДО</small>

@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>DocSign — Восстановление пароля</title>
+
+    <!-- ✅ Значок сайта (Favicon) DocSign -->
+    <link rel="icon" type="image/png" href="{{ asset('img/dss.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('img/dss.png') }}">
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -501,7 +506,7 @@
 <div class="container">
     <div class="reset-card">
         <div class="logo-section">
-            <img src="https://image.qwenlm.ai/public_source/5fabf35d-788a-476d-8837-6431dd4fb2c8/1bb634345-5339-4471-924b-764b665ee39d.png" alt="DocSign Logo" class="logo-img">
+            <img src="{{ asset('img/dss.png') }}" alt="DocSign Logo" class="logo-img">
             <div class="logo-title">Doc<span>Sign</span></div>
             <div class="logo-subtitle" data-i18n="subtitle">Восстановление пароля</div>
         </div>

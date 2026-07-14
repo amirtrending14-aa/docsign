@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DocSign — Система ЭДО</title>
+    <title>DocSign</title>
+
+    <!-- ✅ ДОБАВЛЕНО: Значок сайта (Favicon) -->
+    <link rel="icon" type="image/png" href="{{ asset('img/dss.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('img/dss.png') }}">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/index.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script>
+        // Твой дальнейший код...
         tailwind.config = {
           theme: {
             extend: {
@@ -603,14 +609,81 @@
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 lg:h-18">
-                <a href="#" class="flex items-center gap-3 group">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg group-hover:shadow-blue-500/30 transition-all duration-300">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
-                    <span class="text-lg font-bold tracking-tight">Doc<span class="gradient-accent">Sign</span></span>
+                {{-- Логотип в навигации --}}
+                <a href="#" id="logoLink" class="flex items-center gap-3 group">
+                    <img src="{{ asset('img/dss.png') }}"
+                         alt="DocSign"
+                         class="w-16 h-16 rounded-xl object-contain group-hover:scale-105 transition-all duration-300 cursor-pointer">
+                    <span class="text-lg font-bold tracking-tight text-white">Doc<span class="gradient-accent">Sign</span></span>
                 </a>
+
+                {{-- Модальное окно для большого логотипа --}}
+                <div id="logoModal" class="fixed inset-0 z-[100] hidden">
+                    {{-- Затемнённый фон --}}
+                    <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" id="modalBackdrop"></div>
+
+                    {{-- Контент модального окна --}}
+                    <div class="relative min-h-screen flex items-center justify-center p-4">
+                        <div class="relative bg-gradient-to-br from-zinc-900 to-black rounded-3xl p-16 shadow-2xl border border-white/10 max-w-3xl w-full text-center transform scale-95 opacity-0 transition-all duration-300" id="modalContent">
+                            {{-- Кнопка закрытия --}}
+                            <button id="closeModal" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+
+                            {{-- Большой логотип --}}
+                            <img src="{{ asset('img/dss.png') }}"
+                                 alt="DocSign"
+                                 class="w-96 h-96 object-contain mx-auto mb-8 drop-shadow-2xl">
+
+                            {{-- Название --}}
+                            <h2 class="text-5xl font-bold text-white">Doc<span class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Sign</span></h2>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- JavaScript для модального окна --}}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const logoLink = document.getElementById('logoLink');
+                        const modal = document.getElementById('logoModal');
+                        const modalContent = document.getElementById('modalContent');
+                        const closeModal = document.getElementById('closeModal');
+                        const backdrop = document.getElementById('modalBackdrop');
+
+                        // Открытие модального окна
+                        logoLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            modal.classList.remove('hidden');
+                            setTimeout(() => {
+                                modalContent.classList.remove('scale-95', 'opacity-0');
+                                modalContent.classList.add('scale-100', 'opacity-100');
+                            }, 10);
+                        });
+
+                        // Закрытие по кнопке
+                        closeModal.addEventListener('click', closeModalFunc);
+
+                        // Закрытие по клику на фон
+                        backdrop.addEventListener('click', closeModalFunc);
+
+                        // Закрытие по Escape
+                        document.addEventListener('keydown', function(e) {
+                            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                                closeModalFunc();
+                            }
+                        });
+
+                        function closeModalFunc() {
+                            modalContent.classList.remove('scale-100', 'opacity-100');
+                            modalContent.classList.add('scale-95', 'opacity-0');
+                            setTimeout(() => {
+                                modal.classList.add('hidden');
+                            }, 300);
+                        }
+                    });
+                </script>
                 <div class="hidden lg:flex items-center gap-8">
                     <a href="#features" class="nav-link text-sm font-medium text-gray-400" data-i18n="nav_features">Возможности</a>
                     <a href="#analytics" class="nav-link text-sm font-medium text-gray-400" data-i18n="nav_analytics">Аналитика</a>
@@ -662,7 +735,6 @@
             </div>
         </div>
     </nav>
-
     <!-- Hero Section -->
     <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 30%, rgba(59,130,246,0.08) 0%, transparent 60%);"></div>

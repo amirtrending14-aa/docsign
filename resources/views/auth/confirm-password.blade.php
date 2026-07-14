@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>DocSign — Подтверждение</title>
+
+    {{-- ✅ ДОБАВЛЕНО: Favicon DocSign --}}
+    <link rel="icon" type="image/png" href="{{ asset('img/dss.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('img/dss.png') }}">
+
     <link href="https://fonts.bunny.net/css?family=figtree:500;600;700&display=swap" rel="stylesheet">
     <style>
         :root{--p:#4f46e5;--a:#06b6d4;--bg:#0f172a;--card:rgba(30,41,59,.8);--txt:#f1f5f9;--muted:#94a3b8;--brd:rgba(148,163,184,.15)}
@@ -151,7 +156,7 @@
 
 <div class="card">
     <div class="logo">
-        <img src="https://image.qwenlm.ai/public_source/5fabf35d-788a-476d-8837-6431dd4fb2c8/1bb634345-5339-4471-924b-764b665ee39d.png" alt="DocSign">
+        <img src="{{ asset('img/dss.png') }}" alt="DocSign">
         <h1>Doc<span>Sign</span></h1>
         <p data-i18n="sub">Подтверждение</p>
     </div>
